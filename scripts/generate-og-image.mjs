@@ -7,6 +7,11 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUTPUT_PATH = path.join(ROOT, 'public/og.png');
 
+// Pulled from the real dictionary (not a hardcoded copy) so the OG image
+// can't silently drift out of sync with the site's actual tagline again.
+const pt = JSON.parse(await readFile(path.join(ROOT, 'src/i18n/pt.json'), 'utf-8'));
+const TAGLINE = pt.hero.tagline;
+
 const COLOR_BG = '#f7f5f0';
 const COLOR_TEXT = '#141310';
 const COLOR_SECONDARY = '#5c594f';
@@ -66,7 +71,7 @@ async function main() {
                     maxWidth: '820px',
                     lineHeight: 1.4
                   },
-                  children: 'Full-stack developer looking for my first position as a software engineer.'
+                  children: TAGLINE
                 }
               }
             ]

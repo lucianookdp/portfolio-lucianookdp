@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://lucianookdp.github.io',
+  site: 'https://lucianookdp.dev',
   output: 'static',
   trailingSlash: 'never',
 

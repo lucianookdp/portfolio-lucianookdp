@@ -16,10 +16,10 @@ const { dict, locale, ptPath, enPath } = Astro.props;
 const navItems = [
   { href: '#about', id: 'about', label: dict.nav.about },
   { href: '#projects', id: 'projects', label: dict.nav.projects },
-  { href: '#github', id: 'github', label: dict.nav.github },
-  { href: '#stack', id: 'stack', label: dict.nav.stack },
   { href: '#services', id: 'services', label: dict.nav.services },
-  { href: '#contact', id: 'contact', label: dict.nav.contact }
+  { href: '#contact', id: 'contact', label: dict.nav.contact },
+  { href: '#github', id: 'github', label: dict.nav.github },
+  { href: '#stack', id: 'stack', label: dict.nav.stack }
 ];
 
 const homePath = locale === 'pt' ? '/' : '/en';

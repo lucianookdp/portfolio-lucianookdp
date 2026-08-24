@@ -20,3 +20,7 @@ npm run build   # build the static site
 npm run preview # preview the production build
 npm run check   # type-check
 ```
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
