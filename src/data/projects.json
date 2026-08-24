@@ -1,0 +1,80 @@
+[
+  {
+    "id": "frigorifico",
+    "enabled": true,
+    "repoUrl": "https://github.com/lucianookdp/frigorifico-react",
+    "demoUrl": null,
+    "stack": ["React", "Node.js", "MySQL", "OpenAI API"],
+    "translations": {
+      "pt": {
+        "name": "frigorifico-react",
+        "problem": "A empresa não tinha site e recebia todos os pedidos de orçamento por telefone e WhatsApp, sem organização.",
+        "result": "Site com catálogo de produtos, um painel onde a própria empresa atualiza tudo sozinha e orçamentos que chegam prontos no WhatsApp."
+      },
+      "en": {
+        "name": "frigorifico-react",
+        "problem": "The company had no website and took every quote request by phone and WhatsApp, with no organization.",
+        "result": "A site with a product catalog, a panel where the company updates everything itself, and quotes that arrive ready on WhatsApp."
+      }
+    },
+    "media": { "slot": "frigorifico" }
+  },
+  {
+    "id": "lost-and-found",
+    "enabled": true,
+    "repoUrl": "https://github.com/lucianookdp/LostAndFound",
+    "demoUrl": null,
+    "stack": ["React", "Node.js", "MySQL", "JWT Auth"],
+    "translations": {
+      "pt": {
+        "name": "LostAndFound",
+        "problem": "Os achados e perdidos da faculdade eram anotados em planilha, sem registro confiável de quem retirou cada item.",
+        "result": "Sistema onde a recepção cadastra os itens encontrados e cada retirada fica registrada, com os dados dos alunos protegidos."
+      },
+      "en": {
+        "name": "LostAndFound",
+        "problem": "The campus lost-and-found was tracked in a spreadsheet, with no reliable record of who claimed each item.",
+        "result": "A system where the front desk logs found items and every claim is recorded, with student data kept protected."
+      }
+    },
+    "media": { "slot": "lost-and-found" }
+  },
+  {
+    "id": "webhook-inspector",
+    "enabled": true,
+    "repoUrl": "https://github.com/lucianookdp/webhook-inspector",
+    "demoUrl": null,
+    "stack": ["TypeScript", "Fastify", "PostgreSQL"],
+    "translations": {
+      "pt": {
+        "name": "webhook-inspector",
+        "problem": "Quando dois sistemas conversam entre si, é difícil enxergar o que um está realmente enviando para o outro.",
+        "result": "Ferramenta que cria um endereço temporário e mostra na hora tudo que chega nele, apagando os dados sozinha depois de 24 horas."
+      },
+      "en": {
+        "name": "webhook-inspector",
+        "problem": "When two systems talk to each other, it's hard to see what one is actually sending to the other.",
+        "result": "A tool that creates a temporary address and shows everything arriving at it in real time, erasing the data on its own after 24 hours."
+      }
+    },
+    "media": { "slot": "webhook-inspector" }
+  },
+  {
+    "id": "keys-of-fear",
+    "enabled": true,
+    "repoUrl": "https://github.com/lucianookdp/horror-game-unity",
+    "demoUrl": null,
+    "stack": ["Unity", "C#", "Blender"],
+    "translations": {
+      "pt": {
+        "name": "horror-game-unity",
+        "result": "Jogo de terror em 3D feito do zero por curiosidade e prática, com os cenários e personagens criados por mim."
+      },
+      "en": {
+        "name": "horror-game-unity",
+        "result": "A 3D horror game built from scratch out of curiosity and practice, with the scenes and characters created by me."
+      }
+    },
+    "media": { "slot": "keys-of-fear" }
+  }
+]

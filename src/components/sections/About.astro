@@ -1,0 +1,19 @@
+---
+import RevealText from '../ui/RevealText.astro';
+import type { Dictionary } from '../../i18n/utils';
+
+interface Props {
+  dict: Dictionary;
+}
+
+const { dict } = Astro.props;
+---
+
+<section id="about" class="mx-auto max-w-6xl px-6 py-28">
+  <div class="grid gap-8 md:grid-cols-[1fr_2fr] md:gap-16">
+    <RevealText as="h2" class="font-display text-3xl">{dict.about.heading}</RevealText>
+    <RevealText as="p" class="max-w-2xl font-sans text-lg leading-relaxed text-[var(--color-text-secondary)]">
+      {dict.about.body}
+    </RevealText>
+  </div>
+</section>

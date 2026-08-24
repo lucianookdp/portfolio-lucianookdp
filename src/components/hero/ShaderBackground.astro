@@ -1,0 +1,62 @@
+---
+interface Props {
+  id?: string;
+}
+
+const { id = 'shader-canvas' } = Astro.props;
+---
+
+<div class="shader-bg absolute inset-0" aria-hidden="true">
+  <canvas id={id} class="shader-canvas absolute inset-0 h-full w-full"></canvas>
+</div>
+
+<style>
+  .shader-bg {
+    background: radial-gradient(
+      circle at 50% 62%,
+      color-mix(in srgb, var(--color-accent-glow) 30%, var(--color-bg)) 0%,
+      var(--color-bg) 60%
+    );
+  }
+
+  .shader-canvas {
+    opacity: 0;
+    transition: opacity 800ms ease;
+  }
+
+  .shader-canvas.is-ready {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  import { initHeroShader } from './shader';
+
+  // Keyed by container so a same-page double-fire (the initial call and the
+  // first astro:page-load can both land before any navigation happens) skips
+  // containers that are already running instead of disposing and immediately
+  // recreating a context on the same canvas — browsers won't hand out a fresh
+  // one right after WEBGL_lose_context, so that would leave the shader dead.
+  // Only containers an actual page swap removed get torn down.
+  const shaders = new Map<HTMLElement, () => void>();
+
+  function initShaders() {
+    for (const [container, dispose] of shaders) {
+      if (!container.isConnected) {
+        dispose();
+        shaders.delete(container);
+      }
+    }
+
+    document.querySelectorAll<HTMLElement>('.shader-bg').forEach((container) => {
+      if (shaders.has(container)) return;
+      const canvas = container.querySelector<HTMLCanvasElement>('canvas');
+      if (!canvas) return;
+      const dispose = initHeroShader(container, canvas);
+      if (dispose) shaders.set(container, dispose);
+    });
+  }
+
+  initShaders();
+  document.addEventListener('astro:page-load', initShaders);
+</script>

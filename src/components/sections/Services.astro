@@ -1,0 +1,47 @@
+---
+import RevealText from '../ui/RevealText.astro';
+import type { Dictionary } from '../../i18n/utils';
+
+interface Props {
+  dict: Dictionary;
+}
+
+const { dict } = Astro.props;
+
+---
+
+<section id="services" class="mx-auto max-w-6xl px-6 py-28">
+  <div class="grid gap-8 md:grid-cols-[1fr_2fr] md:gap-16">
+    <RevealText as="h2" class="font-display text-3xl">{dict.services.heading}</RevealText>
+    <div class="max-w-2xl">
+      <RevealText as="p" class="font-sans text-lg leading-relaxed text-[var(--color-text-secondary)]">
+        {dict.services.body}
+      </RevealText>
+      <a
+        href="#contact"
+        class="tap-scale mt-8 inline-flex items-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 font-sans text-sm font-medium text-[var(--color-on-accent)] transition-transform duration-200 hover:scale-[1.03]"
+      >
+        {dict.services.cta}
+      </a>
+    </div>
+  </div>
+
+  <div class="mt-16">
+    <h3 class="font-sans text-sm font-medium uppercase tracking-wide text-[var(--color-text-secondary)]">
+      {dict.services.processHeading}
+    </h3>
+    <ol class="mt-6 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-3">
+      {dict.services.steps.map((step, index) => (
+        <li class="flex gap-4">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--color-accent)]/40 font-display text-base text-[var(--color-accent)]" aria-hidden="true">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <div>
+            <p class="font-display text-lg">{step.title}</p>
+            <p class="mt-1 font-sans text-sm text-[var(--color-text-secondary)]">{step.description}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

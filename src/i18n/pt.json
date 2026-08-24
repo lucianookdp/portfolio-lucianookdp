@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "title": "Luciano K. Dal Pai | Engenheiro de Software Full-Stack",
+    "description": "Portfólio de Luciano K. Dal Pai: engenheiro de software, desenvolvedor full-stack e entusiasta de tecnologia."
+  },
+  "nav": {
+    "primary": "Navegação principal",
+    "about": "Sobre",
+    "projects": "Projetos",
+    "services": "Serviços",
+    "github": "Atividade",
+    "stack": "Stack",
+    "contact": "Contato",
+    "skipToContent": "Pular para o conteúdo"
+  },
+  "hero": {
+    "tagline": "Engenheiro de software, desenvolvedor full-stack e entusiasta de tecnologia.",
+    "ctaProjects": "Ver projetos",
+    "ctaContact": "Contato"
+  },
+  "about": {
+    "heading": "Sobre",
+    "body": "Engenheiro de software e desenvolvedor full-stack, entusiasta de tecnologia sempre em busca de aprender mais sobre soluções tecnológicas e como aplicá-las a problemas reais."
+  },
+  "projects": {
+    "heading": "Projetos em destaque",
+    "subheading": "Uma seleção do que venho construindo.",
+    "problem": "Problema",
+    "result": "Resultado",
+    "viewRepo": "Repositório",
+    "viewDemo": "Demo",
+    "viewMoreGithub": "Ver mais projetos no GitHub"
+  },
+  "github": {
+    "heading": "Atividade no GitHub",
+    "subheading": "Dados buscados direto da API do GitHub em tempo de build.",
+    "contributions": "contribuições no último ano",
+    "repos": "repositórios públicos",
+    "stars": "estrelas recebidas",
+    "topLanguages": "Linguagens mais usadas",
+    "heatmapCaption": "Mapa de contribuições dos últimos 12 meses",
+    "updatedAt": "Atualizado em",
+    "viewProfile": "Ver perfil no GitHub",
+    "empty": "Os dados serão exibidos após o primeiro build no GitHub Actions."
+  },
+  "stack": {
+    "heading": "Stack",
+    "subheading": "Ferramentas que uso no dia a dia.",
+    "categories": {
+      "languages": "Linguagens",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "databases": "Bancos de dados",
+      "tools": "Ferramentas & infra"
+    }
+  },
+  "services": {
+    "heading": "Serviços",
+    "body": "Estou sempre aberto a novas oportunidades e parcerias. Se você ou sua empresa tem um projeto em mente, ficarei feliz em conversar e entender como posso ajudar.",
+    "cta": "Pedir um orçamento",
+    "processHeading": "Como funciona",
+    "steps": [
+      {
+        "title": "Briefing",
+        "description": "Alinhamos objetivos, necessidades e metas do projeto com você."
+      },
+      {
+        "title": "Design",
+        "description": "Layout e identidade visual pensados pro seu projeto."
+      },
+      {
+        "title": "Desenvolvimento",
+        "description": "Código limpo, rápido e otimizado, do zero ao deploy."
+      },
+      {
+        "title": "Ajustes finais",
+        "description": "Melhorias com base no seu feedback antes da entrega."
+      },
+      {
+        "title": "Entrega & suporte",
+        "description": "Você recebe o projeto pronto pra uso, com suporte técnico."
+      },
+      {
+        "title": "Parceria contínua",
+        "description": "Sigo à disposição para atualizações e novos projetos."
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Contato",
+    "subheading": "De preferência por email. O resto do meu trabalho está documentado no GitHub.",
+    "loadingEmail": "Carregando email…",
+    "copyEmail": "Copiar email",
+    "emailCopied": "Email copiado!"
+  },
+  "footer": {
+    "rights": "Todos os direitos reservados."
+  },
+  "commandPalette": {
+    "label": "Paleta de comandos",
+    "openButton": "Abrir paleta de comandos",
+    "placeholder": "Digite um comando ou busque...",
+    "empty": "Nenhum resultado encontrado.",
+    "groupNavigation": "Navegação",
+    "groupActions": "Ações",
+    "groupLinks": "Links externos",
+    "toggleTheme": "Alternar tema",
+    "toggleThemeLight": "Mudar para modo claro",
+    "toggleThemeDark": "Mudar para modo escuro",
+    "switchLanguage": "Switch to English",
+    "openGithub": "Abrir GitHub",
+    "sendEmail": "Enviar email",
+    "hint": "para abrir"
+  }
+}

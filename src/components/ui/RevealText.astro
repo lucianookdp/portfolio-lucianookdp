@@ -1,0 +1,177 @@
+---
+interface Props {
+  as?: 'h2' | 'h3' | 'p' | 'div';
+  class?: string;
+}
+
+const { as: Tag = 'div', class: className = '' }: Props = Astro.props;
+---
+
+<Tag class={`reveal-text ${className}`}>
+  <slot />
+</Tag>
+
+<style is:global>
+  .reveal-line {
+    display: block;
+    overflow: hidden;
+  }
+
+  .reveal-line-inner {
+    display: block;
+    transform: translateY(115%);
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-line-inner {
+      transform: none;
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  import { animate, stagger } from 'motion';
+
+  function splitIntoLines(el: HTMLElement) {
+    const text = el.textContent?.trim() ?? '';
+    if (!text) return;
+
+    const words = text.split(/\s+/);
+    el.textContent = '';
+    words.forEach((word, i) => {
+      const span = document.createElement('span');
+      span.className = 'reveal-word';
+      span.style.display = 'inline-block';
+      span.textContent = word;
+      el.appendChild(span);
+      if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
+    });
+
+    const wordSpans = Array.from(el.querySelectorAll<HTMLElement>(':scope > .reveal-word'));
+    const lines: HTMLElement[][] = [];
+    let lastTop: number | null = null;
+    wordSpans.forEach((span) => {
+      const top = span.offsetTop;
+      if (lastTop === null || Math.abs(top - lastTop) > 2) {
+        lines.push([]);
+        lastTop = top;
+      }
+      lines[lines.length - 1].push(span);
+    });
+
+    el.textContent = '';
+    lines.forEach((lineWords) => {
+      const lineEl = document.createElement('span');
+      lineEl.className = 'reveal-line';
+      const innerEl = document.createElement('span');
+      innerEl.className = 'reveal-line-inner';
+      lineWords.forEach((span, idx) => {
+        innerEl.appendChild(span);
+        if (idx < lineWords.length - 1) innerEl.appendChild(document.createTextNode(' '));
+      });
+      lineEl.appendChild(innerEl);
+      el.appendChild(lineEl);
+    });
+  }
+
+  function initRevealText() {
+    const roots = document.querySelectorAll<HTMLElement>('.reveal-text:not([data-reveal-ready])');
+    if (roots.length === 0) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    roots.forEach((root) => {
+      root.dataset.revealReady = 'true';
+
+      if (prefersReducedMotion) return;
+
+      const targets = root.children.length > 0 ? Array.from(root.children) : [root];
+      targets.forEach((target) => {
+        if (target instanceof HTMLElement) splitIntoLines(target);
+      });
+    });
+
+    if (prefersReducedMotion) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const lines = entry.target.querySelectorAll<HTMLElement>('.reveal-line-inner');
+          const controls = animate(
+            lines,
+            { transform: 'translateY(0%)', opacity: 1 },
+            { duration: 0.7, delay: stagger(0.07), ease: [0.16, 1, 0.3, 1] }
+          );
+          runningAnimations.set(entry.target as HTMLElement, controls);
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -10% 0px' }
+    );
+
+    roots.forEach((root) => {
+      // A root that's already on screen when this runs (page refreshed mid-scroll,
+      // or loaded straight into a #section link) would otherwise have its reveal
+      // fire instantly, before the user ever sees it animate in. Just show it.
+      const rect = root.getBoundingClientRect();
+      const alreadyVisible = rect.top < window.innerHeight * 0.85 && rect.bottom > 0;
+      if (alreadyVisible) {
+        root.querySelectorAll<HTMLElement>('.reveal-line-inner').forEach((line) => {
+          line.style.transform = 'translateY(0%)';
+          line.style.opacity = '1';
+        });
+        return;
+      }
+      observer.observe(root);
+    });
+
+    scheduleSafetyCheck();
+  }
+
+  // .reveal-line-inner starts permanently hidden via CSS (opacity: 0) and is only
+  // ever revealed by the IntersectionObserver callback above. If that callback is
+  // missed or throttled (e.g. the tab was backgrounded at the moment an element
+  // scrolled into view), the text would stay invisible forever with no recovery.
+  // This net catches anything that's on screen but never got revealed and shows
+  // it immediately (no animation) so content is never permanently lost.
+  //
+  // Roots whose reveal DID start (the observer fired) get an entry here. Their
+  // animation runs on the Web Animations API, which keeps driving the element's
+  // rendered value even while stalled — a plain style write on those lines would
+  // get silently overridden by the still-"running" animation. .complete() is
+  // what actually forces it to its end state and releases control.
+  const runningAnimations = new WeakMap<HTMLElement, { complete: () => void }>();
+  let safetyTimer: number | undefined;
+  function forceRevealIfVisible() {
+    document.querySelectorAll<HTMLElement>('.reveal-text[data-reveal-ready]').forEach((root) => {
+      const lines = root.querySelectorAll<HTMLElement>('.reveal-line-inner');
+      if (lines.length === 0) return;
+      const stillHidden = Array.from(lines).some((line) => getComputedStyle(line).opacity === '0');
+      if (!stillHidden) return;
+      const rect = root.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!isVisible) return;
+
+      const controls = runningAnimations.get(root);
+      if (controls) {
+        controls.complete();
+        return;
+      }
+      lines.forEach((line) => {
+        line.style.transform = 'translateY(0%)';
+        line.style.opacity = '1';
+      });
+    });
+  }
+  function scheduleSafetyCheck() {
+    window.clearTimeout(safetyTimer);
+    safetyTimer = window.setTimeout(forceRevealIfVisible, 1200);
+  }
+  window.addEventListener('scroll', scheduleSafetyCheck, { passive: true });
+
+  initRevealText();
+  document.addEventListener('astro:page-load', initRevealText);
+</script>

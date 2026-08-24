@@ -1,0 +1,76 @@
+---
+import RevealText from '../ui/RevealText.astro';
+import ProjectCard from './ProjectCard.astro';
+import projectsData from '../../data/projects.json';
+import type { Dictionary, Locale } from '../../i18n/utils';
+
+interface Props {
+  dict: Dictionary;
+  locale: Locale;
+}
+
+const { dict, locale } = Astro.props;
+
+const projects = projectsData.filter((project) => project.enabled);
+---
+
+<section id="projects" class="mx-auto max-w-6xl px-6 py-28">
+  <RevealText as="h2" class="font-display text-3xl">{dict.projects.heading}</RevealText>
+  <p class="mt-3 max-w-xl font-sans text-[var(--color-text-secondary)]">{dict.projects.subheading}</p>
+
+  <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+    {projects.map((project) => (
+      <ProjectCard
+        id={project.id}
+        repoUrl={project.repoUrl}
+        demoUrl={project.demoUrl}
+        translation={project.translations[locale]}
+        dict={dict}
+      />
+    ))}
+  </div>
+
+  <a
+    href="https://github.com/lucianookdp"
+    target="_blank"
+    rel="noopener noreferrer me"
+    class="tap-scale mt-10 inline-flex items-center gap-2.5 rounded-full border border-[var(--color-text)] px-6 py-3 font-sans text-sm font-medium text-[var(--color-text)] transition-colors duration-200 hover:bg-[var(--color-text)] hover:text-[var(--color-bg)]"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" aria-hidden="true">
+      <path
+        fill="currentColor"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.221-.253-4.556-1.113-4.556-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.203 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"
+      />
+    </svg>
+    {dict.projects.viewMoreGithub}
+  </a>
+</section>
+
+<script>
+  import { animate, scroll } from 'motion';
+
+  let stopParallax: Array<() => void> = [];
+
+  function initParallax() {
+    stopParallax.forEach((stop) => stop());
+    stopParallax = [];
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    document.querySelectorAll<HTMLElement>('.project-cover-parallax').forEach((el) => {
+      const card = el.closest('article');
+      if (!card) return;
+      const stop = scroll(animate(el, { transform: ['translateY(-16px)', 'translateY(16px)'] }), {
+        target: card,
+        offset: ['start end', 'end start']
+      });
+      stopParallax.push(stop);
+    });
+  }
+
+  initParallax();
+  document.addEventListener('astro:page-load', initParallax);
+</script>

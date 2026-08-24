@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ShaderBackground from '../components/hero/ShaderBackground.astro';
+---
+
+<BaseLayout locale="pt" title="404 | Luciano K. Dal Pai" noIndex>
+  <section class="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-6 text-center">
+    <ShaderBackground id="not-found-canvas" />
+
+    <div class="relative z-10 flex flex-col items-center gap-10">
+      <p class="glitch-404 font-display text-[clamp(6rem,20vw,14rem)] leading-none text-[var(--color-text)]" data-text="404">404</p>
+
+      <div class="flex max-w-md flex-col gap-1 font-sans text-[var(--color-text-secondary)]">
+        <p>Essa rota não existe ou ainda não foi construída.</p>
+        <p>This route doesn't exist or hasn't been built yet.</p>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/"
+          class="rounded-full bg-[var(--color-accent)] px-6 py-3 font-sans text-sm font-medium text-[var(--color-on-accent)] transition-transform duration-200 hover:scale-[1.03]"
+        >
+          Voltar ao início
+        </a>
+        <a
+          href="/en"
+          class="rounded-full border border-[var(--color-border)] px-6 py-3 font-sans text-sm font-medium text-[var(--color-text)] transition-colors duration-200 hover:border-[var(--color-accent)]"
+        >
+          Back to home
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .glitch-404 {
+    position: relative;
+    display: inline-block;
+  }
+
+  .glitch-404::before,
+  .glitch-404::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: screen;
+    opacity: 0;
+  }
+
+  .glitch-404::before {
+    color: #ff2e6b;
+    animation: glitch-shift-1 6s ease-in-out infinite;
+  }
+
+  .glitch-404::after {
+    color: #2ee6ff;
+    animation: glitch-shift-2 6s ease-in-out infinite;
+  }
+
+  @keyframes glitch-shift-1 {
+    0%,
+    92%,
+    100% {
+      opacity: 0;
+      transform: translate(0, 0);
+      clip-path: inset(0 0 0 0);
+    }
+    93% {
+      opacity: 0.8;
+      transform: translate(-4px, 2px);
+      clip-path: inset(10% 0 60% 0);
+    }
+    95% {
+      opacity: 0.8;
+      transform: translate(3px, -1px);
+      clip-path: inset(60% 0 5% 0);
+    }
+    97% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes glitch-shift-2 {
+    0%,
+    92%,
+    100% {
+      opacity: 0;
+      transform: translate(0, 0);
+      clip-path: inset(0 0 0 0);
+    }
+    93% {
+      opacity: 0.8;
+      transform: translate(4px, -2px);
+      clip-path: inset(40% 0 20% 0);
+    }
+    95% {
+      opacity: 0.8;
+      transform: translate(-3px, 1px);
+      clip-path: inset(5% 0 70% 0);
+    }
+    97% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glitch-404::before,
+    .glitch-404::after {
+      animation: none;
+      opacity: 0;
+    }
+  }
+</style>

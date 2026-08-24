@@ -1,0 +1,33 @@
+---
+import RevealText from '../ui/RevealText.astro';
+import ObfuscatedEmail from '../islands/ObfuscatedEmail.tsx';
+import type { Dictionary } from '../../i18n/utils';
+
+interface Props {
+  dict: Dictionary;
+}
+
+const { dict } = Astro.props;
+---
+
+<section id="contact" class="mx-auto max-w-6xl px-6 py-28">
+  <div class="grid gap-8 md:grid-cols-[1fr_2fr] md:gap-16">
+    <RevealText as="h2" class="font-display text-3xl">{dict.contact.heading}</RevealText>
+
+    <div class="max-w-xl">
+      <p class="font-sans text-[var(--color-text-secondary)]">{dict.contact.subheading}</p>
+
+      <div class="mt-8">
+        <ObfuscatedEmail
+          client:only="react"
+          userPart="engslucianok"
+          domainPart="gmail"
+          tldPart="com"
+          loadingLabel={dict.contact.loadingEmail}
+          copyLabel={dict.contact.copyEmail}
+          copiedLabel={dict.contact.emailCopied}
+        />
+      </div>
+    </div>
+  </div>
+</section>

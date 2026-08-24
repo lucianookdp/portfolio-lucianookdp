@@ -1,0 +1,100 @@
+---
+import ShaderBackground from './ShaderBackground.astro';
+import type { Dictionary, Locale } from '../../i18n/utils';
+
+interface Props {
+  dict: Dictionary;
+  locale: Locale;
+  displayName: string;
+}
+
+const { dict, displayName } = Astro.props;
+---
+
+<section id="hero" class="relative flex min-h-[82svh] items-end overflow-hidden sm:min-h-[88svh] lg:min-h-[100svh]">
+  <ShaderBackground id="hero-canvas" />
+
+  <div id="hero-content" class="relative z-10 mx-auto w-full max-w-6xl px-6 pb-16 pt-32 sm:pb-20 sm:pt-36 lg:pt-40">
+    <h1 class="hero-entrance font-display leading-[0.92] font-medium tracking-tight text-[var(--color-text)]" style="font-size: clamp(3rem, 11vw, 10.5rem);">
+      {displayName}
+    </h1>
+
+    <p class="hero-entrance mt-8 max-w-xl font-sans text-lg text-[var(--color-text-secondary)] sm:text-xl">
+      {dict.hero.tagline}
+    </p>
+
+    <div class="hero-entrance mt-10 flex flex-wrap items-center gap-4">
+      <a
+        href="#projects"
+        class="tap-scale rounded-full bg-[var(--color-accent)] px-6 py-3 font-sans text-sm font-medium text-[var(--color-on-accent)] transition-transform duration-200 hover:scale-[1.03]"
+      >
+        {dict.hero.ctaProjects}
+      </a>
+      <a
+        href="#contact"
+        class="tap-scale rounded-full border border-[var(--color-border)] px-6 py-3 font-sans text-sm font-medium text-[var(--color-text)] transition-colors duration-200 hover:border-[var(--color-accent)]"
+      >
+        {dict.hero.ctaContact}
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { animate, scroll } from 'motion';
+
+  // Re-run on every Astro page transition so the entrance replays and the
+  // scroll-linked fade re-binds to that page's fresh Hero elements. The old
+  // scroll subscription is stopped first — Motion's scroll() keeps listening
+  // on window otherwise, leaking one per navigation.
+  let stopScrollEffect: (() => void) | undefined;
+
+  function initHero() {
+    stopScrollEffect?.();
+    stopScrollEffect = undefined;
+
+    const heroSection = document.getElementById('hero');
+    const heroContent = document.getElementById('hero-content');
+    if (!heroSection || !heroContent) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const entranceEls = Array.from(heroContent.querySelectorAll<HTMLElement>('.hero-entrance'));
+    const entranceAnimations = entranceEls.map((el, index) =>
+      animate(
+        el,
+        { opacity: [0, 1], transform: ['translateY(20px)', 'translateY(0px)'] },
+        { duration: 0.8, delay: 0.15 + index * 0.18, ease: [0.16, 1, 0.3, 1] }
+      )
+    );
+
+    // Safety net: animate() is requestAnimationFrame-driven, which browsers can
+    // stall indefinitely for a backgrounded tab. This is the Hero's name and
+    // CTAs — the first thing a visitor sees — so don't let a missed rAF leave
+    // them stuck invisible; force the animations to their end state after a
+    // generous max wait. Calling .complete() (not just setting el.style
+    // directly) matters: these run on the Web Animations API, which keeps
+    // driving the element's rendered value even while stalled, silently
+    // overriding a plain style write — .complete() is what actually releases
+    // that control back. setTimeout is used instead of rAF here specifically
+    // because it isn't paused the same way for hidden tabs, so it still fires.
+    window.setTimeout(() => {
+      entranceAnimations.forEach((controls) => controls.complete());
+    }, 2500);
+
+    stopScrollEffect = scroll(
+      animate(heroContent, {
+        transform: ['translateY(0px) scale(1)', 'translateY(40px) scale(0.97)'],
+        opacity: [1, 0.6]
+      }),
+      {
+        target: heroSection,
+        offset: ['start start', 'end start']
+      }
+    );
+  }
+
+  initHero();
+  document.addEventListener('astro:page-load', initHero);
+</script>

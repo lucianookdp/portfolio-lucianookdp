@@ -1,0 +1,85 @@
+---
+import RevealText from '../ui/RevealText.astro';
+import { findProjectMedia } from '../../lib/media';
+import type { Dictionary } from '../../i18n/utils';
+
+interface Translation {
+  name: string;
+  // Not every project frames as problem/solution — a personal build can just be
+  // described. Those entries omit `problem` and render `result` as plain prose.
+  problem?: string;
+  result: string;
+}
+
+interface Props {
+  id: string;
+  repoUrl: string;
+  demoUrl: string | null;
+  translation: Translation;
+  dict: Dictionary;
+}
+
+const { id, repoUrl, demoUrl, translation, dict } = Astro.props;
+const media = findProjectMedia(id);
+
+const COVER_ICONS: Record<string, string> = {
+  frigorifico: `<circle cx="9" cy="20" r="1" /><circle cx="18" cy="20" r="1" /><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h8.2a2 2 0 0 0 2-1.6L21 8H6" />`,
+  'lost-and-found': `<path d="m12 3 7 3v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Z" /><path d="m9 12 2 2 4-4" />`,
+  'webhook-inspector': `<circle cx="12" cy="16" r="1.5" /><path d="M12 16V8" /><path d="M8.5 11a5 5 0 0 1 7 0" /><path d="M5.5 8a9 9 0 0 1 13 0" />`,
+  'keys-of-fear': `<path d="M6 20V10a6 6 0 0 1 12 0v10l-2.5-2-2 2-2-2-2 2-2-2Z" /><circle cx="9.5" cy="10.5" r="0.75" fill="currentColor" stroke="none" /><circle cx="14.5" cy="10.5" r="0.75" fill="currentColor" stroke="none" />`
+};
+const DEFAULT_ICON = `<path d="m8 9-4 3 4 3" /><path d="m16 9 4 3-4 3" /><path d="m14 6-4 12" />`;
+const coverIcon = COVER_ICONS[id] ?? DEFAULT_ICON;
+---
+
+<article class="project-card group flex flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)]">
+  <div class="relative aspect-video w-full overflow-hidden border-b border-[var(--color-border)] bg-[var(--color-bg)]">
+    {media ? (
+      media.isVideo ? (
+        <video src={media.src} class="h-full w-full object-cover" autoplay loop muted playsinline></video>
+      ) : (
+        <img src={media.src} alt={translation.name} class="h-full w-full object-cover" loading="lazy" />
+      )
+    ) : (
+      <div class="project-cover flex h-full w-full items-center justify-center" aria-hidden="true">
+        <div class="project-cover-parallax">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={coverIcon} />
+        </div>
+      </div>
+    )}
+  </div>
+
+  <div class="flex flex-1 flex-col gap-4 p-6">
+    <RevealText as="h3" class="font-display text-2xl">{translation.name}</RevealText>
+
+    {translation.problem ? (
+      <dl class="flex flex-col gap-3 font-sans text-sm">
+        <div>
+          <dt class="font-medium text-[var(--color-text)]">{dict.projects.problem}</dt>
+          <dd class="mt-1">
+            <RevealText as="div" class="text-[var(--color-text-secondary)]">{translation.problem}</RevealText>
+          </dd>
+        </div>
+        <div>
+          <dt class="font-medium text-[var(--color-text)]">{dict.projects.result}</dt>
+          <dd class="mt-1">
+            <RevealText as="div" class="text-[var(--color-text-secondary)]">{translation.result}</RevealText>
+          </dd>
+        </div>
+      </dl>
+    ) : (
+      <RevealText as="div" class="font-sans text-sm text-[var(--color-text-secondary)]">{translation.result}</RevealText>
+    )}
+
+    <div class="mt-auto flex gap-4 pt-2 font-sans text-sm">
+      <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="font-medium text-[var(--color-accent)] underline-offset-4 hover:underline">
+        {dict.projects.viewRepo}
+      </a>
+      {demoUrl && (
+        <a href={demoUrl} target="_blank" rel="noopener noreferrer" class="font-medium text-[var(--color-accent)] underline-offset-4 hover:underline">
+          {dict.projects.viewDemo}
+        </a>
+      )}
+    </div>
+  </div>
+</article>
