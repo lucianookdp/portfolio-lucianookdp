@@ -1,0 +1,373 @@
+@import "tailwindcss";
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/inter";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --color-bg: #f7f5f0;
+  --color-bg-elevated: #ffffff;
+  --color-text: #141310;
+  --color-text-secondary: #5c594f;
+  --color-accent: #1e8e56;
+  --color-accent-glow: #1fb469;
+  --color-on-accent: #08150e;
+  --color-border: #e4e0d6;
+  color-scheme: light;
+}
+
+.dark {
+  --color-bg: #0e0d0b;
+  --color-bg-elevated: #17150f;
+  --color-text: #f3f1ea;
+  --color-text-secondary: #9c988b;
+  --color-accent: #34c17d;
+  --color-accent-glow: #3ddc8f;
+  --color-on-accent: #08150e;
+  --color-border: #262420;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-bg-elevated: var(--color-bg-elevated);
+  --color-text: var(--color-text);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-accent: var(--color-accent);
+  --color-accent-glow: var(--color-accent-glow);
+  --color-on-accent: var(--color-on-accent);
+  --color-border: var(--color-border);
+
+  --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --animate-none: none;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    background: var(--color-bg);
+    color-scheme: light dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+  }
+}
+
+@layer utilities {
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -3rem;
+    transition: top 200ms ease;
+    z-index: 100;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+}
+
+/* Scroll progress bar */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  height: 2px;
+  width: 100%;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #scroll-progress {
+    display: none;
+  }
+}
+
+/* Film-grain texture, sits above the shader / background, below content */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Command palette discovery hint */
+#open-command-palette.cmdk-hint {
+  animation: cmdk-pulse 1.8s ease-out 3;
+}
+
+@keyframes cmdk-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 55%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--color-accent) 0%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 0%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #open-command-palette.cmdk-hint {
+    animation: none;
+  }
+}
+
+/* Hero entrance: hidden only once we know JS will animate it back in, so a
+   no-JS visit (or a script that fails to run) never leaves it stuck invisible. */
+.js .hero-entrance {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .hero-entrance {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Astro page navigation: a quick crossfade instead of the default flash-cut. */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.theme-transition)::view-transition-old(root) {
+    animation: page-fade-out 180ms ease-out forwards;
+  }
+
+  html:not(.theme-transition)::view-transition-new(root) {
+    animation: page-fade-in 220ms ease-in 60ms backwards;
+  }
+}
+
+@keyframes page-fade-out {
+  to { opacity: 0; }
+}
+
+@keyframes page-fade-in {
+  from { opacity: 0; }
+}
+
+/* Theme toggle: circular reveal via the View Transitions API.
+   Scoped to html.theme-transition so it doesn't hijack Astro's page-navigation
+   transitions, which use the same ::view-transition-*(root) pseudo-elements. */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-transition::view-transition-old(root),
+  html.theme-transition::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  html.theme-transition::view-transition-new(root) {
+    clip-path: circle(0% at var(--theme-toggle-x, 100%) var(--theme-toggle-y, 0%));
+    animation: theme-circle-reveal 600ms ease-in-out forwards;
+  }
+
+  html.theme-transition.dark::view-transition-old(root) {
+    z-index: 1;
+  }
+
+  html.theme-transition.dark::view-transition-new(root) {
+    z-index: 2147483646;
+  }
+}
+
+@keyframes theme-circle-reveal {
+  to {
+    clip-path: circle(150% at var(--theme-toggle-x, 100%) var(--theme-toggle-y, 0%));
+  }
+}
+
+/* Generated project cover (no screenshot available) */
+.project-cover {
+  background-image:
+    radial-gradient(circle at 28% 25%, color-mix(in srgb, var(--color-accent) 16%, transparent) 0%, transparent 60%),
+    radial-gradient(circle at 78% 78%, color-mix(in srgb, var(--color-accent) 10%, transparent) 0%, transparent 55%),
+    radial-gradient(color-mix(in srgb, var(--color-border) 90%, transparent) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    18px 18px;
+}
+
+.project-cover svg {
+  width: 26%;
+  height: 26%;
+  color: var(--color-accent);
+  filter: drop-shadow(0 10px 24px color-mix(in srgb, var(--color-accent) 30%, transparent));
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover .project-cover svg {
+    transform: scale(1.08) translateY(-2px);
+  }
+}
+
+/* Sliding active-section indicator under the header nav */
+#nav-indicator {
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: var(--color-accent);
+  will-change: transform, width;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #nav-indicator {
+    transition: none;
+  }
+}
+
+/* Tap feedback for touch devices */
+.tap-scale {
+  transition: transform 150ms ease;
+}
+
+.tap-scale:active {
+  transform: scale(0.94);
+}
+
+/* Floating back-to-top button (most useful on long mobile scrolls) */
+#back-to-top {
+  position: fixed;
+  right: max(1.25rem, env(safe-area-inset-right) + 0.5rem);
+  bottom: max(1.25rem, env(safe-area-inset-bottom) + 0.5rem);
+  z-index: 45;
+  display: flex;
+  height: 44px;
+  width: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+  opacity: 0;
+  transform: translateY(8px) scale(0.94);
+  pointer-events: none;
+  transition: opacity 250ms ease, transform 250ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms ease;
+}
+
+.back-to-top-arrow {
+  height: 18px;
+  width: 18px;
+}
+
+.back-to-top-ring {
+  position: absolute;
+  inset: 0;
+  height: 44px;
+  width: 44px;
+  transform: rotate(-90deg);
+}
+
+.back-to-top-ring circle {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 100ms linear;
+}
+
+#back-to-top.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+#back-to-top:hover {
+  border-color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #back-to-top {
+    transition: opacity 150ms ease;
+  }
+}
+
+/* Side dot navigation */
+.side-dots {
+  position: fixed;
+  right: max(1.75rem, env(safe-area-inset-right));
+  top: 50%;
+  z-index: 40;
+  display: none;
+  flex-direction: column;
+  gap: 0.9rem;
+  transform: translateY(-50%);
+}
+
+@media (min-width: 1280px) {
+  .side-dots {
+    display: flex;
+  }
+}
+
+.side-dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--color-border);
+  transition: height 300ms cubic-bezier(0.16, 1, 0.3, 1), background-color 300ms ease;
+}
+
+.side-dot:hover {
+  background: color-mix(in srgb, var(--color-accent) 60%, var(--color-border));
+}
+
+.side-dot[aria-current='true'] {
+  height: 22px;
+  background: var(--color-accent);
+}
+
+/* Project card hover lift */
+.project-card {
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms ease, box-shadow 300ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-accent);
+    box-shadow: 0 16px 40px -20px color-mix(in srgb, var(--color-accent) 45%, transparent);
+  }
+}

@@ -1,0 +1,191 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import SkipLink from '../components/layout/SkipLink.astro';
+import { getDictionary, type Locale } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+  title?: string;
+  description?: string;
+  ptPath?: string;
+  enPath?: string;
+  noIndex?: boolean;
+}
+
+const { locale, title, description, ptPath = '/', enPath = '/en', noIndex = false } = Astro.props;
+const dict = getDictionary(locale);
+
+const pageTitle = title ?? dict.meta.title;
+const pageDescription = description ?? dict.meta.description;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = new URL('/og.png', Astro.site);
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Luciano K. Dal Pai',
+  url: String(Astro.site),
+  jobTitle: 'Full-Stack Software Engineer',
+  sameAs: ['https://github.com/lucianookdp']
+};
+---
+
+<!doctype html>
+<html lang={locale === 'pt' ? 'pt-BR' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="theme-color" content="#0e0d0b" />
+    <meta name="apple-mobile-web-app-title" content="Luciano K. Dal Pai" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="pt-BR" href={new URL(ptPath, Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(enPath, Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(ptPath, Astro.site)} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <ClientRouter />
+
+    <script is:inline>
+      // Astro's ClientRouter can leave an unhandled rejection on its internal
+      // transition.finished promise when the browser aborts a view transition
+      // (e.g. InvalidStateError if the document isn't visible at the moment of
+      // navigation) — the page navigation itself still completes correctly, this
+      // is purely a cosmetic console gap in Astro's own handling. Silence only
+      // that exact, known-benign case so real errors still surface normally.
+      window.addEventListener('unhandledrejection', function (event) {
+        var reason = event.reason;
+        if (reason && reason.name === 'InvalidStateError' && /transition/i.test(reason.message || '')) {
+          event.preventDefault();
+        }
+      });
+    </script>
+
+    {!noIndex && <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />}
+
+    <script is:inline>
+      function applyStoredTheme() {
+        document.documentElement.classList.add('js');
+        var stored = localStorage.getItem('theme');
+        var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0e0d0b' : '#f7f5f0');
+      }
+      applyStoredTheme();
+      // Reapply right after each page-transition swap, before the new page is
+      // shown, so a persisted dark theme doesn't flash light for a frame.
+      document.addEventListener('astro:after-swap', applyStoredTheme);
+    </script>
+  </head>
+  <body>
+    <div class="grain-overlay" aria-hidden="true"></div>
+    <div id="scroll-progress" aria-hidden="true"></div>
+    <SkipLink label={dict.nav.skipToContent} />
+    <Header dict={dict} locale={locale} ptPath={ptPath} enPath={enPath} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer dict={dict} />
+
+    <button type="button" id="back-to-top" aria-label={locale === 'pt' ? 'Voltar ao topo' : 'Back to top'} class="tap-scale">
+      <svg id="back-to-top-ring" class="back-to-top-ring" viewBox="0 0 44 44" aria-hidden="true">
+        <circle cx="22" cy="22" r="19" />
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="back-to-top-arrow" aria-hidden="true">
+        <path d="M12 19V5" />
+        <path d="m6 11 6-6 6 6" />
+      </svg>
+    </button>
+
+    <script is:inline>
+      var teardownScrollUi = null;
+
+      function initScrollUi() {
+        if (teardownScrollUi) teardownScrollUi();
+
+        var bar = document.getElementById('scroll-progress');
+        var button = document.getElementById('back-to-top');
+        var ring = document.getElementById('back-to-top-ring');
+        var ringCircle = ring ? ring.querySelector('circle') : null;
+        var circumference = 2 * Math.PI * 19;
+        if (ringCircle) {
+          ringCircle.style.strokeDasharray = String(circumference);
+          ringCircle.style.strokeDashoffset = String(circumference);
+        }
+
+        var visible = false;
+        var ticking = false;
+
+        function update() {
+          var scrollTop = window.scrollY;
+          var height = document.documentElement.scrollHeight - window.innerHeight;
+          var progress = height > 0 ? Math.min(1, Math.max(0, scrollTop / height)) : 0;
+
+          if (bar) bar.style.transform = 'scaleX(' + progress + ')';
+          if (ringCircle) ringCircle.style.strokeDashoffset = String(circumference * (1 - progress));
+
+          if (button) {
+            var shouldShow = scrollTop > window.innerHeight * 0.6;
+            if (shouldShow !== visible) {
+              visible = shouldShow;
+              button.classList.toggle('is-visible', visible);
+            }
+          }
+
+          ticking = false;
+        }
+
+        function onScroll() {
+          if (!ticking) {
+            requestAnimationFrame(update);
+            ticking = true;
+          }
+        }
+
+        function onClick() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        update();
+        if (button) button.addEventListener('click', onClick);
+
+        teardownScrollUi = function () {
+          window.removeEventListener('scroll', onScroll);
+          if (button) button.removeEventListener('click', onClick);
+        };
+      }
+
+      initScrollUi();
+      document.addEventListener('astro:page-load', initScrollUi);
+
+      console.log('%cLuciano K. Dal Pai', 'font-family:Georgia,serif;font-size:20px;font-weight:700;color:#1e8e56;');
+      console.log('%cconstruído com Astro, TypeScript e WebGL, sem UI kit pronto no hero.', 'font-size:12px;color:#9c988b;');
+      console.log('%cse chegou até aqui, provavelmente também abre o console por hábito: engslucianok@gmail.com', 'font-size:12px;color:#9c988b;');
+    </script>
+  </body>
+</html>

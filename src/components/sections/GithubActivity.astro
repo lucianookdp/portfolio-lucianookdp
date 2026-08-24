@@ -1,0 +1,150 @@
+---
+import RevealText from '../ui/RevealText.astro';
+import rawStats from '../../data/github-stats.json';
+import type { GithubStats } from '../../lib/github-stats';
+import type { Dictionary, Locale } from '../../i18n/utils';
+
+const stats = rawStats as GithubStats;
+
+interface Props {
+  dict: Dictionary;
+  locale: Locale;
+}
+
+const { dict, locale } = Astro.props;
+
+const hasData = stats.generatedAt !== null;
+
+const numberFormatter = new Intl.NumberFormat(locale === 'pt' ? 'pt-BR' : 'en-US');
+const dateFormatter = new Intl.DateTimeFormat(locale === 'pt' ? 'pt-BR' : 'en-US', {
+  dateStyle: 'medium'
+});
+
+const statCards = [
+  { label: dict.github.contributions, value: stats.totalContributions },
+  { label: dict.github.repos, value: stats.totalRepos },
+  { label: dict.github.stars, value: stats.totalStars }
+];
+---
+
+<section id="github" class="mx-auto max-w-6xl px-6 py-28">
+  <RevealText as="h2" class="font-display text-3xl">{dict.github.heading}</RevealText>
+  <p class="mt-3 max-w-xl font-sans text-[var(--color-text-secondary)]">{dict.github.subheading}</p>
+
+  {!hasData && (
+    <p class="mt-10 font-sans text-sm text-[var(--color-text-secondary)]">{dict.github.empty}</p>
+  )}
+
+  {hasData && (
+    <>
+      <div class="mt-10 grid gap-6 sm:grid-cols-3">
+        {statCards.map((card) => (
+          <div class="rounded-2xl border border-[var(--color-border)] p-6">
+            <p class="stat-number font-display text-4xl" data-count-to={card.value}>{numberFormatter.format(card.value)}</p>
+            <p class="mt-1 font-sans text-sm text-[var(--color-text-secondary)]">{card.label}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-12">
+        <h3 class="font-sans text-sm font-medium uppercase tracking-wide text-[var(--color-text-secondary)]">
+          {dict.github.topLanguages}
+        </h3>
+        <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+          {stats.topLanguages.map((lang) => (
+            <li class="flex items-center gap-2 font-sans text-sm">
+              <span class="h-2.5 w-2.5 rounded-full" style={`background-color: ${lang.color}`} aria-hidden="true"></span>
+              {lang.name}
+              <span class="text-[var(--color-text-secondary)]">{lang.percentage}%</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="mt-12">
+        <div
+          role="img"
+          aria-label={`${dict.github.heatmapCaption}: ${numberFormatter.format(stats.totalContributions)} ${dict.github.contributions}`}
+          class="heatmap grid w-full max-w-full grid-flow-col gap-1 overflow-x-auto pb-2"
+        >
+          {stats.weeks.map((week) => (
+            <div class="grid grid-rows-7 gap-1">
+              {week.map((day) => (
+                <div
+                  class="heatmap-cell h-2.5 w-2.5 rounded-[2px]"
+                  style={`background-color: color-mix(in srgb, var(--color-accent) ${day.level === 0 ? 0 : day.level * 22 + 12}%, var(--color-border))`}
+                  title={`${day.date}: ${day.count}`}
+                ></div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <p class="mt-6 font-sans text-xs text-[var(--color-text-secondary)]">
+        {dict.github.updatedAt} {dateFormatter.format(new Date(stats.generatedAt as string))} ·{' '}
+        <a href={`https://github.com/${stats.login}`} target="_blank" rel="noopener noreferrer" class="underline-offset-4 hover:underline">
+          {dict.github.viewProfile}
+        </a>
+      </p>
+    </>
+  )}
+</section>
+
+<script>
+  import { animate, stagger } from 'motion';
+
+  function initGithubActivity() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const locale = document.documentElement.lang.startsWith('pt') ? 'pt-BR' : 'en-US';
+    const formatter = new Intl.NumberFormat(locale);
+
+    // Guards against double-init: the initial call and the first astro:page-load
+    // firing can both land on the very same page before any navigation happens.
+    const numbers = document.querySelectorAll<HTMLElement>('.stat-number[data-count-to]:not([data-init])');
+    numbers.forEach((el) => (el.dataset.init = 'true'));
+    if (numbers.length > 0) {
+      const numberObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target as HTMLElement;
+            const target = Number(el.dataset.countTo);
+            animate(0, target, {
+              duration: 1.2,
+              ease: [0.16, 1, 0.3, 1],
+              onUpdate(latest) {
+                el.textContent = formatter.format(Math.round(latest));
+              }
+            });
+            numberObserver.unobserve(el);
+          });
+        },
+        { threshold: 0.4 }
+      );
+      numbers.forEach((el) => numberObserver.observe(el));
+    }
+
+    const heatmap = document.querySelector<HTMLElement>('.heatmap:not([data-init])');
+    if (heatmap) {
+      heatmap.dataset.init = 'true';
+      const cells = heatmap.querySelectorAll('.heatmap-cell');
+      const heatmapObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            animate(cells, { opacity: [0, 1] }, { duration: 0.4, delay: stagger(0.002) });
+            heatmapObserver.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.2 }
+      );
+      heatmapObserver.observe(heatmap);
+    }
+  }
+
+  initGithubActivity();
+  document.addEventListener('astro:page-load', initGithubActivity);
+</script>

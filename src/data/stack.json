@@ -1,0 +1,7 @@
+{
+  "languages": ["TypeScript", "JavaScript", "Go", "Python"],
+  "frontend": ["Astro", "React", "Tailwind CSS", "Motion"],
+  "backend": ["Node.js", "Express", "Go"],
+  "databases": ["MySQL", "PostgreSQL"],
+  "tools": ["Git", "GitHub Actions", "Vite"]
+}

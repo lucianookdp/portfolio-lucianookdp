@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "title": "Luciano K. Dal Pai | Full-Stack Software Engineer",
+    "description": "Portfolio of Luciano K. Dal Pai: software engineer, full-stack developer, and tech enthusiast."
+  },
+  "nav": {
+    "primary": "Main navigation",
+    "about": "About",
+    "projects": "Projects",
+    "services": "Services",
+    "github": "Activity",
+    "stack": "Stack",
+    "contact": "Contact",
+    "skipToContent": "Skip to content"
+  },
+  "hero": {
+    "tagline": "Software engineer, full-stack developer, and tech enthusiast.",
+    "ctaProjects": "View projects",
+    "ctaContact": "Contact"
+  },
+  "about": {
+    "heading": "About",
+    "body": "Software engineer and full-stack developer, tech enthusiast always looking to learn more about technology solutions and how to apply them to real problems."
+  },
+  "projects": {
+    "heading": "Featured projects",
+    "subheading": "A selection of what I've been building.",
+    "problem": "Problem",
+    "result": "Result",
+    "viewRepo": "Repository",
+    "viewDemo": "Demo",
+    "viewMoreGithub": "See more projects on GitHub"
+  },
+  "github": {
+    "heading": "GitHub activity",
+    "subheading": "Data fetched straight from the GitHub API at build time.",
+    "contributions": "contributions in the last year",
+    "repos": "public repositories",
+    "stars": "stars received",
+    "topLanguages": "Most used languages",
+    "heatmapCaption": "Contribution heatmap for the last 12 months",
+    "updatedAt": "Updated on",
+    "viewProfile": "View GitHub profile",
+    "empty": "Data will show up after the first build on GitHub Actions."
+  },
+  "stack": {
+    "heading": "Stack",
+    "subheading": "Tools I use day to day.",
+    "categories": {
+      "languages": "Languages",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "databases": "Databases",
+      "tools": "Tools & infra"
+    }
+  },
+  "services": {
+    "heading": "Services",
+    "body": "I'm always open to new opportunities and partnerships. If you or your company has a project in mind, I'd be happy to talk and see how I can help.",
+    "cta": "Request a quote",
+    "processHeading": "How it works",
+    "steps": [
+      {
+        "title": "Briefing",
+        "description": "We align goals, needs, and the project's scope together."
+      },
+      {
+        "title": "Design",
+        "description": "Layout and visual identity tailored to your project."
+      },
+      {
+        "title": "Development",
+        "description": "Clean, fast, optimized code, from scratch to deploy."
+      },
+      {
+        "title": "Final adjustments",
+        "description": "Improvements based on your feedback before delivery."
+      },
+      {
+        "title": "Delivery & support",
+        "description": "You get the finished project ready to use, with technical support."
+      },
+      {
+        "title": "Ongoing partnership",
+        "description": "I stay available for updates and future projects."
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Contact",
+    "subheading": "Email works best. The rest of my work is documented on GitHub.",
+    "loadingEmail": "Loading email…",
+    "copyEmail": "Copy email",
+    "emailCopied": "Email copied!"
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  },
+  "commandPalette": {
+    "label": "Command palette",
+    "openButton": "Open command palette",
+    "placeholder": "Type a command or search...",
+    "empty": "No results found.",
+    "groupNavigation": "Navigation",
+    "groupActions": "Actions",
+    "groupLinks": "External links",
+    "toggleTheme": "Toggle theme",
+    "toggleThemeLight": "Switch to light mode",
+    "toggleThemeDark": "Switch to dark mode",
+    "switchLanguage": "Mudar para Português",
+    "openGithub": "Open GitHub",
+    "sendEmail": "Send email",
+    "hint": "to open"
+  }
+}

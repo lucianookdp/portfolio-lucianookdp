@@ -1,0 +1,210 @@
+---
+import LanguageToggle from '../islands/LanguageToggle.tsx';
+import ThemeToggle from '../islands/ThemeToggle.tsx';
+import CommandPalette from '../islands/CommandPalette.tsx';
+import type { Dictionary, Locale } from '../../i18n/utils';
+
+interface Props {
+  dict: Dictionary;
+  locale: Locale;
+  ptPath: string;
+  enPath: string;
+}
+
+const { dict, locale, ptPath, enPath } = Astro.props;
+
+const navItems = [
+  { href: '#about', id: 'about', label: dict.nav.about },
+  { href: '#projects', id: 'projects', label: dict.nav.projects },
+  { href: '#github', id: 'github', label: dict.nav.github },
+  { href: '#stack', id: 'stack', label: dict.nav.stack },
+  { href: '#services', id: 'services', label: dict.nav.services },
+  { href: '#contact', id: 'contact', label: dict.nav.contact }
+];
+
+const homePath = locale === 'pt' ? '/' : '/en';
+---
+
+<header class="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/85 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href={homePath} class="whitespace-nowrap font-sans text-lg font-medium tracking-tight" transition:name="site-logo">
+      lucianookdp
+    </a>
+
+    <nav aria-label={dict.nav.primary} class="relative hidden items-center gap-6 font-sans text-sm text-[var(--color-text-secondary)] md:flex">
+      {navItems.map((item) => (
+        <a href={item.href} data-nav-link class="relative transition-colors duration-200 hover:text-[var(--color-text)] aria-[current]:text-[var(--color-text)]">
+          {item.label}
+        </a>
+      ))}
+      <span id="nav-indicator" aria-hidden="true"></span>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        id="open-command-palette"
+        aria-label={dict.commandPalette.openButton}
+        class="tap-scale flex h-11 w-11 select-none items-center justify-center rounded border border-[var(--color-border)] font-sans text-xs text-[var(--color-text-secondary)] transition-colors duration-200 hover:border-[var(--color-accent)] sm:h-auto sm:w-auto sm:px-2 sm:py-1"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 sm:hidden" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+        <span class="hidden sm:inline">&#8984;K</span>
+      </button>
+      <LanguageToggle client:load currentLocale={locale} ptPath={ptPath} enPath={enPath} />
+      <ThemeToggle client:load labelLight={locale === 'pt' ? 'Mudar para modo claro' : 'Switch to light mode'} labelDark={locale === 'pt' ? 'Mudar para modo escuro' : 'Switch to dark mode'} />
+      <CommandPalette client:load dict={dict.commandPalette} navItems={navItems} currentLocale={locale} ptPath={ptPath} enPath={enPath} />
+    </div>
+  </div>
+</header>
+
+<nav class="side-dots" aria-label={dict.nav.primary}>
+  {navItems.map((item) => (
+    <a href={item.href} data-side-dot class="side-dot" aria-label={item.label}></a>
+  ))}
+</nav>
+
+<script>
+  import { animate } from 'motion';
+
+  // Header rewires itself on every Astro page-transition (PT/EN switch etc.),
+  // since the transition swaps in fresh nav/button elements. Everything that
+  // attaches to document/window (not to those elements) is torn down first,
+  // otherwise repeated navigations would stack up duplicate listeners.
+  let teardownHeader: (() => void) | null = null;
+
+  function initHeader() {
+    teardownHeader?.();
+    const cleanups: Array<() => void> = [];
+
+    const cmdkButton = document.getElementById('open-command-palette');
+
+    function onCmdkClick() {
+      window.dispatchEvent(new CustomEvent('command-palette:open'));
+    }
+    cmdkButton?.addEventListener('click', onCmdkClick);
+    if (cmdkButton) cleanups.push(() => cmdkButton.removeEventListener('click', onCmdkClick));
+
+    if (cmdkButton && !localStorage.getItem('cmdk-hint-seen')) {
+      const showHint = () => cmdkButton.classList.add('cmdk-hint');
+      const dismissHint = () => {
+        cmdkButton.classList.remove('cmdk-hint');
+        localStorage.setItem('cmdk-hint-seen', '1');
+        window.removeEventListener('command-palette:open', dismissHint);
+        cmdkButton.removeEventListener('click', dismissHint);
+        document.removeEventListener('keydown', onKeydownDismiss);
+      };
+      function onKeydownDismiss(event: KeyboardEvent) {
+        if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') dismissHint();
+      }
+
+      const hintTimer = window.setTimeout(showHint, 1500);
+      window.addEventListener('command-palette:open', dismissHint);
+      cmdkButton.addEventListener('click', dismissHint);
+      document.addEventListener('keydown', onKeydownDismiss);
+
+      cleanups.push(() => {
+        window.clearTimeout(hintTimer);
+        window.removeEventListener('command-palette:open', dismissHint);
+        cmdkButton.removeEventListener('click', dismissHint);
+        document.removeEventListener('keydown', onKeydownDismiss);
+      });
+    }
+
+    const navEl = document.querySelector<HTMLElement>('nav[aria-label]');
+    const indicator = document.getElementById('nav-indicator');
+    const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'));
+    const sideDots = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-side-dot]'));
+    const sections = navLinks
+      .map((link) => document.querySelector<HTMLElement>(link.getAttribute('href') ?? ''))
+      .filter((el): el is HTMLElement => el !== null);
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function setActive(index: number, animated: boolean) {
+      navLinks.forEach((link, i) => {
+        if (i === index) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+      sideDots.forEach((dot, i) => {
+        if (i === index) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+
+      const activeLink = navLinks[index];
+      if (!indicator || !navEl || !activeLink) return;
+      const x = activeLink.offsetLeft;
+      const width = activeLink.offsetWidth;
+
+      if (animated && !prefersReducedMotion) {
+        animate(indicator, { transform: `translateX(${x}px)`, width: `${width}px` }, { duration: 0.4, ease: [0.16, 1, 0.3, 1] });
+      } else {
+        indicator.style.transform = `translateX(${x}px)`;
+        indicator.style.width = `${width}px`;
+      }
+    }
+
+    if (sections.length === navLinks.length && sections.length > 0) {
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const index = sections.indexOf(entry.target as HTMLElement);
+            if (index !== -1) setActive(index, true);
+          });
+        },
+        { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+      );
+      sections.forEach((section) => sectionObserver.observe(section));
+
+      function onResize() {
+        const current = navLinks.findIndex((link) => link.hasAttribute('aria-current'));
+        if (current !== -1) setActive(current, false);
+      }
+      window.addEventListener('resize', onResize);
+
+      cleanups.push(() => {
+        sectionObserver.disconnect();
+        window.removeEventListener('resize', onResize);
+      });
+    }
+
+    const sectionShortcuts: Record<string, string> = { a: 'about', p: 'projects', g: 'github', s: 'stack', v: 'services', c: 'contact' };
+    let awaitingChord = false;
+    let chordTimeoutId = 0;
+
+    function onShortcutKeydown(event: KeyboardEvent) {
+      const target = event.target as HTMLElement | null;
+      const isTyping = !!target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
+      if (isTyping || event.metaKey || event.ctrlKey || event.altKey) return;
+
+      if (!awaitingChord) {
+        if (event.key.toLowerCase() === 'g') {
+          awaitingChord = true;
+          window.clearTimeout(chordTimeoutId);
+          chordTimeoutId = window.setTimeout(() => {
+            awaitingChord = false;
+          }, 900);
+        }
+        return;
+      }
+
+      awaitingChord = false;
+      window.clearTimeout(chordTimeoutId);
+      const targetId = sectionShortcuts[event.key.toLowerCase()];
+      if (targetId) document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    document.addEventListener('keydown', onShortcutKeydown);
+    cleanups.push(() => {
+      window.clearTimeout(chordTimeoutId);
+      document.removeEventListener('keydown', onShortcutKeydown);
+    });
+
+    teardownHeader = () => cleanups.forEach((fn) => fn());
+  }
+
+  initHeader();
+  document.addEventListener('astro:page-load', initHeader);
+</script>

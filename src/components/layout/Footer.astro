@@ -1,0 +1,16 @@
+---
+import type { Dictionary } from '../../i18n/utils';
+
+interface Props {
+  dict: Dictionary;
+}
+
+const { dict } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-[var(--color-border)]">
+  <div class="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-10 font-sans text-sm text-[var(--color-text-secondary)] sm:flex-row sm:items-center sm:justify-between">
+    <p>&copy; {year} Luciano K. Dal Pai. {dict.footer.rights}</p>
+  </div>
+</footer>

@@ -1,0 +1,39 @@
+---
+import RevealText from '../ui/RevealText.astro';
+import stackData from '../../data/stack.json';
+import type { Dictionary } from '../../i18n/utils';
+
+interface Props {
+  dict: Dictionary;
+}
+
+const { dict } = Astro.props;
+
+const groups = [
+  { key: 'languages', items: stackData.languages },
+  { key: 'frontend', items: stackData.frontend },
+  { key: 'backend', items: stackData.backend },
+  { key: 'databases', items: stackData.databases },
+  { key: 'tools', items: stackData.tools }
+] as const;
+---
+
+<section id="stack" class="mx-auto max-w-6xl px-6 py-14">
+  <RevealText as="h2" class="font-sans text-lg font-medium tracking-tight">{dict.stack.heading}</RevealText>
+  <p class="mt-1 font-sans text-sm text-[var(--color-text-secondary)]">{dict.stack.subheading}</p>
+
+  <div class="mt-6 grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
+    {groups.map((group) => (
+      <div>
+        <h3 class="font-sans text-xs font-medium uppercase tracking-wide text-[var(--color-text-secondary)] opacity-70">
+          {dict.stack.categories[group.key]}
+        </h3>
+        <ul class="mt-2 flex flex-col gap-1">
+          {group.items.map((item) => (
+            <li class="font-sans text-sm text-[var(--color-text)]">{item}</li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>
