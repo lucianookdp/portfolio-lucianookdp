@@ -1,0 +1,13 @@
+{
+  "name": "Luciano K. Dal Pai",
+  "short_name": "lucianookdp",
+  "description": "Portfólio de Luciano K. Dal Pai — engenheiro de software e desenvolvedor full-stack.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e0d0b",
+  "theme_color": "#0e0d0b",
+  "icons": [
+    { "src": "/favicon-48.png", "sizes": "48x48", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,4 @@
+Contact: mailto:lucianokdp@gmail.com
+Preferred-Languages: pt-BR, en
+Canonical: https://lucianookdp.dev/.well-known/security.txt
+Expires: 2027-08-24T00:00:00.000Z
