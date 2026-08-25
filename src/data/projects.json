@@ -60,21 +60,23 @@
     "media": { "slot": "webhook-inspector" }
   },
   {
-    "id": "keys-of-fear",
+    "id": "football-tracker",
     "enabled": true,
-    "repoUrl": "https://github.com/lucianookdp/horror-game-unity",
+    "repoUrl": "https://github.com/lucianookdp/football-tracker-js",
     "demoUrl": null,
-    "stack": ["Unity", "C#", "Blender"],
+    "stack": ["React", "Material UI", "Axios", "Cypress"],
     "translations": {
       "pt": {
-        "name": "horror-game-unity",
-        "result": "Jogo de terror em 3D feito do zero por curiosidade e prática, com os cenários e personagens criados por mim."
+        "name": "football-tracker-js",
+        "problem": "Acompanhar estatísticas de partidas de futebol ao vivo normalmente exige ficar trocando de site ou app toda hora.",
+        "result": "App em React que busca os dados direto de uma API de futebol em tempo real, com testes automatizados garantindo que a tela sempre carrega certo."
       },
       "en": {
-        "name": "horror-game-unity",
-        "result": "A 3D horror game built from scratch out of curiosity and practice, with the scenes and characters created by me."
+        "name": "football-tracker-js",
+        "problem": "Following live football match stats usually means jumping between different sites or apps.",
+        "result": "React app that pulls data straight from a live football API, with automated tests making sure the screen always loads correctly."
       }
     },
-    "media": { "slot": "keys-of-fear" }
+    "media": { "slot": "football-tracker" }
   }
 ]
