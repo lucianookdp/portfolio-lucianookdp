@@ -5,7 +5,6 @@
 **[lucianookdp.dev](https://lucianookdp.dev)**
 
 [![Deploy](https://github.com/lucianookdp/portfolio-lucianookdp/actions/workflows/deploy.yml/badge.svg)](https://github.com/lucianookdp/portfolio-lucianookdp/actions/workflows/deploy.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-black.svg)](./LICENSE)
 [![Astro](https://img.shields.io/badge/built%20with-Astro-black.svg)](https://astro.build)
 
 Personal portfolio — editorial typography, a WebGL shader hero, PT/EN
@@ -40,4 +39,5 @@ npm run check   # type-check
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+All rights reserved — see [LICENSE](./LICENSE). Public for viewing and
+reference only, not licensed for reuse.
