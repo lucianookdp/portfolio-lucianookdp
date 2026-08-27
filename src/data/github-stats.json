@@ -7,22 +7,22 @@
     {
       "name": "JavaScript",
       "color": "#f1e05a",
-      "percentage": 32.1
+      "percentage": 32.7
     },
     {
       "name": "PHP",
       "color": "#4F5D95",
-      "percentage": 16.3
+      "percentage": 16.1
     },
     {
       "name": "CSS",
       "color": "#663399",
-      "percentage": 10
+      "percentage": 9.9
     },
     {
       "name": "C++",
       "color": "#f34b7d",
-      "percentage": 8.8
+      "percentage": 8.7
     },
     {
       "name": "CMake",
@@ -32,7 +32,7 @@
     {
       "name": "Blade",
       "color": "#f7523f",
-      "percentage": 6.7
+      "percentage": 6.6
     }
   ],
   "weeks": [
@@ -1980,8 +1980,13 @@
         "date": "2026-08-26",
         "count": 0,
         "level": 0
+      },
+      {
+        "date": "2026-08-27",
+        "count": 0,
+        "level": 0
       }
     ]
   ],
-  "generatedAt": "2026-08-26T06:51:17.157Z"
+  "generatedAt": "2026-08-27T17:24:35.549Z"
 }
