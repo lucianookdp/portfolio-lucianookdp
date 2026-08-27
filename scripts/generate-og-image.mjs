@@ -12,10 +12,16 @@ const OUTPUT_PATH = path.join(ROOT, 'public/og.png');
 const pt = JSON.parse(await readFile(path.join(ROOT, 'src/i18n/pt.json'), 'utf-8'));
 const TAGLINE = pt.hero.tagline;
 
-const COLOR_BG = '#f7f5f0';
-const COLOR_TEXT = '#141310';
-const COLOR_SECONDARY = '#5c594f';
-const COLOR_ACCENT = '#1e8e56';
+// Dark theme tokens, matching src/styles/global.css .dark and the favicon's
+// orb mark — the OG card should look like it belongs to the same brand as
+// the site and the icon, not a separate light-only design.
+const COLOR_BG = '#0e0d0b';
+const COLOR_TEXT = '#f3f1ea';
+const COLOR_SECONDARY = '#9c988b';
+const COLOR_ACCENT_GLOW = '#3ddc8f';
+const COLOR_ACCENT_DEEP = '#146b3f';
+const ORB_PATH =
+  'M64 22c23 0 41 15 41 37 0 21-15 36-34 41-5 1-9-3-8-8 3-11-5-18-16-21-15-5-22-18-15-32 6-11 18-17 32-17Z';
 
 async function loadFont(relativePath) {
   return readFile(path.join(ROOT, 'node_modules', relativePath));
@@ -38,14 +44,46 @@ async function main() {
         flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundColor: COLOR_BG,
-        backgroundImage: `radial-gradient(circle at 85% 15%, ${COLOR_ACCENT}33 0%, ${COLOR_BG} 55%)`,
-        padding: '80px'
+        padding: '80px',
+        position: 'relative'
       },
       children: [
         {
+          // Same orb mark as the favicon, oversized and bleeding off the
+          // top-right corner, so the OG card reads as the same brand.
+          type: 'svg',
+          props: {
+            width: 520,
+            height: 520,
+            viewBox: '0 0 128 128',
+            style: { position: 'absolute', top: '-140px', right: '-140px' },
+            children: [
+              {
+                type: 'defs',
+                props: {
+                  children: {
+                    type: 'radialGradient',
+                    props: {
+                      id: 'orb',
+                      cx: '32%',
+                      cy: '28%',
+                      r: '80%',
+                      children: [
+                        { type: 'stop', props: { offset: '0%', stopColor: COLOR_ACCENT_GLOW } },
+                        { type: 'stop', props: { offset: '100%', stopColor: COLOR_ACCENT_DEEP } }
+                      ]
+                    }
+                  }
+                }
+              },
+              { type: 'path', props: { d: ORB_PATH, fill: 'url(#orb)' } }
+            ]
+          }
+        },
+        {
           type: 'div',
           props: {
-            style: { display: 'flex', flexDirection: 'column', gap: '28px' },
+            style: { display: 'flex', flexDirection: 'column', gap: '28px', position: 'relative' },
             children: [
               {
                 type: 'div',
@@ -80,7 +118,7 @@ async function main() {
         {
           type: 'div',
           props: {
-            style: { display: 'flex', alignItems: 'center', gap: '16px' },
+            style: { display: 'flex', alignItems: 'center', gap: '16px', position: 'relative' },
             children: [
               {
                 type: 'div',
@@ -89,7 +127,7 @@ async function main() {
                     width: '14px',
                     height: '14px',
                     borderRadius: '9999px',
-                    backgroundColor: COLOR_ACCENT,
+                    backgroundColor: COLOR_ACCENT_GLOW,
                     display: 'flex'
                   }
                 }
@@ -98,7 +136,7 @@ async function main() {
                 type: 'div',
                 props: {
                   style: { fontFamily: 'Inter', fontWeight: 700, fontSize: '28px', color: COLOR_TEXT },
-                  children: 'lucianookdp.github.io'
+                  children: 'lucianookdp.dev'
                 }
               }
             ]
