@@ -21,6 +21,11 @@
      darker sage here reads as a dark-mode-strength shadow and starts
      fighting the theme's dark hero text for contrast. */
   --color-shader-mid: #d7e2cd;
+  /* Project-cover glow strength: white cards need a much stronger tint than
+     dark cards for the same accent color to actually read as green instead
+     of fading to near-invisible. */
+  --color-cover-glow-1: color-mix(in srgb, var(--color-accent) 32%, transparent);
+  --color-cover-glow-2: color-mix(in srgb, var(--color-accent) 22%, transparent);
   color-scheme: light;
 }
 
@@ -34,6 +39,8 @@
   --color-on-accent: #08150e;
   --color-border: #262420;
   --color-shader-mid: var(--color-border);
+  --color-cover-glow-1: color-mix(in srgb, var(--color-accent) 16%, transparent);
+  --color-cover-glow-2: color-mix(in srgb, var(--color-accent) 10%, transparent);
   color-scheme: dark;
 }
 
@@ -225,8 +232,8 @@
 /* Generated project cover (no screenshot available) */
 .project-cover {
   background-image:
-    radial-gradient(circle at 28% 25%, color-mix(in srgb, var(--color-accent) 16%, transparent) 0%, transparent 60%),
-    radial-gradient(circle at 78% 78%, color-mix(in srgb, var(--color-accent) 10%, transparent) 0%, transparent 55%),
+    radial-gradient(circle at 28% 25%, var(--color-cover-glow-1) 0%, transparent 60%),
+    radial-gradient(circle at 78% 78%, var(--color-cover-glow-2) 0%, transparent 55%),
     radial-gradient(color-mix(in srgb, var(--color-border) 90%, transparent) 1px, transparent 1px);
   background-size:
     auto,
