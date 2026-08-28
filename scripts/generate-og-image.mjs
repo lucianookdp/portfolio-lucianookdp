@@ -13,15 +13,16 @@ const pt = JSON.parse(await readFile(path.join(ROOT, 'src/i18n/pt.json'), 'utf-8
 const TAGLINE = pt.hero.tagline;
 
 // Dark theme tokens, matching src/styles/global.css .dark and the favicon's
-// orb mark — the OG card should look like it belongs to the same brand as
-// the site and the icon, not a separate light-only design.
+// infinity mark — the OG card should look like it belongs to the same brand
+// as the site and the icon, not a separate design.
 const COLOR_BG = '#0e0d0b';
 const COLOR_TEXT = '#f3f1ea';
 const COLOR_SECONDARY = '#9c988b';
 const COLOR_ACCENT_GLOW = '#3ddc8f';
 const COLOR_ACCENT_DEEP = '#146b3f';
-const ORB_PATH =
-  'M64 22c23 0 41 15 41 37 0 21-15 36-34 41-5 1-9-3-8-8 3-11-5-18-16-21-15-5-22-18-15-32 6-11 18-17 32-17Z';
+// Same mark as the header wordmark and the favicon (src/components/layout/Header.astro).
+const INFINITY_PATH =
+  'M 25 10 C 10 10 10 40 25 40 C 35 40 40 30 50 25 C 60 20 65 10 75 10 C 90 10 90 40 75 40 C 65 40 60 30 50 25 C 40 20 35 10 25 10 Z';
 
 async function loadFont(relativePath) {
   return readFile(path.join(ROOT, 'node_modules', relativePath));
@@ -49,25 +50,27 @@ async function main() {
       },
       children: [
         {
-          // Same orb mark as the favicon, oversized and bleeding off the
-          // top-right corner, so the OG card reads as the same brand.
+          // Same infinity mark as the header wordmark and the favicon,
+          // oversized and bleeding off the top-right corner, so the OG card
+          // reads as the same brand instead of an unrelated decoration.
           type: 'svg',
           props: {
-            width: 520,
-            height: 520,
-            viewBox: '0 0 128 128',
-            style: { position: 'absolute', top: '-140px', right: '-140px' },
+            width: 360,
+            height: 164,
+            viewBox: '4 4 92 42',
+            style: { position: 'absolute', top: '-52px', right: '-45px' },
             children: [
               {
                 type: 'defs',
                 props: {
                   children: {
-                    type: 'radialGradient',
+                    type: 'linearGradient',
                     props: {
-                      id: 'orb',
-                      cx: '32%',
-                      cy: '28%',
-                      r: '80%',
+                      id: 'ogMark',
+                      x1: '0%',
+                      y1: '0%',
+                      x2: '100%',
+                      y2: '0%',
                       children: [
                         { type: 'stop', props: { offset: '0%', stopColor: COLOR_ACCENT_GLOW } },
                         { type: 'stop', props: { offset: '100%', stopColor: COLOR_ACCENT_DEEP } }
@@ -76,7 +79,16 @@ async function main() {
                   }
                 }
               },
-              { type: 'path', props: { d: ORB_PATH, fill: 'url(#orb)' } }
+              {
+                type: 'path',
+                props: {
+                  d: INFINITY_PATH,
+                  fill: 'none',
+                  stroke: 'url(#ogMark)',
+                  strokeWidth: 11,
+                  strokeLinecap: 'round'
+                }
+              }
             ]
           }
         },
@@ -116,29 +128,63 @@ async function main() {
           }
         },
         {
+          // Same "lucian[infinity]kdp" wordmark treatment as the header logo
+          // (src/components/layout/Header.astro), so the domain line reads as
+          // the actual logo instead of a plain text label next to a dot.
           type: 'div',
           props: {
-            style: { display: 'flex', alignItems: 'center', gap: '16px', position: 'relative' },
+            style: {
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative',
+              fontFamily: 'Inter',
+              fontWeight: 700,
+              fontSize: '28px',
+              color: COLOR_TEXT
+            },
             children: [
+              { type: 'div', props: { children: 'lucian' } },
               {
-                type: 'div',
+                type: 'svg',
                 props: {
-                  style: {
-                    width: '14px',
-                    height: '14px',
-                    borderRadius: '9999px',
-                    backgroundColor: COLOR_ACCENT_GLOW,
-                    display: 'flex'
-                  }
+                  width: 34,
+                  height: 15.5,
+                  viewBox: '4 4 92 42',
+                  style: { margin: '0 1px' },
+                  children: [
+                    {
+                      type: 'defs',
+                      props: {
+                        children: {
+                          type: 'linearGradient',
+                          props: {
+                            id: 'ogWordmark',
+                            x1: '0%',
+                            y1: '0%',
+                            x2: '100%',
+                            y2: '0%',
+                            children: [
+                              { type: 'stop', props: { offset: '0%', stopColor: COLOR_ACCENT_GLOW } },
+                              { type: 'stop', props: { offset: '100%', stopColor: COLOR_ACCENT_DEEP } }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      type: 'path',
+                      props: {
+                        d: INFINITY_PATH,
+                        fill: 'none',
+                        stroke: 'url(#ogWordmark)',
+                        strokeWidth: 11,
+                        strokeLinecap: 'round'
+                      }
+                    }
+                  ]
                 }
               },
-              {
-                type: 'div',
-                props: {
-                  style: { fontFamily: 'Inter', fontWeight: 700, fontSize: '28px', color: COLOR_TEXT },
-                  children: 'lucianookdp.dev'
-                }
-              }
+              { type: 'div', props: { children: 'kdp.dev' } }
             ]
           }
         }
