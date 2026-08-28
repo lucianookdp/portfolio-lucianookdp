@@ -121,7 +121,7 @@ export function initHeroShader(container: HTMLElement, canvas: HTMLCanvasElement
       uResolution: { value: new Vec2(1, 1) },
       uMouse: { value: new Vec2(0.5, 0.5) },
       uColorBg: { value: new Vec3(...readColor('--color-bg')) },
-      uColorMid: { value: new Vec3(...readColor('--color-border')) },
+      uColorMid: { value: new Vec3(...readColor('--color-shader-mid')) },
       uColorAccent: { value: new Vec3(...readColor('--color-accent-glow')) }
     }
   });
@@ -133,6 +133,11 @@ export function initHeroShader(container: HTMLElement, canvas: HTMLCanvasElement
   function resize() {
     const width = container.clientWidth;
     const height = container.clientHeight;
+    // A 0×0 measurement means layout hasn't settled yet (this can happen on
+    // the very first call). Skip it rather than sizing the renderer to
+    // nothing — ResizeObserver's own initial callback, or the retry below,
+    // will call resize() again once a real size is available.
+    if (width === 0 || height === 0) return;
     renderer.setSize(width, height);
     program.uniforms.uResolution.value.set(width, height);
   }
@@ -174,6 +179,19 @@ export function initHeroShader(container: HTMLElement, canvas: HTMLCanvasElement
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(container);
 
+  // Safety net: if the container was unmeasurable on every attempt so far
+  // (still 0×0 — resize() no-ops on that), keep retrying for a bit instead
+  // of leaving the renderer permanently sized at its 1×1 default forever.
+  let resizeRetries = 0;
+  const resizeRetryId = window.setInterval(() => {
+    resizeRetries += 1;
+    if (renderer.gl.drawingBufferWidth > 1 || resizeRetries > 20) {
+      window.clearInterval(resizeRetryId);
+      return;
+    }
+    resize();
+  }, 150);
+
   container.addEventListener('pointermove', onPointerMove);
 
   const intersectionObserver = new IntersectionObserver(
@@ -193,7 +211,7 @@ export function initHeroShader(container: HTMLElement, canvas: HTMLCanvasElement
 
   function onThemeChange() {
     program.uniforms.uColorBg.value.set(...readColor('--color-bg'));
-    program.uniforms.uColorMid.value.set(...readColor('--color-border'));
+    program.uniforms.uColorMid.value.set(...readColor('--color-shader-mid'));
     program.uniforms.uColorAccent.value.set(...readColor('--color-accent-glow'));
   }
   window.addEventListener('theme-change', onThemeChange);
@@ -203,6 +221,7 @@ export function initHeroShader(container: HTMLElement, canvas: HTMLCanvasElement
   // otherwise every navigation leaks a WebGL context plus a stale listener.
   return function dispose() {
     stop();
+    window.clearInterval(resizeRetryId);
     resizeObserver.disconnect();
     intersectionObserver.disconnect();
     container.removeEventListener('pointermove', onPointerMove);

@@ -10,9 +10,17 @@
   --color-text: #141310;
   --color-text-secondary: #5c594f;
   --color-accent: #1e8e56;
-  --color-accent-glow: #1fb469;
+  --color-accent-glow: #35c47f;
   --color-on-accent: #08150e;
   --color-border: #e4e0d6;
+  /* Shader-only mid tone, decoupled from --color-border: the hero gradient
+     needs a deeper waypoint than the light theme's pale UI border to keep
+     any real contrast on its way to the accent, without darkening every
+     border in the UI to get it. Pale sage (not neutral tan) so the cream ->
+     mid -> accent gradient stays in one green family, but kept light — a
+     darker sage here reads as a dark-mode-strength shadow and starts
+     fighting the theme's dark hero text for contrast. */
+  --color-shader-mid: #d7e2cd;
   color-scheme: light;
 }
 
@@ -25,6 +33,7 @@
   --color-accent-glow: #3ddc8f;
   --color-on-accent: #08150e;
   --color-border: #262420;
+  --color-shader-mid: var(--color-border);
   color-scheme: dark;
 }
 
