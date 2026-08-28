@@ -27,8 +27,29 @@ const homePath = locale === 'pt' ? '/' : '/en';
 
 <header class="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/85 backdrop-blur">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-    <a href={homePath} class="whitespace-nowrap font-sans text-lg font-medium tracking-tight" transition:name="site-logo">
-      lucianookdp
+    <a
+      href={homePath}
+      class="inline-flex items-center whitespace-nowrap font-sans text-lg font-medium tracking-tight"
+      transition:name="site-logo"
+      aria-label="lucianookdp"
+    >
+      <span aria-hidden="true">lucian</span>
+      <svg aria-hidden="true" viewBox="0 0 100 50" class="mx-[0.06em] h-[0.62em] w-auto translate-y-[0.05em]">
+        <defs>
+          <linearGradient id="header-infinity-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#3ddc8f" />
+            <stop offset="100%" stop-color="#146b3f" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M 25 10 C 10 10 10 40 25 40 C 35 40 40 30 50 25 C 60 20 65 10 75 10 C 90 10 90 40 75 40 C 65 40 60 30 50 25 C 40 20 35 10 25 10 Z"
+          fill="none"
+          stroke="url(#header-infinity-grad)"
+          stroke-width="11"
+          stroke-linecap="round"
+        />
+      </svg>
+      <span aria-hidden="true">kdp</span>
     </a>
 
     <nav aria-label={dict.nav.primary} class="relative hidden items-center gap-6 font-sans text-sm text-[var(--color-text-secondary)] md:flex">
