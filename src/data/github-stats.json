@@ -1,78 +1,41 @@
 {
   "login": "lucianookdp",
-  "totalRepos": 39,
+  "totalRepos": 35,
   "totalStars": 1,
-  "totalContributions": 216,
+  "totalContributions": 235,
   "topLanguages": [
     {
       "name": "JavaScript",
       "color": "#f1e05a",
-      "percentage": 31.9
+      "percentage": 32.2
+    },
+    {
+      "name": "Python",
+      "color": "#3572A5",
+      "percentage": 15.8
     },
     {
       "name": "PHP",
       "color": "#4F5D95",
-      "percentage": 15.7
+      "percentage": 13.3
+    },
+    {
+      "name": "TypeScript",
+      "color": "#3178c6",
+      "percentage": 8.5
     },
     {
       "name": "CSS",
       "color": "#663399",
-      "percentage": 10.1
-    },
-    {
-      "name": "C++",
-      "color": "#f34b7d",
-      "percentage": 8.4
-    },
-    {
-      "name": "CMake",
-      "color": "#DA3434",
-      "percentage": 6.8
+      "percentage": 8.1
     },
     {
       "name": "Blade",
       "color": "#f7523f",
-      "percentage": 6.4
+      "percentage": 7.6
     }
   ],
   "weeks": [
-    [
-      {
-        "date": "2025-08-24",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-25",
-        "count": 2,
-        "level": 1
-      },
-      {
-        "date": "2025-08-26",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-08-27",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-28",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-08-29",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-08-30",
-        "count": 0,
-        "level": 0
-      }
-    ],
     [
       {
         "date": "2025-08-31",
@@ -1956,14 +1919,14 @@
       },
       {
         "date": "2026-08-22",
-        "count": 19,
+        "count": 18,
         "level": 3
       }
     ],
     [
       {
         "date": "2026-08-23",
-        "count": 32,
+        "count": 31,
         "level": 4
       },
       {
@@ -1973,7 +1936,7 @@
       },
       {
         "date": "2026-08-25",
-        "count": 26,
+        "count": 25,
         "level": 4
       },
       {
@@ -1993,10 +1956,17 @@
       },
       {
         "date": "2026-08-29",
-        "count": 1,
-        "level": 1
+        "count": 8,
+        "level": 2
+      }
+    ],
+    [
+      {
+        "date": "2026-08-30",
+        "count": 15,
+        "level": 2
       }
     ]
   ],
-  "generatedAt": "2026-08-29T12:26:40.778Z"
+  "generatedAt": "2026-08-30T11:26:30.346Z"
 }
