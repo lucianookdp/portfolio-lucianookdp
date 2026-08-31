@@ -106,7 +106,6 @@ const personSchema = {
   </head>
   <body>
     <div class="grain-overlay" aria-hidden="true"></div>
-    <div id="scroll-progress" aria-hidden="true"></div>
     <SkipLink label={dict.nav.skipToContent} />
     <Header dict={dict} locale={locale} ptPath={ptPath} enPath={enPath} />
     <main id="main-content">
@@ -130,7 +129,6 @@ const personSchema = {
       function initScrollUi() {
         if (teardownScrollUi) teardownScrollUi();
 
-        var bar = document.getElementById('scroll-progress');
         var button = document.getElementById('back-to-top');
         var ring = document.getElementById('back-to-top-ring');
         var ringCircle = ring ? ring.querySelector('circle') : null;
@@ -148,7 +146,6 @@ const personSchema = {
           var height = document.documentElement.scrollHeight - window.innerHeight;
           var progress = height > 0 ? Math.min(1, Math.max(0, scrollTop / height)) : 0;
 
-          if (bar) bar.style.transform = 'scaleX(' + progress + ')';
           if (ringCircle) ringCircle.style.strokeDashoffset = String(circumference * (1 - progress));
 
           if (button) {

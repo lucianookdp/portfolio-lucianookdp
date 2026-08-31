@@ -112,26 +112,6 @@
   }
 }
 
-/* Scroll progress bar */
-#scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 60;
-  height: 2px;
-  width: 100%;
-  background: var(--color-accent);
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  will-change: transform;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #scroll-progress {
-    display: none;
-  }
-}
-
 /* Film-grain texture, sits above the shader / background, below content */
 .grain-overlay {
   position: fixed;
