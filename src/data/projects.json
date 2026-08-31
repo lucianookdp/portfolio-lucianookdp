@@ -1,5 +1,45 @@
 [
   {
+    "id": "cnpj-due-diligence",
+    "enabled": true,
+    "repoUrl": "https://github.com/lucianookdp/cnpj-due-diligence",
+    "demoUrl": "https://lucianookdp.github.io/cnpj-due-diligence/",
+    "stack": ["Python", "FastAPI", "React", "TypeScript", "PostgreSQL"],
+    "translations": {
+      "pt": {
+        "name": "cnpj-due-diligence",
+        "problem": "Investigar uma empresa antes de fechar negócio com ela normalmente exige cruzar dados na mão em vários sites do governo, um por um.",
+        "result": "Plataforma que, a partir de um CNPJ, monta o grafo societário, cruza com listas restritivas oficiais e calcula um score de risco explicável de 0 a 100, com exportação do dossiê em PDF."
+      },
+      "en": {
+        "name": "cnpj-due-diligence",
+        "problem": "Vetting a Brazilian company before doing business with it usually means manually cross-checking data across several government websites, one by one.",
+        "result": "A platform that, given a CNPJ, builds the corporate ownership graph, cross-references official restrictive lists, and computes an explainable 0-100 risk score, with PDF dossier export."
+      }
+    },
+    "media": { "slot": "cnpj-due-diligence" }
+  },
+  {
+    "id": "webhook-inspector",
+    "enabled": true,
+    "repoUrl": "https://github.com/lucianookdp/webhook-inspector",
+    "demoUrl": null,
+    "stack": ["TypeScript", "Fastify", "PostgreSQL"],
+    "translations": {
+      "pt": {
+        "name": "webhook-inspector",
+        "problem": "Quando dois sistemas conversam entre si, é difícil enxergar o que um está realmente enviando para o outro.",
+        "result": "Ferramenta que cria um endereço temporário e mostra na hora tudo que chega nele, apagando os dados sozinha depois de 24 horas."
+      },
+      "en": {
+        "name": "webhook-inspector",
+        "problem": "When two systems talk to each other, it's hard to see what one is actually sending to the other.",
+        "result": "A tool that creates a temporary address and shows everything arriving at it in real time, erasing the data on its own after 24 hours."
+      }
+    },
+    "media": { "slot": "webhook-inspector" }
+  },
+  {
     "id": "frigorifico",
     "enabled": true,
     "repoUrl": "https://github.com/lucianookdp/frigorifico-react",
@@ -38,45 +78,5 @@
       }
     },
     "media": { "slot": "lost-and-found" }
-  },
-  {
-    "id": "webhook-inspector",
-    "enabled": true,
-    "repoUrl": "https://github.com/lucianookdp/webhook-inspector",
-    "demoUrl": null,
-    "stack": ["TypeScript", "Fastify", "PostgreSQL"],
-    "translations": {
-      "pt": {
-        "name": "webhook-inspector",
-        "problem": "Quando dois sistemas conversam entre si, é difícil enxergar o que um está realmente enviando para o outro.",
-        "result": "Ferramenta que cria um endereço temporário e mostra na hora tudo que chega nele, apagando os dados sozinha depois de 24 horas."
-      },
-      "en": {
-        "name": "webhook-inspector",
-        "problem": "When two systems talk to each other, it's hard to see what one is actually sending to the other.",
-        "result": "A tool that creates a temporary address and shows everything arriving at it in real time, erasing the data on its own after 24 hours."
-      }
-    },
-    "media": { "slot": "webhook-inspector" }
-  },
-  {
-    "id": "cnpj-due-diligence",
-    "enabled": true,
-    "repoUrl": "https://github.com/lucianookdp/cnpj-due-diligence",
-    "demoUrl": "https://lucianookdp.github.io/cnpj-due-diligence/",
-    "stack": ["Python", "FastAPI", "React", "TypeScript", "PostgreSQL"],
-    "translations": {
-      "pt": {
-        "name": "cnpj-due-diligence",
-        "problem": "Investigar uma empresa antes de fechar negócio com ela normalmente exige cruzar dados na mão em vários sites do governo, um por um.",
-        "result": "Plataforma que, a partir de um CNPJ, monta o grafo societário, cruza com listas restritivas oficiais e calcula um score de risco explicável de 0 a 100, com exportação do dossiê em PDF."
-      },
-      "en": {
-        "name": "cnpj-due-diligence",
-        "problem": "Vetting a Brazilian company before doing business with it usually means manually cross-checking data across several government websites, one by one.",
-        "result": "A platform that, given a CNPJ, builds the corporate ownership graph, cross-references official restrictive lists, and computes an explainable 0-100 risk score, with PDF dossier export."
-      }
-    },
-    "media": { "slot": "cnpj-due-diligence" }
   }
 ]
