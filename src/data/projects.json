@@ -60,23 +60,23 @@
     "media": { "slot": "webhook-inspector" }
   },
   {
-    "id": "football-tracker",
+    "id": "cnpj-due-diligence",
     "enabled": true,
-    "repoUrl": "https://github.com/lucianookdp/football-tracker-js",
-    "demoUrl": null,
-    "stack": ["React", "Material UI", "Axios", "Cypress"],
+    "repoUrl": "https://github.com/lucianookdp/cnpj-due-diligence",
+    "demoUrl": "https://lucianookdp.github.io/cnpj-due-diligence/",
+    "stack": ["Python", "FastAPI", "React", "TypeScript", "PostgreSQL"],
     "translations": {
       "pt": {
-        "name": "football-tracker-js",
-        "problem": "Acompanhar estatísticas de partidas de futebol ao vivo normalmente exige ficar trocando de site ou app toda hora.",
-        "result": "App em React que busca os dados direto de uma API de futebol em tempo real, com testes automatizados garantindo que a tela sempre carrega certo."
+        "name": "cnpj-due-diligence",
+        "problem": "Investigar uma empresa antes de fechar negócio com ela normalmente exige cruzar dados na mão em vários sites do governo, um por um.",
+        "result": "Plataforma que, a partir de um CNPJ, monta o grafo societário, cruza com listas restritivas oficiais e calcula um score de risco explicável de 0 a 100, com exportação do dossiê em PDF."
       },
       "en": {
-        "name": "football-tracker-js",
-        "problem": "Following live football match stats usually means jumping between different sites or apps.",
-        "result": "React app that pulls data straight from a live football API, with automated tests making sure the screen always loads correctly."
+        "name": "cnpj-due-diligence",
+        "problem": "Vetting a Brazilian company before doing business with it usually means manually cross-checking data across several government websites, one by one.",
+        "result": "A platform that, given a CNPJ, builds the corporate ownership graph, cross-references official restrictive lists, and computes an explainable 0-100 risk score, with PDF dossier export."
       }
     },
-    "media": { "slot": "football-tracker" }
+    "media": { "slot": "cnpj-due-diligence" }
   }
 ]
