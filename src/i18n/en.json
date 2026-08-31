@@ -14,13 +14,13 @@
     "skipToContent": "Skip to content"
   },
   "hero": {
-    "tagline": "Software engineer and full-stack developer, naturally curious and always keeping an eye on new tech.",
+    "tagline": "Software engineer, full-stack developer, and tech enthusiast.",
     "ctaProjects": "View projects",
     "ctaContact": "Contact"
   },
   "about": {
     "heading": "About",
-    "body": "I work as a full-stack software engineer. I like learning about new tech solutions and getting my hands dirty applying them to real problems."
+    "body": "I like studying new technologies and applying them to solve real, everyday problems."
   },
   "projects": {
     "heading": "Featured projects",
