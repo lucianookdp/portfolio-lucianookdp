@@ -15,11 +15,12 @@ interface Props {
   id: string;
   repoUrl: string;
   demoUrl: string | null;
+  stack: string[];
   translation: Translation;
   dict: Dictionary;
 }
 
-const { id, repoUrl, demoUrl, translation, dict } = Astro.props;
+const { id, repoUrl, demoUrl, stack, translation, dict } = Astro.props;
 const media = findProjectMedia(id);
 
 const COVER_ICONS: Record<string, string> = {
@@ -52,6 +53,16 @@ const coverIcon = COVER_ICONS[id] ?? DEFAULT_ICON;
   <div class="flex flex-1 flex-col gap-4 p-6">
     <RevealText as="h3" class="font-display text-2xl">{translation.name}</RevealText>
 
+    {stack.length > 0 && (
+      <ul class="-mt-1 flex flex-wrap gap-1.5" aria-label={dict.projects.stackLabel}>
+        {stack.map((tech) => (
+          <li class="rounded-full bg-[var(--color-accent-soft)] px-2.5 py-0.5 font-sans text-xs font-medium text-[var(--color-accent-text)]">
+            {tech}
+          </li>
+        ))}
+      </ul>
+    )}
+
     {translation.problem ? (
       <dl class="flex flex-col gap-3 font-sans text-sm">
         <div>
@@ -72,11 +83,11 @@ const coverIcon = COVER_ICONS[id] ?? DEFAULT_ICON;
     )}
 
     <div class="mt-auto flex gap-4 pt-2 font-sans text-sm">
-      <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="font-medium text-[var(--color-accent)] underline-offset-4 hover:underline">
+      <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="font-medium text-[var(--color-accent-text)] underline-offset-4 hover:underline">
         {dict.projects.viewRepo}
       </a>
       {demoUrl && (
-        <a href={demoUrl} target="_blank" rel="noopener noreferrer" class="font-medium text-[var(--color-accent)] underline-offset-4 hover:underline">
+        <a href={demoUrl} target="_blank" rel="noopener noreferrer" class="font-medium text-[var(--color-accent-text)] underline-offset-4 hover:underline">
           {dict.projects.viewDemo}
         </a>
       )}

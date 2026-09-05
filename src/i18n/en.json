@@ -14,6 +14,7 @@
     "skipToContent": "Skip to content"
   },
   "hero": {
+    "availability": "Available for new projects",
     "tagline": "Software engineer, full-stack developer, and tech enthusiast.",
     "ctaProjects": "View projects",
     "ctaContact": "Contact"
@@ -27,6 +28,7 @@
     "subheading": "A selection of what I've been building.",
     "problem": "Problem",
     "result": "Result",
+    "stackLabel": "Technologies",
     "viewRepo": "Repository",
     "viewDemo": "Demo",
     "viewMoreGithub": "See more projects on GitHub"

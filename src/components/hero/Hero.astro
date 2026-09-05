@@ -9,14 +9,25 @@ interface Props {
 }
 
 const { dict, displayName } = Astro.props;
+
+// Keep the two-word surname on one line: at mid-size viewports the clamp()
+// heading wrapped as "Luciano K. Dal / Pai", splitting "Dal Pai" in half.
+const nameWords = displayName.split(' ');
+const surname = nameWords.slice(-2).join(' ');
+const givenNames = nameWords.slice(0, -2).join(' ');
 ---
 
 <section id="hero" class="relative flex min-h-[82svh] items-end overflow-hidden sm:min-h-[88svh] lg:min-h-[100svh]">
   <ShaderBackground id="hero-canvas" />
 
   <div id="hero-content" class="relative z-10 mx-auto w-full max-w-6xl px-6 pb-16 pt-32 sm:pb-20 sm:pt-36 lg:pt-40">
+    <p class="hero-entrance mb-6 inline-flex items-center gap-2.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg)]/60 px-3.5 py-1.5 font-sans text-xs font-medium text-[var(--color-text-secondary)] backdrop-blur">
+      <span class="availability-dot h-2 w-2 rounded-full bg-[var(--color-accent-glow)]" aria-hidden="true"></span>
+      {dict.hero.availability}
+    </p>
+
     <h1 class="hero-entrance font-display leading-[0.92] font-medium tracking-tight text-[var(--color-text)]" style="font-size: clamp(3rem, 11vw, 10.5rem);">
-      {displayName}
+      {givenNames} <span class="whitespace-nowrap">{surname}</span>
     </h1>
 
     <p class="hero-entrance mt-8 max-w-xl font-sans text-lg text-[var(--color-text-secondary)] sm:text-xl">
