@@ -24,6 +24,7 @@ const projects = projectsData.filter((project) => project.enabled);
         id={project.id}
         repoUrl={project.repoUrl}
         demoUrl={project.demoUrl}
+        stack={project.stack}
         translation={project.translations[locale]}
         dict={dict}
       />
@@ -71,6 +72,30 @@ const projects = projectsData.filter((project) => project.enabled);
     });
   }
 
-  initParallax();
-  document.addEventListener('astro:page-load', initParallax);
+  // Cursor spotlight: feeds the pointer position into --spot-x/--spot-y, which
+  // the card's ::after glow (global.css) is centred on. Listeners live on the
+  // card elements themselves, so a page swap discards them with the cards and
+  // no teardown is needed; the data flag only guards the same-page double-init.
+  function onCardPointerMove(event: PointerEvent) {
+    const card = event.currentTarget as HTMLElement;
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--spot-x', `${event.clientX - rect.left}px`);
+    card.style.setProperty('--spot-y', `${event.clientY - rect.top}px`);
+  }
+
+  function initSpotlight() {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    document.querySelectorAll<HTMLElement>('.project-card:not([data-spotlight])').forEach((card) => {
+      card.dataset.spotlight = 'true';
+      card.addEventListener('pointermove', onCardPointerMove);
+    });
+  }
+
+  function initProjects() {
+    initParallax();
+    initSpotlight();
+  }
+
+  initProjects();
+  document.addEventListener('astro:page-load', initProjects);
 </script>
