@@ -18,21 +18,18 @@
     "Node.js",
     "Express",
     "Fastify",
-    "FastAPI",
     "Laravel",
     "Prisma"
   ],
   "databases": [
     "PostgreSQL",
     "MySQL",
-    "Redis",
     "SQLite",
     "Firebase"
   ],
   "tools": [
     "Git",
     "GitHub Actions",
-    "Docker",
     "Cypress",
     "pytest",
     "Unity"
