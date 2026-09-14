@@ -56,7 +56,7 @@ const personSchema = {
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cloudflareinsights.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests"
     />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="google-site-verification" content="8sgfW2OFAdFr3pEkx6YtgTbVwmFRgC6oZ6CNWm2urm8" />
@@ -182,6 +182,14 @@ const personSchema = {
         document.documentElement.classList.add(reduced || seen ? 'preloaded' : 'preloading');
       })();
     </script>
+
+    <!-- Cloudflare Web Analytics: cookie-less pageview/visitor counts, no backend. -->
+    <script
+      type="module"
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "92371cc8e4dc493cb5dd964a99142255"}'
+      is:inline
+    ></script>
   </head>
   <body>
     <Preloader />
