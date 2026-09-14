@@ -167,7 +167,7 @@ const STEP_ICONS = [
             </p>
             <div class="detail-swap mt-3 sm:mt-4" data-detail>
               <h3 class="font-display text-xl font-semibold sm:text-3xl" data-detail-title>{steps[0].title}</h3>
-              <p class="mt-2 font-sans text-sm leading-relaxed text-[var(--color-text-secondary)] sm:mt-3 sm:text-base" data-detail-description>{steps[0].description}</p>
+              <p class="mt-2 min-h-[2.6rem] font-sans text-sm leading-relaxed text-[var(--color-text-secondary)] sm:mt-3 sm:min-h-[3.25rem] sm:text-base" data-detail-description>{steps[0].description}</p>
             </div>
           </div>
           <div>
@@ -275,14 +275,25 @@ const STEP_ICONS = [
     };
 
     const stickyTop = () => parseFloat(getComputedStyle(panel).top) || 0;
-    // How far the wrapper scrolls while the panel is stuck.
-    const travel = () => Math.max(1, root.offsetHeight - panel.offsetHeight);
+    // How far the wrapper scrolls while the panel is stuck. Cached instead of
+    // read fresh on every scroll tick: panel.offsetHeight depends on which
+    // step's text is currently shown, and that text is what setActive() (via
+    // update(), below) swaps in — reading it live turns this into a feedback
+    // loop where a step change can shift the panel's height, which shifts the
+    // computed progress, which can flip the step back again. Most visible on
+    // mobile (steps stack in one column, so text-length differences move the
+    // panel's height the most) and on any fast scroll-through, e.g. a "Pedir
+    // orçamento"-style link jumping straight to a later section.
+    let travelValue = 1;
+    const refreshTravel = () => {
+      travelValue = Math.max(1, root.offsetHeight - panel.offsetHeight);
+    };
 
     let ticking = false;
     const update = () => {
       ticking = false;
       const rect = root.getBoundingClientRect();
-      const progress = Math.min(1, Math.max(0, (stickyTop() - rect.top) / travel()));
+      const progress = Math.min(1, Math.max(0, (stickyTop() - rect.top) / travelValue));
       const i = Math.min(count - 1, Math.floor(progress * count));
       setActive(i);
       if (detailProgress) {
@@ -295,22 +306,27 @@ const STEP_ICONS = [
       ticking = true;
       requestAnimationFrame(update);
     };
+    const onResize = () => {
+      refreshTravel();
+      onScroll();
+    };
 
     const select = (event: Event) => {
       const i = steps.indexOf(event.currentTarget as HTMLElement);
       if (i === -1) return;
-      const top = root.getBoundingClientRect().top + window.scrollY - stickyTop() + ((i + 0.2) / count) * travel();
+      const top = root.getBoundingClientRect().top + window.scrollY - stickyTop() + ((i + 0.2) / count) * travelValue;
       scrollToTarget(Math.round(top), { offset: 0, immediate: reduced });
     };
     steps.forEach((step) => step.addEventListener('click', select));
 
+    refreshTravel();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    window.addEventListener('resize', onResize);
     update();
 
     teardown = () => {
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('resize', onResize);
       steps.forEach((step) => step.removeEventListener('click', select));
     };
   }
