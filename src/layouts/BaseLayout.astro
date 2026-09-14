@@ -130,8 +130,18 @@ const personSchema = {
             window.scrollTo(0, 0);
           });
         };
-        window.addEventListener('pageshow', toTop);
         window.addEventListener('load', toTop);
+        // pageshow also fires when the browser restores this exact page from
+        // its back-forward cache instead of loading it fresh — notably, iOS
+        // Safari does this whenever a backgrounded tab regains focus (e.g.
+        // switching apps and coming back), not just on real back/forward
+        // navigation. event.persisted is true only in that restore case; the
+        // visit isn't fresh then, so leave the scroll position alone instead
+        // of yanking the visitor back to the top mid-session (which could
+        // easily land a tap on the wrong element right after).
+        window.addEventListener('pageshow', function (event) {
+          if (!event.persisted) toTop();
+        });
       }
 
       // Language: honour an explicit choice (stored by the toggle); otherwise a
