@@ -1,39 +1,50 @@
 {
   "meta": {
-    "title": "Luciano K. Dal Pai | Full-Stack Software Engineer",
-    "description": "Portfolio of Luciano K. Dal Pai: software engineer, full-stack developer, and tech enthusiast."
+    "title": "Luciano K. Dal Pai · Full-Stack Software Engineer",
+    "description": "Full-stack software engineer based in Brazil. I build web and mobile apps with React, Node.js, Python and Flutter, from the database to the interface. Open to new projects."
   },
   "nav": {
     "primary": "Main navigation",
     "about": "About",
     "projects": "Projects",
     "services": "Services",
-    "github": "Activity",
     "stack": "Stack",
     "contact": "Contact",
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menuHint": "Browse the site"
   },
   "hero": {
     "availability": "Available for new projects",
+    "role": "Full-Stack Software Engineer",
     "tagline": "Software engineer, full-stack developer, and tech enthusiast.",
     "ctaProjects": "View projects",
-    "ctaContact": "Contact"
+    "ctaContact": "Get in touch",
+    "scroll": "Scroll to explore",
+    "location": "Brazil · GMT-3",
+    "localTime": "Local time",
+    "sceneLabel": "3D laptop with the website open on its screen"
   },
   "about": {
+    "index": "01",
     "heading": "About",
+    "lead": "I turn everyday problems into software people actually use.",
     "body": "Throughout my journey, I've been studying different technologies and applying that knowledge to real projects, always looking for practical solutions to everyday problems."
   },
   "projects": {
+    "index": "02",
     "heading": "Featured projects",
-    "subheading": "A selection of what I've been building.",
+    "subheading": "A selection of what I've been building, and the problem each one solves.",
     "problem": "Problem",
     "result": "Result",
     "stackLabel": "Technologies",
     "viewRepo": "Repository",
-    "viewDemo": "Demo",
+    "viewDemo": "See it live",
     "viewMoreGithub": "See more projects on GitHub"
   },
   "github": {
+    "index": "04",
     "heading": "GitHub activity",
     "subheading": "Data fetched straight from the GitHub API at build time.",
     "contributions": "contributions in the last year",
@@ -46,17 +57,19 @@
     "empty": "Data will show up after the first build on GitHub Actions."
   },
   "stack": {
-    "heading": "Stack",
-    "subheading": "Tools I use day to day.",
+    "index": "04",
+    "heading": "Stack & activity",
+    "subheading": "Technologies from my repositories and my GitHub activity.",
     "categories": {
       "languages": "Languages",
-      "frontend": "Frontend",
+      "frontend": "Frontend & mobile",
       "backend": "Backend",
       "databases": "Databases",
-      "tools": "Tools & infra"
+      "tools": "Tools & testing"
     }
   },
   "services": {
+    "index": "03",
     "heading": "Services",
     "body": "I'm always open to new opportunities and partnerships. If you or your company has a project in mind, I'd be happy to talk and see how I can help.",
     "cta": "Request a quote",
@@ -86,17 +99,27 @@
         "title": "Ongoing partnership",
         "description": "I stay available for updates and future projects."
       }
-    ]
+    ],
+    "scrollHint": "Scroll to continue",
+    "next": "Next",
+    "done": "All steps"
   },
   "contact": {
+    "index": "05",
     "heading": "Contact",
+    "title": "Let's build something together?",
     "subheading": "Email works best. The rest of my work is documented on GitHub.",
     "loadingEmail": "Loading email…",
     "copyEmail": "Copy email",
-    "emailCopied": "Email copied!"
+    "emailCopied": "Email copied!",
+    "sendEmail": "Send email",
+    "responseTime": "I usually reply within 24h"
   },
   "footer": {
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "localTime": "Local time",
+    "navigate": "Navigate",
+    "elsewhere": "Other"
   },
   "commandPalette": {
     "label": "Command palette",

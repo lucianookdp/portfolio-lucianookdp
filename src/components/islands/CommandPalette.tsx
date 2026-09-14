@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Command } from 'cmdk';
 import { navigate } from 'astro:transitions/client';
 import { getStoredTheme, toggleTheme, type Theme } from '../../lib/theme';
+import { scrollToTarget } from '../../lib/lenis';
 
 interface Dict {
   label: string;
@@ -15,6 +16,7 @@ interface Dict {
   switchLanguage: string;
   openGithub: string;
   sendEmail: string;
+  hint: string;
 }
 
 interface NavItem {
@@ -30,6 +32,11 @@ interface Props {
   enPath: string;
 }
 
+const groupClass =
+  '[&_[cmdk-group-heading]]:block [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-[0.14em] [&_[cmdk-group-heading]]:text-[var(--color-text-secondary)]';
+const itemClass =
+  'flex cursor-pointer items-center justify-between gap-4 rounded-xl px-3 py-2.5 font-sans text-sm text-[var(--color-text)] transition-colors data-[selected=true]:bg-[var(--color-accent-soft)] data-[selected=true]:text-[var(--color-accent-text)]';
+
 export default function CommandPalette({ dict, navItems, currentLocale, ptPath, enPath }: Props) {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<Theme>('light');
@@ -43,7 +50,6 @@ export default function CommandPalette({ dict, navItems, currentLocale, ptPath, 
         setOpen((prev) => !prev);
       }
     }
-
     function onExternalOpen() {
       setOpen(true);
     }
@@ -58,10 +64,7 @@ export default function CommandPalette({ dict, navItems, currentLocale, ptPath, 
 
   function goToSection(id: string) {
     setOpen(false);
-    window.location.hash = '';
-    requestAnimationFrame(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+    requestAnimationFrame(() => scrollToTarget(`#${id}`));
   }
 
   function handleToggleTheme() {
@@ -71,7 +74,13 @@ export default function CommandPalette({ dict, navItems, currentLocale, ptPath, 
 
   function handleSwitchLanguage() {
     setOpen(false);
-    navigate(currentLocale === 'pt' ? enPath : ptPath);
+    const next = currentLocale === 'pt' ? 'en' : 'pt';
+    try {
+      localStorage.setItem('lang', next);
+    } catch {
+      // Storage can be unavailable; navigation still works.
+    }
+    navigate(next === 'en' ? enPath : ptPath);
   }
 
   function openExternal(url: string) {
@@ -89,74 +98,63 @@ export default function CommandPalette({ dict, navItems, currentLocale, ptPath, 
       open={open}
       onOpenChange={setOpen}
       label={dict.label}
-      className="fixed left-1/2 top-24 z-[100] w-[min(90vw,32rem)] -translate-x-1/2 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-2xl"
-      overlayClassName="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm"
+      className="glass fixed left-1/2 top-24 z-[100] w-[min(92vw,34rem)] -translate-x-1/2 overflow-hidden rounded-2xl shadow-2xl"
+      overlayClassName="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm"
       contentClassName="p-0"
     >
-      <Command.Input
-        placeholder={dict.placeholder}
-        className="w-full border-b border-[var(--color-border)] bg-transparent px-5 py-4 font-sans text-base text-[var(--color-text)] outline-none placeholder:text-[var(--color-text-secondary)]"
-      />
-      <Command.List className="max-h-80 overflow-y-auto p-2">
-        <Command.Empty className="px-3 py-6 text-center font-sans text-sm text-[var(--color-text-secondary)]">
-          {dict.empty}
-        </Command.Empty>
+      <div className="flex items-center gap-3 border-b border-[var(--color-border)] px-4">
+        <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-[var(--color-text-secondary)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+        <Command.Input
+          placeholder={dict.placeholder}
+          className="w-full bg-transparent py-4 font-sans text-base text-[var(--color-text)] outline-none placeholder:text-[var(--color-text-secondary)]"
+        />
+        <kbd className="hidden rounded-md border border-[var(--color-border-strong)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-text-secondary)] sm:block">esc</kbd>
+      </div>
+      <Command.List className="max-h-80 overflow-y-auto p-2" data-lenis-prevent>
+        <Command.Empty className="px-3 py-6 text-center font-sans text-sm text-[var(--color-text-secondary)]">{dict.empty}</Command.Empty>
 
-        <Command.Group
-          heading={dict.groupNavigation}
-          className="[&_[cmdk-group-heading]]:block [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:font-sans [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wide [&_[cmdk-group-heading]]:text-[var(--color-text-secondary)]"
-        >
-          {navItems.map((item) => (
-            <Command.Item
-              key={item.id}
-              onSelect={() => goToSection(item.id)}
-              className="cursor-pointer rounded-lg px-3 py-2.5 font-sans text-sm text-[var(--color-text)] data-[selected=true]:bg-[var(--color-border)]"
-            >
-              {item.label}
+        <Command.Group heading={dict.groupNavigation} className={groupClass}>
+          {navItems.map((item, index) => (
+            <Command.Item key={item.id} onSelect={() => goToSection(item.id)} className={itemClass}>
+              <span>{item.label}</span>
+              <span className="font-mono text-[10px] text-[var(--color-text-secondary)]">0{index + 1}</span>
             </Command.Item>
           ))}
         </Command.Group>
 
         <Command.Separator className="my-2 h-px bg-[var(--color-border)]" />
 
-        <Command.Group
-          heading={dict.groupActions}
-          className="[&_[cmdk-group-heading]]:block [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:font-sans [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wide [&_[cmdk-group-heading]]:text-[var(--color-text-secondary)]"
-        >
-          <Command.Item
-            onSelect={handleToggleTheme}
-            className="cursor-pointer rounded-lg px-3 py-2.5 font-sans text-sm text-[var(--color-text)] data-[selected=true]:bg-[var(--color-border)]"
-          >
+        <Command.Group heading={dict.groupActions} className={groupClass}>
+          <Command.Item onSelect={handleToggleTheme} className={itemClass}>
             {theme === 'dark' ? dict.toggleThemeLight : dict.toggleThemeDark}
           </Command.Item>
-          <Command.Item
-            onSelect={handleSwitchLanguage}
-            className="cursor-pointer rounded-lg px-3 py-2.5 font-sans text-sm text-[var(--color-text)] data-[selected=true]:bg-[var(--color-border)]"
-          >
+          <Command.Item onSelect={handleSwitchLanguage} className={itemClass}>
             {dict.switchLanguage}
           </Command.Item>
         </Command.Group>
 
         <Command.Separator className="my-2 h-px bg-[var(--color-border)]" />
 
-        <Command.Group
-          heading={dict.groupLinks}
-          className="[&_[cmdk-group-heading]]:block [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:font-sans [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wide [&_[cmdk-group-heading]]:text-[var(--color-text-secondary)]"
-        >
-          <Command.Item
-            onSelect={() => openExternal('https://github.com/lucianookdp')}
-            className="cursor-pointer rounded-lg px-3 py-2.5 font-sans text-sm text-[var(--color-text)] data-[selected=true]:bg-[var(--color-border)]"
-          >
-            {dict.openGithub}
+        <Command.Group heading={dict.groupLinks} className={groupClass}>
+          <Command.Item onSelect={() => openExternal('https://github.com/lucianookdp')} className={itemClass}>
+            <span>{dict.openGithub}</span>
+            <span aria-hidden="true">↗</span>
           </Command.Item>
-          <Command.Item
-            onSelect={sendEmail}
-            className="cursor-pointer rounded-lg px-3 py-2.5 font-sans text-sm text-[var(--color-text)] data-[selected=true]:bg-[var(--color-border)]"
-          >
-            {dict.sendEmail}
+          <Command.Item onSelect={sendEmail} className={itemClass}>
+            <span>{dict.sendEmail}</span>
+            <span aria-hidden="true">↗</span>
           </Command.Item>
         </Command.Group>
       </Command.List>
+      <div className="flex items-center gap-2 border-t border-[var(--color-border)] px-4 py-2.5 font-mono text-[10px] text-[var(--color-text-secondary)]">
+        <kbd className="rounded border border-[var(--color-border-strong)] px-1">↑↓</kbd>
+        <kbd className="rounded border border-[var(--color-border-strong)] px-1">↵</kbd>
+        <span>·</span>
+        <span>g + a/p/v/s/c</span>
+      </div>
     </Command.Dialog>
   );
 }

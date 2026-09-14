@@ -7,9 +7,10 @@ interface Props {
   loadingLabel: string;
   copyLabel: string;
   copiedLabel: string;
+  sendLabel: string;
 }
 
-export default function ObfuscatedEmail({ userPart, domainPart, tldPart, loadingLabel, copyLabel, copiedLabel }: Props) {
+export default function ObfuscatedEmail({ userPart, domainPart, tldPart, loadingLabel, copyLabel, copiedLabel, sendLabel }: Props) {
   const [email, setEmail] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -38,31 +39,35 @@ export default function ObfuscatedEmail({ userPart, domainPart, tldPart, loading
   }
 
   return (
-    <span className="flex flex-wrap items-center gap-3">
+    <div className="flex flex-col gap-6">
       <a
         href={`mailto:${email}`}
-        className="tap-scale break-all font-display text-2xl text-[var(--color-accent)] underline-offset-4 hover:underline sm:text-3xl"
+        className="tap-scale w-fit break-all font-display text-xl font-medium tracking-tight text-[var(--color-text)] underline decoration-[var(--color-accent)] decoration-2 underline-offset-8 transition-colors hover:text-[var(--color-accent-text)] sm:text-4xl"
       >
         {email}
       </a>
-      <button
-        type="button"
-        onClick={handleCopy}
-        aria-label={copied ? copiedLabel : copyLabel}
-        title={copied ? copiedLabel : copyLabel}
-        className="tap-scale flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[var(--color-text-secondary)] transition-colors duration-200 hover:bg-[var(--color-border)] hover:text-[var(--color-text)]"
-      >
-        {copied ? (
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M20 6 9 17l-5-5" />
+      <div className="flex flex-wrap items-center gap-3">
+        <a href={`mailto:${email}`} className="btn btn-accent">
+          {sendLabel}
+          <svg className="btn-arrow h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M5 12h14" />
+            <path d="m13 6 6 6-6 6" />
           </svg>
-        ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <rect x="9" y="9" width="11" height="11" rx="2" />
-            <path d="M5 15V5a2 2 0 0 1 2-2h10" />
-          </svg>
-        )}
-      </button>
-    </span>
+        </a>
+        <button type="button" onClick={handleCopy} aria-live="polite" className="btn btn-ghost">
+          {copied ? (
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="11" height="11" rx="2" />
+              <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+            </svg>
+          )}
+          {copied ? copiedLabel : copyLabel}
+        </button>
+      </div>
+    </div>
   );
 }

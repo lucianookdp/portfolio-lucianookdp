@@ -1,13 +1,21 @@
 {
   "name": "Luciano K. Dal Pai",
   "short_name": "lucianookdp",
-  "description": "Portfólio de Luciano K. Dal Pai — engenheiro de software e desenvolvedor full-stack.",
+  "description": "Engenheiro de software full-stack no Brasil. Construo aplicações web e mobile com React, Node.js, Python e Flutter, do banco de dados à interface. Disponível para projetos.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0e0d0b",
-  "theme_color": "#0e0d0b",
+  "background_color": "#08090c",
+  "theme_color": "#08090c",
   "icons": [
-    { "src": "/favicon-48.png", "sizes": "48x48", "type": "image/png" },
-    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+    {
+      "src": "/favicon-48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
   ]
 }

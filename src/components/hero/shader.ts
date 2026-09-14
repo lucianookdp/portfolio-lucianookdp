@@ -68,11 +68,11 @@ const fragment = /* glsl */ `
     float mixB = smoothstep(0.28, 0.72, n2);
 
     vec3 color = mix(uColorBg, uColorMid, mixA);
-    color = mix(color, uColorAccent, mixB * 0.72);
+    color = mix(color, uColorAccent, mixB * 0.38);
 
     vec2 center = vec2(aspect * 0.5, 0.62) + mouseInfluence * 0.6;
     float vignette = smoothstep(1.1, 0.15, distance(p, center));
-    color = mix(uColorBg, color, 0.55 + vignette * 0.45);
+    color = mix(uColorBg, color, 0.35 + vignette * 0.45);
 
     gl_FragColor = vec4(color, 1.0);
   }

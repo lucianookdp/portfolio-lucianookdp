@@ -1,0 +1,31 @@
+---
+interface Props {
+  items: string[];
+  direction?: 'normal' | 'reverse';
+  duration?: string;
+  class?: string;
+}
+
+const { items, direction = 'normal', duration = '45s', class: className = '' } = Astro.props;
+---
+
+<div class={`marquee ${className}`} data-direction={direction} style={`--duration: ${duration}`} aria-hidden="true">
+  {[0, 1].map(() => (
+    <div class="marquee-track">
+      {items.map((item) => (
+        <span class="flex items-center gap-6 sm:gap-10 font-display text-lg font-medium tracking-tight text-[var(--color-text-secondary)] sm:text-3xl">
+          <span>{item}</span>
+          <svg viewBox="4 4 92 42" class="h-3 w-auto text-[var(--color-accent)]" aria-hidden="true">
+            <path
+              d="M 25 10 C 10 10 10 40 25 40 C 35 40 40 30 50 25 C 60 20 65 10 75 10 C 90 10 90 40 75 40 C 65 40 60 30 50 25 C 40 20 35 10 25 10 Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="11"
+              stroke-linecap="round"
+            />
+          </svg>
+        </span>
+      ))}
+    </div>
+  ))}
+</div>

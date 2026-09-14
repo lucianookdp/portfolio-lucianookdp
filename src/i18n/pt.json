@@ -1,39 +1,50 @@
 {
   "meta": {
-    "title": "Luciano K. Dal Pai | Engenheiro de Software Full-Stack",
-    "description": "Portfólio de Luciano K. Dal Pai: engenheiro de software, desenvolvedor full-stack e entusiasta de tecnologia."
+    "title": "Luciano K. Dal Pai · Engenheiro de Software Full-Stack",
+    "description": "Engenheiro de software full-stack no Brasil. Construo aplicações web e mobile com React, Node.js, Python e Flutter, do banco de dados à interface. Disponível para projetos."
   },
   "nav": {
     "primary": "Navegação principal",
     "about": "Sobre",
     "projects": "Projetos",
     "services": "Serviços",
-    "github": "Atividade",
     "stack": "Stack",
     "contact": "Contato",
-    "skipToContent": "Pular para o conteúdo"
+    "skipToContent": "Pular para o conteúdo",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "menuHint": "Navegue pelo site"
   },
   "hero": {
     "availability": "Disponível para novos projetos",
+    "role": "Engenheiro de Software Full-Stack",
     "tagline": "Engenheiro de software, desenvolvedor full-stack e entusiasta de tecnologia.",
     "ctaProjects": "Ver projetos",
-    "ctaContact": "Contato"
+    "ctaContact": "Falar comigo",
+    "scroll": "Role para explorar",
+    "location": "Brasil · GMT-3",
+    "localTime": "Horário local",
+    "sceneLabel": "Notebook 3D com o site aberto na tela"
   },
   "about": {
+    "index": "01",
     "heading": "Sobre",
+    "lead": "Transformo problemas do dia a dia em software que as pessoas realmente usam.",
     "body": "Ao longo da minha trajetória, venho estudando diferentes tecnologias e aplicando esse conhecimento em projetos reais, sempre em busca de soluções práticas para problemas do dia a dia."
   },
   "projects": {
+    "index": "02",
     "heading": "Projetos em destaque",
-    "subheading": "Uma seleção do que venho construindo.",
+    "subheading": "Uma seleção do que venho construindo, com o problema que cada um resolve.",
     "problem": "Problema",
     "result": "Resultado",
     "stackLabel": "Tecnologias",
     "viewRepo": "Repositório",
-    "viewDemo": "Demo",
+    "viewDemo": "Ver ao vivo",
     "viewMoreGithub": "Ver mais projetos no GitHub"
   },
   "github": {
+    "index": "04",
     "heading": "Atividade no GitHub",
     "subheading": "Dados buscados direto da API do GitHub em tempo de build.",
     "contributions": "contribuições no último ano",
@@ -46,17 +57,19 @@
     "empty": "Os dados serão exibidos após o primeiro build no GitHub Actions."
   },
   "stack": {
-    "heading": "Stack",
-    "subheading": "Ferramentas que uso no dia a dia.",
+    "index": "04",
+    "heading": "Stack & atividade",
+    "subheading": "Tecnologias dos meus repositórios e minha atividade no GitHub.",
     "categories": {
       "languages": "Linguagens",
-      "frontend": "Frontend",
+      "frontend": "Frontend & mobile",
       "backend": "Backend",
       "databases": "Bancos de dados",
-      "tools": "Ferramentas & infra"
+      "tools": "Ferramentas & testes"
     }
   },
   "services": {
+    "index": "03",
     "heading": "Serviços",
     "body": "Estou sempre aberto a novas oportunidades e parcerias. Se você ou sua empresa tem um projeto em mente, ficarei feliz em conversar e entender como posso ajudar.",
     "cta": "Pedir um orçamento",
@@ -86,17 +99,27 @@
         "title": "Parceria contínua",
         "description": "Sigo à disposição para atualizações e novos projetos."
       }
-    ]
+    ],
+    "scrollHint": "Role para avançar",
+    "next": "Próximo",
+    "done": "Todas as etapas"
   },
   "contact": {
+    "index": "05",
     "heading": "Contato",
+    "title": "Vamos construir algo juntos?",
     "subheading": "De preferência por email. O resto do meu trabalho está documentado no GitHub.",
     "loadingEmail": "Carregando email…",
     "copyEmail": "Copiar email",
-    "emailCopied": "Email copiado!"
+    "emailCopied": "Email copiado!",
+    "sendEmail": "Enviar email",
+    "responseTime": "Costumo responder em até 24h"
   },
   "footer": {
-    "rights": "Todos os direitos reservados."
+    "rights": "Todos os direitos reservados.",
+    "localTime": "Horário local",
+    "navigate": "Navegar",
+    "elsewhere": "Outros"
   },
   "commandPalette": {
     "label": "Paleta de comandos",
