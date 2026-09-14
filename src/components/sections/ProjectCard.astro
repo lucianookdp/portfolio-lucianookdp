@@ -5,13 +5,14 @@ import type { Dictionary } from '../../i18n/utils';
 
 interface Translation {
   name: string;
-  // Not every project frames as problem/solution — a personal build can just be
-  // described. Those entries omit `problem` and render `result` as plain prose.
+  // Not every project frames as problem/solution — a personal build can just
+  // be described. Those entries omit `problem` and render `result` as prose.
   problem?: string;
   result: string;
 }
 
 interface Props {
+  index: number;
   id: string;
   repoUrl: string;
   demoUrl: string | null;
@@ -20,11 +21,10 @@ interface Props {
   dict: Dictionary;
 }
 
-const { id, repoUrl, demoUrl, stack, translation, dict } = Astro.props;
+const { index, id, repoUrl, demoUrl, stack, translation, dict } = Astro.props;
 const media = findProjectMedia(id);
 
 const COVER_ICONS: Record<string, string> = {
-  // Rachaí's own mark: a receipt torn in two, traced from the brand favicon.
   rachai: `<path d="M5 3.5h14v5.5l-2.4-1.2-2.3 1.6L12 7.8l-2.3 1.6-2.3-1.6L5 9V3.5Z" /><path d="M5 15l2.4 1.2 2.3-1.6 2.3 1.6 2.3-1.6 2.3 1.6L19 15v5.5H5V15Z" />`,
   'lost-and-found': `<path d="m12 3 7 3v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Z" /><path d="m9 12 2 2 4-4" />`,
   'webhook-inspector': `<circle cx="12" cy="16" r="1.5" /><path d="M12 16V8" /><path d="M8.5 11a5 5 0 0 1 7 0" /><path d="M5.5 8a9 9 0 0 1 13 0" />`,
@@ -32,65 +32,86 @@ const COVER_ICONS: Record<string, string> = {
 };
 const DEFAULT_ICON = `<path d="m8 9-4 3 4 3" /><path d="m16 9 4 3-4 3" /><path d="m14 6-4 12" />`;
 const coverIcon = COVER_ICONS[id] ?? DEFAULT_ICON;
+const number = String(index).padStart(2, '0');
 ---
 
-<article class="project-card group flex flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)]">
-  <div class="relative aspect-video w-full overflow-hidden border-b border-[var(--color-border)] bg-[var(--color-bg)]">
-    {media ? (
-      media.isVideo ? (
-        <video src={media.src} class="h-full w-full object-cover" autoplay loop muted playsinline></video>
-      ) : (
-        <img src={media.src} alt={translation.name} class="h-full w-full object-cover" loading="lazy" />
-      )
-    ) : (
-      <div class="project-cover flex h-full w-full items-center justify-center" aria-hidden="true">
-        <div class="project-cover-parallax">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={coverIcon} />
-        </div>
-      </div>
-    )}
-  </div>
+<article class="stack-item project-panel card spot-card grid grid-cols-1 gap-4 p-4 sm:gap-8 sm:p-8 lg:grid-cols-2 lg:gap-12 lg:p-12" data-reveal>
+  <span class="stack-shade" aria-hidden="true"></span>
+  <div class="relative z-[1] flex min-w-0 flex-col">
+    <p class="eyebrow flex items-center gap-3">
+      <span class="text-[var(--color-accent-text)]">{number}</span>
+      <span class="h-px w-6 bg-[var(--color-border-strong)]" aria-hidden="true"></span>
+      <span>{stack[0]}</span>
+    </p>
 
-  <div class="flex flex-1 flex-col gap-4 p-6">
-    <RevealText as="h3" class="font-display text-2xl">{translation.name}</RevealText>
+    <RevealText as="h3" class="mt-3 font-display text-xl font-semibold sm:mt-5 sm:text-4xl lg:text-5xl">{translation.name}</RevealText>
 
     {stack.length > 0 && (
-      <ul class="-mt-1 flex flex-wrap gap-1.5" aria-label={dict.projects.stackLabel}>
+      <ul class="mt-3 flex flex-wrap gap-1 sm:mt-5 sm:gap-1.5" aria-label={dict.projects.stackLabel}>
         {stack.map((tech) => (
-          <li class="rounded-full bg-[var(--color-accent-soft)] px-2.5 py-0.5 font-sans text-xs font-medium text-[var(--color-accent-text)]">
-            {tech}
-          </li>
+          <li class="chip chip-sm">{tech}</li>
         ))}
       </ul>
     )}
 
     {translation.problem ? (
-      <dl class="flex flex-col gap-3 font-sans text-sm">
+      <dl class="mt-5 flex flex-col gap-3 font-sans text-sm leading-relaxed sm:mt-8 sm:gap-5 sm:text-[15px]">
         <div>
-          <dt class="font-medium text-[var(--color-text)]">{dict.projects.problem}</dt>
-          <dd class="mt-1">
-            <RevealText as="div" class="text-[var(--color-text-secondary)]">{translation.problem}</RevealText>
-          </dd>
+          <dt class="eyebrow mb-1.5">{dict.projects.problem}</dt>
+          <dd class="text-[var(--color-text-secondary)]">{translation.problem}</dd>
         </div>
         <div>
-          <dt class="font-medium text-[var(--color-text)]">{dict.projects.result}</dt>
-          <dd class="mt-1">
-            <RevealText as="div" class="text-[var(--color-text-secondary)]">{translation.result}</RevealText>
-          </dd>
+          <dt class="eyebrow mb-1.5">{dict.projects.result}</dt>
+          <dd class="text-[var(--color-text)]">{translation.result}</dd>
         </div>
       </dl>
     ) : (
-      <RevealText as="div" class="font-sans text-sm text-[var(--color-text-secondary)]">{translation.result}</RevealText>
+      <p class="mt-5 font-sans text-sm leading-relaxed text-[var(--color-text-secondary)] sm:mt-8 sm:text-[15px]">{translation.result}</p>
     )}
 
-    <div class="mt-auto flex gap-4 pt-2 font-sans text-sm">
-      <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="font-medium text-[var(--color-accent-text)] underline-offset-4 hover:underline">
-        {dict.projects.viewRepo}
-      </a>
+    <div class="mt-auto flex flex-wrap gap-2 pt-4 sm:gap-3 sm:pt-10">
       {demoUrl && (
-        <a href={demoUrl} target="_blank" rel="noopener noreferrer" class="font-medium text-[var(--color-accent-text)] underline-offset-4 hover:underline">
+        <a href={demoUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" data-magnetic="0.2">
           {dict.projects.viewDemo}
+          <svg class="btn-arrow h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 17 17 7" /><path d="M8 7h9v9" />
+          </svg>
         </a>
+      )}
+      <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" data-magnetic="0.2">
+        {dict.projects.viewRepo}
+        <svg class="btn-arrow h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 17 17 7" /><path d="M8 7h9v9" />
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="relative z-[1] min-w-0">
+    <div class="tilt h-full" data-tilt-max="7">
+      {media ? (
+        <div class="project-cover">
+          {media.isVideo ? (
+            <video src={media.src} class="absolute inset-0 h-full w-full object-cover" autoplay loop muted playsinline></video>
+          ) : (
+            <img src={media.src} alt={translation.name} class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+          )}
+          <span class="tilt-glare" aria-hidden="true"></span>
+        </div>
+      ) : (
+        <div class="project-cover" aria-hidden="true">
+          <span class="project-cover-orbit"></span>
+          <div class="project-cover-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" set:html={coverIcon} />
+          </div>
+          <div class="project-cover-window">
+            <span class="line" style="top: 1.6rem; width: 45%;"></span>
+            <span class="line" style="top: 2.5rem; width: 70%;"></span>
+            <span class="line" style="top: 3.4rem; width: 55%;"></span>
+            <span class="line" style="top: 4.3rem; width: 30%;"></span>
+          </div>
+          <span class="tilt-glare"></span>
+        </div>
       )}
     </div>
   </div>

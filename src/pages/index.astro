@@ -1,24 +1,28 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/hero/Hero.astro';
+import Marquee from '../components/ui/Marquee.astro';
 import About from '../components/sections/About.astro';
 import Projects from '../components/sections/Projects.astro';
-import GithubActivity from '../components/sections/GithubActivity.astro';
-import Stack from '../components/sections/Stack.astro';
 import Services from '../components/sections/Services.astro';
+import StackActivity from '../components/sections/StackActivity.astro';
 import Contact from '../components/sections/Contact.astro';
+import stackData from '../data/stack.json';
 import { getDictionary } from '../i18n/utils';
 
 const locale = 'pt' as const;
 const dict = getDictionary(locale);
+const marqueeItems = Array.from(new Set(Object.values(stackData).flat()));
 ---
 
 <BaseLayout locale={locale} ptPath="/" enPath="/en">
   <Hero dict={dict} locale={locale} displayName="Luciano K. Dal Pai" />
+  <div class="border-y border-[var(--color-border)] py-4 sm:py-6">
+    <Marquee items={marqueeItems} />
+  </div>
   <About dict={dict} />
   <Projects dict={dict} locale={locale} />
   <Services dict={dict} />
+  <StackActivity dict={dict} locale={locale} />
   <Contact dict={dict} />
-  <GithubActivity dict={dict} locale={locale} />
-  <Stack dict={dict} />
 </BaseLayout>

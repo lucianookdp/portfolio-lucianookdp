@@ -1,4 +1,5 @@
 ---
+import SectionHeading from '../ui/SectionHeading.astro';
 import RevealText from '../ui/RevealText.astro';
 import type { Dictionary } from '../../i18n/utils';
 
@@ -9,10 +10,14 @@ interface Props {
 const { dict } = Astro.props;
 ---
 
-<section id="about" class="mx-auto max-w-6xl px-6 py-28">
-  <div class="grid gap-8 md:grid-cols-[1fr_2fr] md:gap-16">
-    <RevealText as="h2" class="font-display text-3xl">{dict.about.heading}</RevealText>
-    <RevealText as="p" class="max-w-2xl font-sans text-lg leading-relaxed text-[var(--color-text-secondary)]">
+<section id="about" class="container-site scroll-mt-24 py-16 sm:py-24 lg:py-32">
+  <SectionHeading index={dict.about.index} heading={dict.about.heading} />
+
+  <div class="mt-10 max-w-4xl sm:mt-14">
+    <RevealText as="p" class="font-display text-2xl font-medium leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+      {dict.about.lead}
+    </RevealText>
+    <RevealText as="p" class="mt-6 max-w-2xl font-sans text-base leading-relaxed text-[var(--color-text-secondary)] sm:mt-8 sm:text-lg">
       {dict.about.body}
     </RevealText>
   </div>

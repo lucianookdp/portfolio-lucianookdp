@@ -1,5 +1,4 @@
 ---
-import ShaderBackground from './ShaderBackground.astro';
 import type { Dictionary, Locale } from '../../i18n/utils';
 
 interface Props {
@@ -10,102 +9,184 @@ interface Props {
 
 const { dict, displayName } = Astro.props;
 
-// Keep the two-word surname on one line: at mid-size viewports the clamp()
-// heading wrapped as "Luciano K. Dal / Pai", splitting "Dal Pai" in half.
+// "Luciano K." on the first line, "Dal Pai" on the second — the two-word
+// surname must never split.
 const nameWords = displayName.split(' ');
 const surname = nameWords.slice(-2).join(' ');
 const givenNames = nameWords.slice(0, -2).join(' ');
 ---
 
-<section id="hero" class="relative flex min-h-[82svh] items-end overflow-hidden sm:min-h-[88svh] lg:min-h-[100svh]">
-  <ShaderBackground id="hero-canvas" />
+<section id="hero" class="relative flex min-h-[100svh] items-end overflow-hidden lg:items-center">
+  <div class="aurora" aria-hidden="true"><span class="aurora-blob"></span></div>
+  <div class="grid-bg" aria-hidden="true"></div>
 
-  <div id="hero-content" class="relative z-10 mx-auto w-full max-w-6xl px-6 pb-16 pt-32 sm:pb-20 sm:pt-36 lg:pt-40">
-    <p class="hero-entrance mb-6 inline-flex items-center gap-2.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg)]/60 px-3.5 py-1.5 font-sans text-xs font-medium text-[var(--color-text-secondary)] backdrop-blur">
-      <span class="availability-dot h-2 w-2 rounded-full bg-[var(--color-accent-glow)]" aria-hidden="true"></span>
-      {dict.hero.availability}
-    </p>
+  <div id="hero-scene" class="absolute inset-0" data-name={displayName} data-role={dict.hero.role}>
+    <canvas id="hero-canvas" class="hero-canvas block h-full w-full" role="img" aria-label={dict.hero.sceneLabel}></canvas>
+    <img id="hero-fallback" class="hero-fallback" src="/media/laptop.webp" alt={dict.hero.sceneLabel} width="1500" height="1260" decoding="async" hidden />
+  </div>
 
-    <h1 class="hero-entrance font-display leading-[0.92] font-medium tracking-tight text-[var(--color-text)]" style="font-size: clamp(3rem, 11vw, 10.5rem);">
-      {givenNames} <span class="whitespace-nowrap">{surname}</span>
-    </h1>
+  <div id="hero-content" class="container-site relative z-10 pb-12 pt-[46svh] sm:pb-16 sm:pt-[40svh] lg:pb-20 lg:pt-40">
+    <div class="lg:max-w-[64%]">
+      <p class="hero-entrance mb-6 inline-flex items-center gap-2.5 rounded-full border border-[var(--color-border-strong)] bg-[var(--color-bg-elevated)]/60 px-3.5 py-1.5 font-mono text-xs text-[var(--color-text-secondary)] backdrop-blur">
+        <span class="availability-dot h-2 w-2 rounded-full bg-[var(--color-accent-2-glow)]" aria-hidden="true"></span>
+        {dict.hero.availability}
+      </p>
 
-    <p class="hero-entrance mt-8 max-w-xl font-sans text-lg text-[var(--color-text-secondary)] sm:text-xl">
-      {dict.hero.tagline}
-    </p>
+      <p class="hero-entrance eyebrow mb-4 text-[var(--color-accent-text)]">{dict.hero.role}</p>
 
-    <div class="hero-entrance mt-10 flex flex-wrap items-center gap-4">
-      <a
-        href="#projects"
-        class="tap-scale rounded-full bg-[var(--color-accent)] px-6 py-3 font-sans text-sm font-medium text-[var(--color-on-accent)] transition-transform duration-200 hover:scale-[1.03]"
-      >
-        {dict.hero.ctaProjects}
+      <h1 class="hero-title text-[var(--color-text)]" style="font-size: clamp(2.7rem, 11vw, 9rem);" aria-label={displayName}>
+        <span class="block" data-split-chars>{givenNames}</span>
+        <span class="hero-line block text-gradient" aria-hidden="true">{surname}</span>
+      </h1>
+
+      <p class="hero-entrance mt-6 max-w-xl font-sans text-base leading-relaxed text-[var(--color-text-secondary)] sm:mt-8 sm:text-xl">
+        {dict.hero.tagline}
+      </p>
+
+      <div class="hero-entrance mt-8 flex flex-wrap items-center gap-3 sm:mt-10">
+        <a href="#projects" class="btn btn-primary" data-magnetic="0.3">
+          {dict.hero.ctaProjects}
+          <svg class="btn-arrow h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14" /><path d="m13 6 6 6-6 6" />
+          </svg>
+        </a>
+        <a href="#contact" class="btn btn-ghost" data-magnetic="0.3">{dict.hero.ctaContact}</a>
+      </div>
+    </div>
+
+    <div class="hero-entrance mt-10 flex items-center justify-between gap-4 font-mono text-[11px] text-[var(--color-text-secondary)] sm:mt-16 sm:text-xs lg:mt-24">
+      <a href="#about" class="flex items-center gap-3" aria-label={dict.hero.scroll}>
+        <span class="scroll-cue" aria-hidden="true"></span>
+        <span class="hidden sm:inline">{dict.hero.scroll}</span>
       </a>
-      <a
-        href="#contact"
-        class="tap-scale rounded-full border border-[var(--color-border)] px-6 py-3 font-sans text-sm font-medium text-[var(--color-text)] transition-colors duration-200 hover:border-[var(--color-accent)]"
-      >
-        {dict.hero.ctaContact}
-      </a>
+      <p class="flex items-center gap-2">
+        <span>{dict.hero.location}</span>
+        <span aria-hidden="true">·</span>
+        <span>{dict.hero.localTime} <span data-local-time class="text-[var(--color-text)]">--:--</span></span>
+      </p>
     </div>
   </div>
 </section>
 
 <script>
-  import { animate, scroll } from 'motion';
+  import { animate, scroll, stagger } from 'motion';
+  import { splitChars } from '../../lib/interactions';
+  import type { LaptopSceneHandle } from './LaptopScene';
 
-  // Re-run on every Astro page transition so the entrance replays and the
-  // scroll-linked fade re-binds to that page's fresh Hero elements. The old
-  // scroll subscription is stopped first — Motion's scroll() keeps listening
-  // on window otherwise, leaking one per navigation.
   let stopScrollEffect: (() => void) | undefined;
+  let scene: { container: HTMLElement; handle: LaptopSceneHandle } | null = null;
 
-  function initHero() {
+  // Low-end or data-saving devices get a still image of the same laptop
+  // instead of the WebGL scene; so does anyone whose browser can't create a
+  // WebGL context.
+  function prefersStill(): boolean {
+    const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
+    return (nav.deviceMemory !== undefined && nav.deviceMemory <= 2) || nav.connection?.saveData === true;
+  }
+
+  function showFallback(container: HTMLElement, canvas: HTMLCanvasElement) {
+    const img = container.querySelector<HTMLImageElement>('#hero-fallback');
+    if (!img) return;
+    canvas.hidden = true;
+    img.hidden = false;
+    requestAnimationFrame(() => img.classList.add('is-ready'));
+  }
+
+  async function mountScene(container: HTMLElement, canvas: HTMLCanvasElement) {
+    if (scene && scene.container === container) return;
+    scene?.handle.dispose();
+    scene = null;
+    if (prefersStill()) {
+      showFallback(container, canvas);
+      return;
+    }
+    // Three.js is only pulled in here, as its own chunk, once the hero exists.
+    let handle: LaptopSceneHandle | null = null;
+    try {
+      const { createLaptopScene } = await import('./LaptopScene');
+      if (!container.isConnected) return;
+      handle = createLaptopScene(container, canvas, {
+        name: container.dataset.name ?? 'Luciano K. Dal Pai',
+        role: container.dataset.role ?? ''
+      });
+    } catch {
+      handle = null;
+    }
+    if (handle) scene = { container, handle };
+    else showFallback(container, canvas);
+  }
+
+  function waitForPreloader(): Promise<void> {
+    if (!document.documentElement.classList.contains('preloading')) return Promise.resolve();
+    return new Promise((resolve) => {
+      const done = () => {
+        window.removeEventListener('preloader:done', done);
+        resolve();
+      };
+      window.addEventListener('preloader:done', done);
+      window.setTimeout(done, 3000);
+    });
+  }
+
+  async function initHero() {
     stopScrollEffect?.();
     stopScrollEffect = undefined;
 
     const heroSection = document.getElementById('hero');
     const heroContent = document.getElementById('hero-content');
-    if (!heroSection || !heroContent) return;
+    const sceneContainer = document.getElementById('hero-scene');
+    const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null;
+    if (!heroSection || !heroContent) {
+      scene?.handle.dispose();
+      scene = null;
+      return;
+    }
+
+    if (sceneContainer && canvas) mountScene(sceneContainer, canvas);
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
+    const chars = Array.from(heroContent.querySelectorAll<HTMLElement>('[data-split-chars]')).flatMap((el) => splitChars(el));
+    const lines = Array.from(heroContent.querySelectorAll<HTMLElement>('.hero-line'));
     const entranceEls = Array.from(heroContent.querySelectorAll<HTMLElement>('.hero-entrance'));
+
+    await waitForPreloader();
+
+    const charAnimation = animate(
+      chars,
+      { opacity: [0, 1], transform: ['translateY(0.65em) rotate(4deg)', 'translateY(0em) rotate(0deg)'] },
+      { duration: 0.9, delay: stagger(0.028, { startDelay: 0.1 }), ease: [0.16, 1, 0.3, 1] }
+    );
+    // The gradient line can't be split per character (background-clip: text
+    // breaks across transformed descendants), so it rises as one piece.
+    const lineAnimation = animate(
+      lines,
+      { opacity: [0, 1], transform: ['translateY(0.5em)', 'translateY(0em)'] },
+      { duration: 1, delay: 0.32, ease: [0.16, 1, 0.3, 1] }
+    );
     const entranceAnimations = entranceEls.map((el, index) =>
       animate(
         el,
-        { opacity: [0, 1], transform: ['translateY(20px)', 'translateY(0px)'] },
-        { duration: 0.8, delay: 0.15 + index * 0.18, ease: [0.16, 1, 0.3, 1] }
+        { opacity: [0, 1], transform: ['translateY(24px)', 'translateY(0px)'] },
+        { duration: 0.9, delay: 0.35 + index * 0.12, ease: [0.16, 1, 0.3, 1] }
       )
     );
 
-    // Safety net: animate() is requestAnimationFrame-driven, which browsers can
-    // stall indefinitely for a backgrounded tab. This is the Hero's name and
-    // CTAs — the first thing a visitor sees — so don't let a missed rAF leave
-    // them stuck invisible; force the animations to their end state after a
-    // generous max wait. Calling .complete() (not just setting el.style
-    // directly) matters: these run on the Web Animations API, which keeps
-    // driving the element's rendered value even while stalled, silently
-    // overriding a plain style write — .complete() is what actually releases
-    // that control back. setTimeout is used instead of rAF here specifically
-    // because it isn't paused the same way for hidden tabs, so it still fires.
+    // Safety net: rAF-driven animations can stall in a backgrounded tab. This
+    // is the first thing a visitor sees, so force everything to its end state
+    // after a generous wait. .complete() releases WAAPI control properly.
     window.setTimeout(() => {
+      charAnimation.complete();
+      lineAnimation.complete();
       entranceAnimations.forEach((controls) => controls.complete());
-    }, 2500);
+    }, 3200);
 
     stopScrollEffect = scroll(
-      animate(heroContent, {
-        transform: ['translateY(0px) scale(1)', 'translateY(40px) scale(0.97)'],
-        opacity: [1, 0.6]
-      }),
-      {
-        target: heroSection,
-        offset: ['start start', 'end start']
-      }
+      animate(heroContent, { transform: ['translateY(0px)', 'translateY(90px)'], opacity: [1, 0.35] }, { ease: 'linear' }),
+      { target: heroSection, offset: ['start start', 'end start'] }
     );
   }
 
-  initHero();
   document.addEventListener('astro:page-load', initHero);
 </script>
