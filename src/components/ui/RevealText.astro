@@ -2,41 +2,32 @@
 interface Props {
   as?: 'h2' | 'h3' | 'p' | 'div';
   class?: string;
+  id?: string;
 }
 
-const { as: Tag = 'div', class: className = '' }: Props = Astro.props;
+const { as: Tag = 'div', class: className = '', id }: Props = Astro.props;
 ---
 
-<Tag class={`reveal-text ${className}`}>
+<Tag class={`reveal-text ${className}`} id={id}>
   <slot />
 </Tag>
-
-<style is:global>
-  .reveal-line {
-    display: block;
-    overflow: hidden;
-  }
-
-  .reveal-line-inner {
-    display: block;
-    transform: translateY(115%);
-    opacity: 0;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .reveal-line-inner {
-      transform: none;
-      opacity: 1;
-    }
-  }
-</style>
 
 <script>
   import { animate, stagger } from 'motion';
 
+  // Line-by-line reveal. The element's text is measured word by word to find
+  // the natural line breaks, then each line is wrapped in an overflow-hidden
+  // block so it can slide up into view. Measuring only happens once the page
+  // has fully loaded and fonts are ready, since a split taken against an
+  // unfinished layout freezes the wrong line breaks in place.
+  const originalText = new WeakMap<HTMLElement, string>();
+  const runningAnimations = new WeakMap<HTMLElement, { complete: () => void }>();
+  let observer: IntersectionObserver | null = null;
+
   function splitIntoLines(el: HTMLElement) {
-    const text = el.textContent?.trim() ?? '';
+    const text = (originalText.get(el) ?? el.textContent ?? '').trim();
     if (!text) return;
+    originalText.set(el, text);
 
     const words = text.split(/\s+/);
     el.textContent = '';
@@ -68,7 +59,7 @@ const { as: Tag = 'div', class: className = '' }: Props = Astro.props;
       const innerEl = document.createElement('span');
       innerEl.className = 'reveal-line-inner';
       lineWords.forEach((span, idx) => {
-        innerEl.appendChild(span);
+        innerEl.appendChild(document.createTextNode(span.textContent ?? ''));
         if (idx < lineWords.length - 1) innerEl.appendChild(document.createTextNode(' '));
       });
       lineEl.appendChild(innerEl);
@@ -76,74 +67,100 @@ const { as: Tag = 'div', class: className = '' }: Props = Astro.props;
     });
   }
 
+  function restoreText(el: HTMLElement) {
+    const text = originalText.get(el);
+    if (text !== undefined) el.textContent = text;
+  }
+
+  function showLines(root: HTMLElement) {
+    root.querySelectorAll<HTMLElement>('.reveal-line-inner').forEach((line) => {
+      line.style.transform = 'translateY(0%)';
+      line.style.opacity = '1';
+    });
+  }
+
+  function prepare(root: HTMLElement) {
+    root.dataset.revealReady = 'true';
+    const targets = root.children.length > 0 ? Array.from(root.children) : [root];
+    targets.forEach((target) => {
+      if (target instanceof HTMLElement) splitIntoLines(target);
+    });
+  }
+
   function initRevealText() {
-    const roots = document.querySelectorAll<HTMLElement>('.reveal-text:not([data-reveal-ready])');
+    const roots = Array.from(document.querySelectorAll<HTMLElement>('.reveal-text:not([data-reveal-ready])'));
     if (roots.length === 0) return;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      roots.forEach((root) => (root.dataset.revealReady = 'true'));
+      return;
+    }
 
-    roots.forEach((root) => {
-      root.dataset.revealReady = 'true';
-
-      if (prefersReducedMotion) return;
-
-      const targets = root.children.length > 0 ? Array.from(root.children) : [root];
-      targets.forEach((target) => {
-        if (target instanceof HTMLElement) splitIntoLines(target);
-      });
-    });
-
-    if (prefersReducedMotion) return;
-
-    const observer = new IntersectionObserver(
+    observer?.disconnect();
+    observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          const lines = entry.target.querySelectorAll<HTMLElement>('.reveal-line-inner');
+          const root = entry.target as HTMLElement;
+          root.dataset.revealed = 'true';
+          const lines = root.querySelectorAll<HTMLElement>('.reveal-line-inner');
           const controls = animate(
             lines,
             { transform: 'translateY(0%)', opacity: 1 },
-            { duration: 0.7, delay: stagger(0.07), ease: [0.16, 1, 0.3, 1] }
+            { duration: 0.8, delay: stagger(0.08), ease: [0.16, 1, 0.3, 1] }
           );
-          runningAnimations.set(entry.target as HTMLElement, controls);
-          observer.unobserve(entry.target);
+          runningAnimations.set(root, controls);
+          observer?.unobserve(root);
         });
       },
       { threshold: 0.2, rootMargin: '0px 0px -10% 0px' }
     );
 
     roots.forEach((root) => {
-      // A root that's already on screen when this runs (page refreshed mid-scroll,
-      // or loaded straight into a #section link) would otherwise have its reveal
-      // fire instantly, before the user ever sees it animate in. Just show it.
+      prepare(root);
+      // Already on screen (refresh mid-scroll, or a direct #section link):
+      // just show it rather than animating something the visitor can't watch.
       const rect = root.getBoundingClientRect();
       const alreadyVisible = rect.top < window.innerHeight * 0.85 && rect.bottom > 0;
       if (alreadyVisible) {
-        root.querySelectorAll<HTMLElement>('.reveal-line-inner').forEach((line) => {
-          line.style.transform = 'translateY(0%)';
-          line.style.opacity = '1';
-        });
+        root.dataset.revealed = 'true';
+        showLines(root);
         return;
       }
-      observer.observe(root);
+      observer?.observe(root);
     });
 
     scheduleSafetyCheck();
   }
 
-  // .reveal-line-inner starts permanently hidden via CSS (opacity: 0) and is only
-  // ever revealed by the IntersectionObserver callback above. If that callback is
-  // missed or throttled (e.g. the tab was backgrounded at the moment an element
-  // scrolled into view), the text would stay invisible forever with no recovery.
-  // This net catches anything that's on screen but never got revealed and shows
-  // it immediately (no animation) so content is never permanently lost.
-  //
-  // Roots whose reveal DID start (the observer fired) get an entry here. Their
-  // animation runs on the Web Animations API, which keeps driving the element's
-  // rendered value even while stalled — a plain style write on those lines would
-  // get silently overridden by the still-"running" animation. .complete() is
-  // what actually forces it to its end state and releases control.
-  const runningAnimations = new WeakMap<HTMLElement, { complete: () => void }>();
+  // Once a root is revealed its line wrappers only get in the way (frozen
+  // breaks on resize), so put the plain text back. Unrevealed roots are
+  // re-measured against the new layout.
+  let resizeTimer: number | undefined;
+  let lastWidth = window.innerWidth;
+  function onResize() {
+    if (window.innerWidth === lastWidth) return;
+    lastWidth = window.innerWidth;
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      document.querySelectorAll<HTMLElement>('.reveal-text[data-reveal-ready]').forEach((root) => {
+        const targets = root.children.length > 0 && !root.querySelector('.reveal-line') ? Array.from(root.children) : [root];
+        const revealed = root.dataset.revealed === 'true';
+        targets.forEach((target) => {
+          if (!(target instanceof HTMLElement)) return;
+          restoreText(target);
+          if (!revealed) splitIntoLines(target);
+        });
+        if (revealed) observer?.unobserve(root);
+      });
+    }, 200);
+  }
+  window.addEventListener('resize', onResize, { passive: true });
+
+  // Safety net: if an IntersectionObserver callback is missed or throttled
+  // (tab backgrounded as an element scrolled in), text would stay invisible.
+  // Anything on screen but still hidden gets shown immediately.
   let safetyTimer: number | undefined;
   function forceRevealIfVisible() {
     document.querySelectorAll<HTMLElement>('.reveal-text[data-reveal-ready]').forEach((root) => {
@@ -152,18 +169,11 @@ const { as: Tag = 'div', class: className = '' }: Props = Astro.props;
       const stillHidden = Array.from(lines).some((line) => getComputedStyle(line).opacity === '0');
       if (!stillHidden) return;
       const rect = root.getBoundingClientRect();
-      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-      if (!isVisible) return;
-
+      if (!(rect.top < window.innerHeight && rect.bottom > 0)) return;
+      root.dataset.revealed = 'true';
       const controls = runningAnimations.get(root);
-      if (controls) {
-        controls.complete();
-        return;
-      }
-      lines.forEach((line) => {
-        line.style.transform = 'translateY(0%)';
-        line.style.opacity = '1';
-      });
+      if (controls) controls.complete();
+      else showLines(root);
     });
   }
   function scheduleSafetyCheck() {
@@ -172,6 +182,15 @@ const { as: Tag = 'div', class: className = '' }: Props = Astro.props;
   }
   window.addEventListener('scroll', scheduleSafetyCheck, { passive: true });
 
-  initRevealText();
-  document.addEventListener('astro:page-load', initRevealText);
+  function onPageLoad() {
+    // Two frames after fonts settle so the layout the split measures against
+    // is the final one.
+    document.fonts.ready.then(() => {
+      requestAnimationFrame(() => requestAnimationFrame(initRevealText));
+    });
+    // A hidden tab never gets a frame; don't leave the split waiting forever.
+    window.setTimeout(initRevealText, 600);
+  }
+
+  document.addEventListener('astro:page-load', onPageLoad);
 </script>

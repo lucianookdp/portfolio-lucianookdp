@@ -1,7 +1,40 @@
 {
-  "languages": ["TypeScript", "JavaScript", "Go", "Python"],
-  "frontend": ["Astro", "React", "Tailwind CSS", "Motion"],
-  "backend": ["Node.js", "Express", "Go"],
-  "databases": ["MySQL", "PostgreSQL"],
-  "tools": ["Git", "GitHub Actions", "Vite"]
+  "languages": [
+    "TypeScript",
+    "JavaScript",
+    "Python",
+    "PHP",
+    "Dart",
+    "C#"
+  ],
+  "frontend": [
+    "React",
+    "Astro",
+    "Tailwind CSS",
+    "Vite",
+    "Flutter"
+  ],
+  "backend": [
+    "Node.js",
+    "Express",
+    "Fastify",
+    "FastAPI",
+    "Laravel",
+    "Prisma"
+  ],
+  "databases": [
+    "PostgreSQL",
+    "MySQL",
+    "Redis",
+    "SQLite",
+    "Firebase"
+  ],
+  "tools": [
+    "Git",
+    "GitHub Actions",
+    "Docker",
+    "Cypress",
+    "pytest",
+    "Unity"
+  ]
 }

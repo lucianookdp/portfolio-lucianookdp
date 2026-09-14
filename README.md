@@ -1,43 +1,46 @@
-# Luciano K. Dal Pai — Portfolio
+# lucianookdp.dev
 
-![Preview](public/og.png)
+Meu site pessoal. Astro na base, React só onde precisa de estado, Tailwind
+para o CSS e Three.js no notebook 3D do topo. Conteúdo em português e inglês.
 
-**[lucianookdp.dev](https://lucianookdp.dev)**
+Site: https://lucianookdp.dev
 
-[![Deploy](https://github.com/lucianookdp/portfolio-lucianookdp/actions/workflows/deploy.yml/badge.svg)](https://github.com/lucianookdp/portfolio-lucianookdp/actions/workflows/deploy.yml)
-[![Astro](https://img.shields.io/badge/built%20with-Astro-black.svg)](https://astro.build)
-
-Personal portfolio — editorial typography, a WebGL shader hero, PT/EN
-content, and a `⌘K` command palette. Fully static, deployed to a custom
-domain.
-
-## Highlights
-
-- Custom WebGL gradient shader in the hero, reactive to cursor movement
-- PT/EN content with proper `hreflang` and i18n routing
-- `⌘K` command palette for navigation and quick actions
-- Smooth cross-fade page transitions
-- Live GitHub activity, fetched from the API at build time
-- Dark/light theme with a circular reveal transition
-
-## Stack
-
-Astro · TypeScript · Tailwind CSS · React (islands) · Motion · OGL
-
-## Running locally
+## Rodando
 
 ```bash
 npm install
 npm run dev
 ```
 
-```bash
-npm run build   # build the static site
-npm run preview # preview the production build
-npm run check   # type-check
+`npm run build` gera o site em `dist/`. Antes disso ele também:
+
+- busca os dados do GitHub (precisa de `GITHUB_TOKEN` no ambiente; sem ele,
+  usa o cache em `src/data/github-stats.json`);
+- gera os favicons a partir de `public/favicon.svg`;
+- gera as imagens de compartilhamento (`og.png` e `og-en.png`).
+
+## Estrutura
+
+```
+src/
+  components/hero/        notebook 3D (LaptopScene.ts) e o hero
+  components/sections/    sobre, projetos, serviços, stack e contato
+  components/islands/     componentes React (tema, idioma, ⌘K, e-mail)
+  data/                   projetos, stack e cache do GitHub
+  i18n/                   textos em pt e en
+  lib/                    scroll suave, animações e utilidades
+scripts/                  geração de ícones, OG e stats
 ```
 
-## License
+Os textos ficam em `src/i18n/*.json` e os projetos em
+`src/data/projects.json`. Para mostrar um vídeo ou GIF de um projeto, basta
+colocar o arquivo em `public/media/projects/<id>.mp4` (ou `.webm`/`.gif`).
 
-All rights reserved — see [LICENSE](./LICENSE). Public for viewing and
-reference only, not licensed for reuse.
+## Deploy
+
+GitHub Pages, pelo workflow em `.github/workflows/deploy.yml`, a cada push na
+`main`. Um segundo workflow atualiza o cache do GitHub todo dia.
+
+## Licença
+
+Todos os direitos reservados. O código é público para consulta.

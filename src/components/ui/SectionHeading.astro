@@ -1,0 +1,29 @@
+---
+import RevealText from './RevealText.astro';
+
+interface Props {
+  index: string;
+  heading: string;
+  subheading?: string;
+  id?: string;
+  compact?: boolean;
+}
+
+const { index, heading, subheading, id, compact = false } = Astro.props;
+const headingClass = compact
+  ? 'mt-3 font-display text-2xl font-semibold sm:text-3xl lg:text-4xl'
+  : 'mt-3 font-display text-3xl font-semibold sm:mt-4 sm:text-5xl lg:text-6xl';
+---
+
+<div class={`flex flex-col gap-4 border-b border-[var(--color-border)] ${compact ? 'pb-5' : 'pb-6 sm:gap-6 sm:pb-8'} lg:flex-row lg:items-end lg:justify-between lg:gap-12`}>
+  <div>
+    <p class="eyebrow flex items-center gap-3">
+      <span class="text-[var(--color-accent-text)]">({index})</span>
+      <span class="h-px w-8 bg-[var(--color-border-strong)]" aria-hidden="true"></span>
+    </p>
+    <RevealText as="h2" class={headingClass} id={id}>
+      {heading}
+    </RevealText>
+  </div>
+  {subheading && <p class="max-w-md font-sans text-sm text-[var(--color-text-secondary)] sm:text-base lg:shrink-0 lg:text-right">{subheading}</p>}
+</div>

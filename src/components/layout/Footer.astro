@@ -1,16 +1,82 @@
 ---
-import type { Dictionary } from '../../i18n/utils';
+import type { Dictionary, Locale } from '../../i18n/utils';
 
 interface Props {
   dict: Dictionary;
+  locale: Locale;
 }
 
-const { dict } = Astro.props;
+const { dict, locale } = Astro.props;
 const year = new Date().getFullYear();
+
+const navItems = [
+  { href: '#about', label: dict.nav.about },
+  { href: '#projects', label: dict.nav.projects },
+  { href: '#services', label: dict.nav.services },
+  { href: '#stack', label: dict.nav.stack },
+  { href: '#contact', label: dict.nav.contact }
+];
 ---
 
-<footer class="border-t border-[var(--color-border)]">
-  <div class="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-10 font-sans text-sm text-[var(--color-text-secondary)] sm:flex-row sm:items-center sm:justify-between">
-    <p>&copy; {year} Luciano K. Dal Pai. {dict.footer.rights}</p>
+<footer class="relative overflow-hidden border-t border-[var(--color-border)]">
+  <div class="container-site relative py-12 sm:py-16">
+    <div class="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_2fr] md:gap-12">
+      <div class="flex flex-col gap-4">
+        <a href={locale === 'pt' ? '/' : '/en'} class="inline-flex items-center font-sans text-lg font-semibold tracking-tight" aria-label="lucianookdp">
+          <span aria-hidden="true">lucian</span>
+          <svg aria-hidden="true" viewBox="4 4 92 42" class="mx-[-0.015em] h-[0.62em] w-auto translate-y-[0.02em] text-[var(--color-accent)]">
+            <path
+              d="M 25 10 C 10 10 10 40 25 40 C 35 40 40 30 50 25 C 60 20 65 10 75 10 C 90 10 90 40 75 40 C 65 40 60 30 50 25 C 40 20 35 10 25 10 Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="11"
+              stroke-linecap="round"
+            />
+          </svg>
+          <span aria-hidden="true">kdp</span>
+        </a>
+        <p class="max-w-xs font-sans text-sm text-[var(--color-text-secondary)]">{dict.hero.tagline}</p>
+        <p class="mt-2 font-mono text-xs text-[var(--color-text-secondary)]">
+          {dict.footer.localTime}: <span data-local-time class="text-[var(--color-text)]">--:--</span> · {dict.hero.location}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-8">
+      <div>
+        <p class="eyebrow">{dict.footer.navigate}</p>
+        <ul class="mt-4 flex flex-col gap-2 font-sans text-sm">
+          {navItems.map((item) => (
+            <li>
+              <a href={item.href} class="text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text)]">{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <p class="eyebrow">{dict.footer.elsewhere}</p>
+        <ul class="mt-4 flex flex-col gap-2 font-sans text-sm">
+          <li>
+            <a href="https://github.com/lucianookdp" target="_blank" rel="noopener noreferrer me" class="text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text)]">GitHub ↗</a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/lucianookdp/" target="_blank" rel="noopener noreferrer me" class="text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text)]">LinkedIn ↗</a>
+          </li>
+        </ul>
+      </div>
+      </div>
+    </div>
+
+    <div class="mt-12 border-t border-[var(--color-border)] pt-6 font-sans text-xs text-[var(--color-text-secondary)] sm:mt-14">
+      <p>&copy; {year} Luciano K. Dal Pai. {dict.footer.rights}</p>
+    </div>
   </div>
+
+  <p
+    class="pointer-events-none select-none whitespace-nowrap px-6 text-center font-display font-bold leading-[0.8] tracking-tighter text-[var(--color-text)] opacity-[0.045]"
+    style="font-size: clamp(3rem, 14.5vw, 15rem); margin-bottom: -0.16em;"
+    aria-hidden="true"
+  >
+    lucianokdp
+  </p>
 </footer>

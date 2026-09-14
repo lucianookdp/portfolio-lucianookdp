@@ -17,19 +17,20 @@ const navItems = [
   { href: '#about', id: 'about', label: dict.nav.about },
   { href: '#projects', id: 'projects', label: dict.nav.projects },
   { href: '#services', id: 'services', label: dict.nav.services },
-  { href: '#contact', id: 'contact', label: dict.nav.contact },
-  { href: '#github', id: 'github', label: dict.nav.github },
-  { href: '#stack', id: 'stack', label: dict.nav.stack }
+  { href: '#stack', id: 'stack', label: dict.nav.stack },
+  { href: '#contact', id: 'contact', label: dict.nav.contact }
 ];
 
 const homePath = locale === 'pt' ? '/' : '/en';
+const INFINITY_PATH =
+  'M 25 10 C 10 10 10 40 25 40 C 35 40 40 30 50 25 C 60 20 65 10 75 10 C 90 10 90 40 75 40 C 65 40 60 30 50 25 C 40 20 35 10 25 10 Z';
 ---
 
-<header class="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/85 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+<header class="site-header" id="site-header">
+  <div class="site-header-inner flex items-center justify-between px-4 py-2 sm:px-5">
     <a
       href={homePath}
-      class="inline-flex items-center whitespace-nowrap font-sans text-lg font-medium tracking-tight"
+      class="inline-flex items-center whitespace-nowrap font-sans text-lg font-semibold tracking-tight"
       transition:name="site-logo"
       aria-label="lucianookdp"
     >
@@ -37,71 +38,118 @@ const homePath = locale === 'pt' ? '/' : '/en';
       <svg aria-hidden="true" viewBox="4 4 92 42" class="mx-[-0.015em] h-[0.62em] w-auto translate-y-[0.02em]">
         <defs>
           <linearGradient id="header-infinity-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#3ddc8f" />
-            <stop offset="100%" stop-color="#146b3f" />
+            <stop offset="0%" stop-color="var(--color-accent-glow)" />
+            <stop offset="100%" stop-color="var(--color-accent)" />
           </linearGradient>
         </defs>
-        <path
-          d="M 25 10 C 10 10 10 40 25 40 C 35 40 40 30 50 25 C 60 20 65 10 75 10 C 90 10 90 40 75 40 C 65 40 60 30 50 25 C 40 20 35 10 25 10 Z"
-          fill="none"
-          stroke="url(#header-infinity-grad)"
-          stroke-width="11"
-          stroke-linecap="round"
-        />
+        <path d={INFINITY_PATH} fill="none" stroke="url(#header-infinity-grad)" stroke-width="11" stroke-linecap="round" />
       </svg>
       <span aria-hidden="true">kdp</span>
     </a>
 
-    <nav aria-label={dict.nav.primary} class="relative hidden items-center gap-6 font-sans text-sm text-[var(--color-text-secondary)] md:flex">
+    <nav aria-label={dict.nav.primary} class="relative hidden items-center gap-1 font-sans text-sm text-[var(--color-text-secondary)] md:flex">
       {navItems.map((item) => (
-        <a href={item.href} data-nav-link class="relative transition-colors duration-200 hover:text-[var(--color-text)] aria-[current]:text-[var(--color-text)]">
+        <a
+          href={item.href}
+          data-nav-link
+          class="relative rounded-full px-3 py-1.5 transition-colors duration-200 hover:text-[var(--color-text)] aria-[current]:text-[var(--color-text)]"
+        >
           {item.label}
         </a>
       ))}
       <span id="nav-indicator" aria-hidden="true"></span>
     </nav>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2">
       <button
         type="button"
         id="open-command-palette"
         aria-label={dict.commandPalette.openButton}
-        class="tap-scale flex h-11 w-11 select-none items-center justify-center rounded border border-[var(--color-border)] font-sans text-xs text-[var(--color-text-secondary)] transition-colors duration-200 hover:border-[var(--color-accent)] sm:h-auto sm:w-auto sm:px-2 sm:py-1"
+        class="tap-scale hidden h-9 select-none items-center gap-1.5 rounded-full border border-[var(--color-border-strong)] px-3 font-mono text-xs text-[var(--color-text-secondary)] transition-colors duration-200 hover:border-[var(--color-accent)] hover:text-[var(--color-text)] sm:flex"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 sm:hidden" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m21 21-4.3-4.3" />
-        </svg>
-        <span class="hidden sm:inline">&#8984;K</span>
+        <span>&#8984;K</span>
       </button>
       <LanguageToggle client:load currentLocale={locale} ptPath={ptPath} enPath={enPath} />
-      <ThemeToggle client:load labelLight={locale === 'pt' ? 'Mudar para modo claro' : 'Switch to light mode'} labelDark={locale === 'pt' ? 'Mudar para modo escuro' : 'Switch to dark mode'} />
+      <ThemeToggle client:load labelLight={dict.commandPalette.toggleThemeLight} labelDark={dict.commandPalette.toggleThemeDark} />
+      <button
+        type="button"
+        id="menu-toggle"
+        class="burger tap-scale text-[var(--color-text)] md:hidden"
+        aria-label={dict.nav.openMenu}
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span></span>
+        <span></span>
+      </button>
       <CommandPalette client:load dict={dict.commandPalette} navItems={navItems} currentLocale={locale} ptPath={ptPath} enPath={enPath} />
     </div>
   </div>
 </header>
 
-<nav class="side-dots" aria-label={dict.nav.primary}>
-  {navItems.map((item) => (
-    <a href={item.href} data-side-dot class="side-dot" aria-label={item.label}></a>
-  ))}
-</nav>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="aurora" aria-hidden="true"><span class="aurora-blob"></span></div>
+  <div class="relative flex h-full flex-col justify-between pt-24">
+    <p class="eyebrow">{dict.nav.menuHint}</p>
+    <nav aria-label={dict.nav.primary} class="flex flex-col gap-2">
+      {navItems.map((item, index) => (
+        <a href={item.href} data-menu-link class="menu-link flex items-baseline gap-4" style={`transition-delay: ${120 + index * 60}ms`}>
+          <span class="font-mono text-xs text-[var(--color-accent-text)]">0{index + 1}</span>
+          <span>{item.label}</span>
+        </a>
+      ))}
+    </nav>
+    <div class="flex items-center justify-between border-t border-[var(--color-border)] pt-6 font-mono text-xs text-[var(--color-text-secondary)]">
+      <span>{dict.hero.location}</span>
+      <a href="https://github.com/lucianookdp" target="_blank" rel="noopener noreferrer me" class="hover:text-[var(--color-text)]">GitHub ↗</a>
+    </div>
+  </div>
+</div>
 
 <script>
   import { animate } from 'motion';
+  import { lockScroll, unlockScroll, scrollToTarget } from '../../lib/lenis';
 
   // Header rewires itself on every Astro page-transition (PT/EN switch etc.),
   // since the transition swaps in fresh nav/button elements. Everything that
-  // attaches to document/window (not to those elements) is torn down first,
-  // otherwise repeated navigations would stack up duplicate listeners.
+  // attaches to document/window is torn down first, otherwise repeated
+  // navigations would stack up duplicate listeners.
   let teardownHeader: (() => void) | null = null;
 
   function initHeader() {
     teardownHeader?.();
     const cleanups: Array<() => void> = [];
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    /* Floating header: compact + glass after a little scroll, hides on the way
+       down and returns on the way up. */
+    const header = document.getElementById('site-header');
+    let lastY = window.scrollY;
+    let ticking = false;
+    function updateHeader() {
+      const y = window.scrollY;
+      if (header) {
+        header.classList.toggle('is-scrolled', y > 24);
+        const goingDown = y > lastY + 4;
+        const goingUp = y < lastY - 4;
+        if (goingDown && y > 420) header.classList.add('is-hidden');
+        else if (goingUp || y < 120) header.classList.remove('is-hidden');
+      }
+      lastY = y;
+      ticking = false;
+    }
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(updateHeader);
+        ticking = true;
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateHeader();
+    cleanups.push(() => window.removeEventListener('scroll', onScroll));
+
+    /* Command palette trigger + first-visit hint */
     const cmdkButton = document.getElementById('open-command-palette');
-
     function onCmdkClick() {
       window.dispatchEvent(new CustomEvent('command-palette:open'));
     }
@@ -120,12 +168,10 @@ const homePath = locale === 'pt' ? '/' : '/en';
       function onKeydownDismiss(event: KeyboardEvent) {
         if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') dismissHint();
       }
-
-      const hintTimer = window.setTimeout(showHint, 1500);
+      const hintTimer = window.setTimeout(showHint, 2500);
       window.addEventListener('command-palette:open', dismissHint);
       cmdkButton.addEventListener('click', dismissHint);
       document.addEventListener('keydown', onKeydownDismiss);
-
       cleanups.push(() => {
         window.clearTimeout(hintTimer);
         window.removeEventListener('command-palette:open', dismissHint);
@@ -134,33 +180,25 @@ const homePath = locale === 'pt' ? '/' : '/en';
       });
     }
 
-    const navEl = document.querySelector<HTMLElement>('nav[aria-label]');
+    /* Active section indicator */
+    const navEl = header?.querySelector<HTMLElement>('nav[aria-label]') ?? null;
     const indicator = document.getElementById('nav-indicator');
     const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'));
-    const sideDots = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-side-dot]'));
     const sections = navLinks
       .map((link) => document.querySelector<HTMLElement>(link.getAttribute('href') ?? ''))
       .filter((el): el is HTMLElement => el !== null);
-
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function setActive(index: number, animated: boolean) {
       navLinks.forEach((link, i) => {
         if (i === index) link.setAttribute('aria-current', 'true');
         else link.removeAttribute('aria-current');
       });
-      sideDots.forEach((dot, i) => {
-        if (i === index) dot.setAttribute('aria-current', 'true');
-        else dot.removeAttribute('aria-current');
-      });
-
       const activeLink = navLinks[index];
       if (!indicator || !navEl || !activeLink) return;
-      const x = activeLink.offsetLeft;
-      const width = activeLink.offsetWidth;
-
+      const x = activeLink.offsetLeft + 12;
+      const width = Math.max(0, activeLink.offsetWidth - 24);
       if (animated && !prefersReducedMotion) {
-        animate(indicator, { transform: `translateX(${x}px)`, width: `${width}px` }, { duration: 0.4, ease: [0.16, 1, 0.3, 1] });
+        animate(indicator, { transform: `translateX(${x}px)`, width: `${width}px` }, { duration: 0.45, ease: [0.16, 1, 0.3, 1] });
       } else {
         indicator.style.transform = `translateX(${x}px)`;
         indicator.style.width = `${width}px`;
@@ -176,31 +214,69 @@ const homePath = locale === 'pt' ? '/' : '/en';
             if (index !== -1) setActive(index, true);
           });
         },
-        { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+        { rootMargin: '-40% 0px -50% 0px', threshold: 0 }
       );
       sections.forEach((section) => sectionObserver.observe(section));
-
       function onResize() {
         const current = navLinks.findIndex((link) => link.hasAttribute('aria-current'));
         if (current !== -1) setActive(current, false);
       }
       window.addEventListener('resize', onResize);
-
       cleanups.push(() => {
         sectionObserver.disconnect();
         window.removeEventListener('resize', onResize);
       });
     }
 
-    const sectionShortcuts: Record<string, string> = { a: 'about', p: 'projects', g: 'github', s: 'stack', v: 'services', c: 'contact' };
+    /* Mobile menu */
+    const menuToggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const openLabel = menuToggle?.getAttribute('aria-label') ?? '';
+    let menuOpen = false;
+
+    function setMenu(open: boolean) {
+      if (!menu || !menuToggle) return;
+      menuOpen = open;
+      menu.classList.toggle('is-open', open);
+      menu.setAttribute('aria-hidden', String(!open));
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? menuToggle.dataset.closeLabel ?? openLabel : openLabel);
+      if (open) lockScroll();
+      else unlockScroll();
+    }
+    function onMenuToggle() {
+      setMenu(!menuOpen);
+    }
+    function onMenuLinkClick(event: Event) {
+      const link = event.currentTarget as HTMLAnchorElement;
+      const href = link.getAttribute('href') ?? '';
+      if (!href.startsWith('#')) return;
+      event.preventDefault();
+      setMenu(false);
+      window.setTimeout(() => scrollToTarget(href), 250);
+    }
+    function onMenuKeydown(event: KeyboardEvent) {
+      if (event.key === 'Escape' && menuOpen) setMenu(false);
+    }
+    menuToggle?.addEventListener('click', onMenuToggle);
+    document.addEventListener('keydown', onMenuKeydown);
+    const menuLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-menu-link]'));
+    menuLinks.forEach((link) => link.addEventListener('click', onMenuLinkClick));
+    cleanups.push(() => {
+      if (menuOpen) setMenu(false);
+      menuToggle?.removeEventListener('click', onMenuToggle);
+      document.removeEventListener('keydown', onMenuKeydown);
+      menuLinks.forEach((link) => link.removeEventListener('click', onMenuLinkClick));
+    });
+
+    /* Keyboard chords: g then a/p/v/g/s/c */
+    const sectionShortcuts: Record<string, string> = { a: 'about', p: 'projects', v: 'services', s: 'stack', c: 'contact' };
     let awaitingChord = false;
     let chordTimeoutId = 0;
-
     function onShortcutKeydown(event: KeyboardEvent) {
       const target = event.target as HTMLElement | null;
       const isTyping = !!target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
       if (isTyping || event.metaKey || event.ctrlKey || event.altKey) return;
-
       if (!awaitingChord) {
         if (event.key.toLowerCase() === 'g') {
           awaitingChord = true;
@@ -211,11 +287,10 @@ const homePath = locale === 'pt' ? '/' : '/en';
         }
         return;
       }
-
       awaitingChord = false;
       window.clearTimeout(chordTimeoutId);
       const targetId = sectionShortcuts[event.key.toLowerCase()];
-      if (targetId) document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (targetId) scrollToTarget(`#${targetId}`);
     }
     document.addEventListener('keydown', onShortcutKeydown);
     cleanups.push(() => {
@@ -226,6 +301,5 @@ const homePath = locale === 'pt' ? '/' : '/en';
     teardownHeader = () => cleanups.forEach((fn) => fn());
   }
 
-  initHeader();
   document.addEventListener('astro:page-load', initHeader);
 </script>

@@ -1,0 +1,70 @@
+---
+// Session intro: the infinity mark draws itself while a counter runs to 100,
+// then the overlay wipes upward and the hero entrance plays. Skipped when
+// html.preloaded is set (already seen this session, or reduced motion).
+---
+
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="flex flex-col items-center gap-6">
+    <svg class="preloader-mark h-16 w-auto" viewBox="4 4 92 42" aria-hidden="true">
+      <defs>
+        <linearGradient id="preloader-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="var(--color-accent-glow)" />
+          <stop offset="100%" stop-color="var(--color-accent)" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M 25 10 C 10 10 10 40 25 40 C 35 40 40 30 50 25 C 60 20 65 10 75 10 C 90 10 90 40 75 40 C 65 40 60 30 50 25 C 40 20 35 10 25 10 Z"
+        fill="none"
+        stroke="url(#preloader-grad)"
+        stroke-width="9"
+        stroke-linecap="round"
+      />
+    </svg>
+    <p class="preloader-counter text-sm text-[var(--color-text-secondary)]"><span id="preloader-count">0</span>%</p>
+  </div>
+</div>
+
+<style>
+  html.preloaded .preloader {
+    display: none;
+  }
+</style>
+
+<script>
+  import { animate } from 'motion';
+
+  function runPreloader() {
+    const root = document.documentElement;
+    const el = document.getElementById('preloader');
+    const count = document.getElementById('preloader-count');
+    if (!el || !root.classList.contains('preloading')) return;
+
+    const finish = () => {
+      if (!root.classList.contains('preloading')) return;
+      root.classList.remove('preloading');
+      root.classList.add('preloaded');
+      el.classList.add('is-done');
+      try {
+        sessionStorage.setItem('preloaded', '1');
+      } catch {}
+      window.dispatchEvent(new Event('preloader:done'));
+    };
+
+    animate(0, 100, {
+      duration: 1.15,
+      ease: [0.76, 0, 0.24, 1],
+      onUpdate(latest) {
+        if (count) count.textContent = String(Math.round(latest));
+      },
+      onComplete() {
+        window.setTimeout(finish, 120);
+      }
+    });
+
+    // Never trap the visitor behind the overlay if the animation stalls.
+    window.setTimeout(finish, 2600);
+  }
+
+  runPreloader();
+</script>
