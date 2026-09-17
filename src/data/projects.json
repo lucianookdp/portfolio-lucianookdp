@@ -4,7 +4,13 @@
     "enabled": true,
     "repoUrl": "https://github.com/lucianookdp/cnpj-due-diligence",
     "demoUrl": "https://lucianookdp.github.io/cnpj-due-diligence/",
-    "stack": ["Python", "FastAPI", "React", "TypeScript", "PostgreSQL"],
+    "stack": [
+      "Python",
+      "FastAPI",
+      "React",
+      "TypeScript",
+      "PostgreSQL"
+    ],
     "translations": {
       "pt": {
         "name": "cnpj-due-diligence",
@@ -17,34 +23,49 @@
         "result": "A platform that, given a CNPJ, builds the corporate ownership graph, cross-references official restrictive lists, and computes an explainable 0-100 risk score, with PDF dossier export."
       }
     },
-    "media": { "slot": "cnpj-due-diligence" }
+    "media": {
+      "slot": "cnpj-due-diligence"
+    }
   },
   {
-    "id": "webhook-inspector",
+    "id": "scammeter",
     "enabled": true,
-    "repoUrl": "https://github.com/lucianookdp/webhook-inspector",
-    "demoUrl": null,
-    "stack": ["TypeScript", "Fastify", "PostgreSQL"],
+    "repoUrl": "https://github.com/lucianookdp/scammeter",
+    "demoUrl": "https://lucianookdp.github.io/scammeter/",
+    "stack": [
+      "TypeScript",
+      "Fastify",
+      "Vite",
+      "Railway"
+    ],
     "translations": {
       "pt": {
-        "name": "webhook-inspector",
-        "problem": "Quando dois sistemas conversam entre si, é difícil enxergar o que um está realmente enviando para o outro.",
-        "result": "Ferramenta que cria um endereço temporário e mostra na hora tudo que chega nele, apagando os dados sozinha depois de 24 horas."
+        "name": "Scammeter",
+        "problem": "Antes de comprar num site desconhecido, quase ninguém sabe conferir se a loja é real: os dados estão espalhados e o CNPJ da página nem sempre bate com quem recebe o Pix.",
+        "result": "Ferramenta que lê o site sozinha, encontra CNPJ e chave Pix, cruza com dados públicos da empresa e devolve uma nota de risco com os motivos de cada ponto."
       },
       "en": {
-        "name": "webhook-inspector",
-        "problem": "When two systems talk to each other, it's hard to see what one is actually sending to the other.",
-        "result": "A tool that creates a temporary address and shows everything arriving at it in real time, erasing the data on its own after 24 hours."
+        "name": "Scammeter",
+        "problem": "Before buying from an unknown Brazilian site, almost nobody knows how to check if the shop is real: the data is scattered and the CNPJ on the page often doesn't match whoever receives the Pix payment.",
+        "result": "A tool that reads the site itself, finds the CNPJ and Pix key, cross-references public company records and returns a risk score with the reasons spelled out in plain language."
       }
     },
-    "media": { "slot": "webhook-inspector" }
+    "media": {
+      "slot": "scammeter"
+    }
   },
   {
     "id": "rachai",
     "enabled": true,
     "repoUrl": "https://github.com/lucianookdp/rachai-web",
     "demoUrl": "https://userachai.com.br",
-    "stack": ["React", "TypeScript", "Fastify", "Prisma", "PostgreSQL"],
+    "stack": [
+      "React",
+      "TypeScript",
+      "Fastify",
+      "Prisma",
+      "PostgreSQL"
+    ],
     "translations": {
       "pt": {
         "name": "Rachaí",
@@ -57,14 +78,21 @@
         "result": "A no-signup app where the group logs expenses and gets back the fewest payments needed to settle up, in PT/EN and with multi-currency support."
       }
     },
-    "media": { "slot": "rachai" }
+    "media": {
+      "slot": "rachai"
+    }
   },
   {
     "id": "lost-and-found",
     "enabled": true,
     "repoUrl": "https://github.com/lucianookdp/LostAndFound",
     "demoUrl": null,
-    "stack": ["React", "Node.js", "MySQL", "JWT Auth"],
+    "stack": [
+      "React",
+      "Node.js",
+      "MySQL",
+      "JWT Auth"
+    ],
     "translations": {
       "pt": {
         "name": "LostAndFound",
@@ -77,6 +105,8 @@
         "result": "A system where the front desk logs found items and every claim is recorded, with student data kept protected."
       }
     },
-    "media": { "slot": "lost-and-found" }
+    "media": {
+      "slot": "lost-and-found"
+    }
   }
 ]
