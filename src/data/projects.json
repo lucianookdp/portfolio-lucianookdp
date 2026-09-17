@@ -42,7 +42,7 @@
       "pt": {
         "name": "Scammeter",
         "problem": "Antes de comprar num site desconhecido, quase ninguém sabe conferir se a loja é real: os dados estão espalhados e o CNPJ da página nem sempre bate com quem recebe o Pix.",
-        "result": "Ferramenta que lê o site sozinha, encontra CNPJ e chave Pix, cruza com dados públicos da empresa e devolve uma nota de risco com os motivos em português claro."
+        "result": "Ferramenta que lê o site sozinha, encontra CNPJ e chave Pix, cruza com dados públicos da empresa e devolve uma nota de risco com os motivos de cada ponto."
       },
       "en": {
         "name": "Scammeter",
