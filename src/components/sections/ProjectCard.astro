@@ -78,6 +78,14 @@ const number = String(index).padStart(2, '0');
           </svg>
         </a>
       )}
+      {!demoUrl && (
+        <span class="btn btn-ghost btn-sm cursor-default opacity-60" aria-disabled="true">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" /><path d="M12 7.5V12l3 2" />
+          </svg>
+          {dict.projects.demoSoon}
+        </span>
+      )}
       <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" data-magnetic="0.2">
         {dict.projects.viewRepo}
         <svg class="btn-arrow h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
