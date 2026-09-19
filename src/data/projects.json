@@ -28,33 +28,6 @@
     }
   },
   {
-    "id": "scammeter",
-    "enabled": true,
-    "repoUrl": "https://github.com/lucianookdp/scammeter",
-    "demoUrl": "https://lucianookdp.github.io/scammeter/",
-    "stack": [
-      "TypeScript",
-      "Fastify",
-      "Vite",
-      "Railway"
-    ],
-    "translations": {
-      "pt": {
-        "name": "Scammeter",
-        "problem": "Antes de comprar num site desconhecido, quase ninguém sabe conferir se a loja é real: os dados estão espalhados e o CNPJ da página nem sempre bate com quem recebe o Pix.",
-        "result": "Ferramenta que lê o site sozinha, encontra CNPJ e chave Pix, cruza com dados públicos da empresa e devolve uma nota de risco com os motivos de cada ponto."
-      },
-      "en": {
-        "name": "Scammeter",
-        "problem": "Before buying from an unknown Brazilian site, almost nobody knows how to check if the shop is real: the data is scattered and the CNPJ on the page often doesn't match whoever receives the Pix payment.",
-        "result": "A tool that reads the site itself, finds the CNPJ and Pix key, cross-references public company records and returns a risk score with the reasons spelled out in plain language."
-      }
-    },
-    "media": {
-      "slot": "scammeter"
-    }
-  },
-  {
     "id": "rachai",
     "enabled": true,
     "repoUrl": "https://github.com/lucianookdp/rachai-web",
@@ -83,10 +56,37 @@
     }
   },
   {
+    "id": "scammeter",
+    "enabled": true,
+    "repoUrl": "https://github.com/lucianookdp/scammeter",
+    "demoUrl": "https://lucianookdp.github.io/scammeter/",
+    "stack": [
+      "TypeScript",
+      "Fastify",
+      "Vite",
+      "Railway"
+    ],
+    "translations": {
+      "pt": {
+        "name": "Scammeter",
+        "problem": "Antes de comprar num site desconhecido, quase ninguém sabe conferir se a loja é real: os dados estão espalhados e o CNPJ da página nem sempre bate com quem recebe o Pix.",
+        "result": "Ferramenta que lê o site sozinha, encontra CNPJ e chave Pix, cruza com dados públicos da empresa e devolve uma nota de risco com os motivos de cada ponto."
+      },
+      "en": {
+        "name": "Scammeter",
+        "problem": "Before buying from an unknown Brazilian site, almost nobody knows how to check if the shop is real: the data is scattered and the CNPJ on the page often doesn't match whoever receives the Pix payment.",
+        "result": "A tool that reads the site itself, finds the CNPJ and Pix key, cross-references public company records and returns a risk score with the reasons spelled out in plain language."
+      }
+    },
+    "media": {
+      "slot": "scammeter"
+    }
+  },
+  {
     "id": "lost-and-found",
     "enabled": true,
     "repoUrl": "https://github.com/lucianookdp/LostAndFound",
-    "demoUrl": null,
+    "demoUrl": "https://lucianookdp.github.io/LostAndFound/",
     "stack": [
       "React",
       "Node.js",
@@ -97,12 +97,12 @@
       "pt": {
         "name": "LostAndFound",
         "problem": "Os achados e perdidos da faculdade eram anotados em planilha, sem registro confiável de quem retirou cada item.",
-        "result": "Sistema onde a recepção cadastra os itens encontrados e cada retirada fica registrada, com os dados dos alunos protegidos."
+        "result": "TCC em Engenharia de Software: a recepção cadastra os itens e cada retirada fica registrada. A demo é o mesmo código, com dados fictícios e sem back-end."
       },
       "en": {
         "name": "LostAndFound",
         "problem": "The campus lost-and-found was tracked in a spreadsheet, with no reliable record of who claimed each item.",
-        "result": "A system where the front desk logs found items and every claim is recorded, with student data kept protected."
+        "result": "Software Engineering capstone: the front desk logs found items and every claim is recorded. The demo is the same code, with fictional data and no back-end."
       }
     },
     "media": {

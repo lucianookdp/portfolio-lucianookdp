@@ -27,11 +27,6 @@ const givenNames = nameWords.slice(0, -2).join(' ');
 
   <div id="hero-content" class="container-site relative z-10 pb-12 pt-[46svh] sm:pb-16 sm:pt-[40svh] lg:pb-20 lg:pt-40">
     <div class="lg:max-w-[64%]">
-      <p class="hero-entrance mb-6 inline-flex items-center gap-2.5 rounded-full border border-[var(--color-border-strong)] bg-[var(--color-bg-elevated)]/60 px-3.5 py-1.5 font-mono text-xs text-[var(--color-text-secondary)] backdrop-blur">
-        <span class="availability-dot h-2 w-2 rounded-full bg-[var(--color-accent-2-glow)]" aria-hidden="true"></span>
-        {dict.hero.availability}
-      </p>
-
       <p class="hero-entrance eyebrow mb-4 text-[var(--color-accent-text)]">{dict.hero.role}</p>
 
       <h1 class="hero-title text-[var(--color-text)]" style="font-size: clamp(2.7rem, 11vw, 9rem);" aria-label={displayName}>
@@ -40,7 +35,7 @@ const givenNames = nameWords.slice(0, -2).join(' ');
       </h1>
 
       <p class="hero-entrance mt-6 max-w-xl font-sans text-base leading-relaxed text-[var(--color-text-secondary)] sm:mt-8 sm:text-xl">
-        {dict.hero.tagline}
+        {dict.hero.intro}
       </p>
 
       <div class="hero-entrance mt-8 flex flex-wrap items-center gap-3 sm:mt-10">
@@ -52,13 +47,14 @@ const givenNames = nameWords.slice(0, -2).join(' ');
         </a>
         <a href="#contact" class="btn btn-ghost" data-magnetic="0.3">{dict.hero.ctaContact}</a>
       </div>
+
+      <p class="hero-entrance mt-6 flex items-center gap-2 font-mono text-[11px] text-[var(--color-text-secondary)]">
+        <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" aria-hidden="true"></span>
+        {dict.hero.availability}
+      </p>
     </div>
 
-    <div class="hero-entrance mt-10 flex items-center justify-between gap-4 font-mono text-[11px] text-[var(--color-text-secondary)] sm:mt-16 sm:text-xs lg:mt-24">
-      <a href="#about" class="flex items-center gap-3" aria-label={dict.hero.scroll}>
-        <span class="scroll-cue" aria-hidden="true"></span>
-        <span class="hidden sm:inline">{dict.hero.scroll}</span>
-      </a>
+    <div class="hero-entrance mt-10 flex items-center justify-end gap-4 font-mono text-[11px] text-[var(--color-text-secondary)] sm:mt-16 sm:text-xs lg:mt-24">
       <p class="flex items-center gap-2">
         <span>{dict.hero.location}</span>
         <span aria-hidden="true">·</span>

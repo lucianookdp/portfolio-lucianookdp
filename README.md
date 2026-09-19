@@ -1,46 +1,47 @@
 # lucianookdp.dev
 
-Meu site pessoal. Astro na base, React só onde precisa de estado, Tailwind
-para o CSS e Three.js no notebook 3D do topo. Conteúdo em português e inglês.
+My personal site. Astro as the base, React only where state is needed, Tailwind
+for the CSS and Three.js for the 3D laptop at the top. Content in Portuguese
+and English.
 
 Site: https://lucianookdp.dev
 
-## Rodando
+## Running
 
 ```bash
 npm install
 npm run dev
 ```
 
-`npm run build` gera o site em `dist/`. Antes disso ele também:
+`npm run build` writes the site to `dist/`. Before that it also:
 
-- busca os dados do GitHub (precisa de `GITHUB_TOKEN` no ambiente; sem ele,
-  usa o cache em `src/data/github-stats.json`);
-- gera os favicons a partir de `public/favicon.svg`;
-- gera as imagens de compartilhamento (`og.png` e `og-en.png`).
+- fetches the GitHub data (needs `GITHUB_TOKEN` in the environment; without it,
+  falls back to the cache in `src/data/github-stats.json`);
+- generates the favicons from `public/favicon.svg`;
+- generates the sharing images (`og.png` and `og-en.png`).
 
-## Estrutura
+## Structure
 
 ```
 src/
-  components/hero/        notebook 3D (LaptopScene.ts) e o hero
-  components/sections/    sobre, projetos, serviços, stack e contato
-  components/islands/     componentes React (tema, idioma, ⌘K, e-mail)
-  data/                   projetos, stack e cache do GitHub
-  i18n/                   textos em pt e en
-  lib/                    scroll suave, animações e utilidades
-scripts/                  geração de ícones, OG e stats
+  components/hero/        the 3D laptop (LaptopScene.ts) and the hero
+  components/sections/    about, projects, services, stack and contact
+  components/islands/     React components (theme, language, ⌘K, e-mail)
+  data/                   projects, stack and the GitHub cache
+  i18n/                   copy in pt and en
+  lib/                    smooth scroll, animations and utilities
+scripts/                  icon, OG image and stats generation
 ```
 
-Os textos ficam em `src/i18n/*.json` e os projetos em
-`src/data/projects.json`. Para mostrar um vídeo ou GIF de um projeto, basta
-colocar o arquivo em `public/media/projects/<id>.mp4` (ou `.webm`/`.gif`).
+The copy lives in `src/i18n/*.json` and the projects in
+`src/data/projects.json`. To show a video or GIF for a project, drop the file
+in `public/media/projects/<id>.mp4` (or `.webm`/`.gif`).
 
 ## Deploy
 
-GitHub Pages, pelo workflow em `.github/workflows/deploy.yml`, a cada push na
-`main`. Um segundo workflow atualiza o cache do GitHub todo dia.
+GitHub Pages, through the workflow in `.github/workflows/deploy.yml`, on every
+push to `main`. A second workflow refreshes the GitHub cache daily.
 
-## Licença
+## License
 
-Todos os direitos reservados. O código é público para consulta.
+All rights reserved. The code is public for reference.

@@ -3,7 +3,7 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 
 /**
  * Hero 3D scene: a laptop, built procedurally, with a live screen. The screen
- * is a 2D canvas painted every frame and used as an emissive texture — it
+ * is a 2D canvas updated at a capped frame rate and used as a screen texture — it
  * alternates between a simplified version of this very site (with a cursor
  * browsing it) and a code editor typing itself out. The lid opens on load and
  * closes as the page scrolls away. Nothing is fetched at runtime.
@@ -19,8 +19,6 @@ function readColor(name: string, fallback = '#22b573'): THREE.Color {
     return new THREE.Color(fallback);
   }
 }
-
-const isDark = () => document.documentElement.classList.contains('dark');
 
 function roundedRect(width: number, height: number, radius: number): THREE.Shape {
   const s = new THREE.Shape();
@@ -64,7 +62,7 @@ const CODE_LINES: [string, string][][] = [
   [['op', '});']],
   [['op', '']],
   [['kw', 'await '], ['id', 'app'], ['op', '.'], ['fn', 'listen'], ['op', '({ port: '], ['num', '3000'], ['op', ' });']],
-  [['cm', '// ✓ deploy ok · 0 erros']]
+  [['cm', '// ✓ ready on localhost:3000']]
 ];
 
 class ScreenPainter {
@@ -74,7 +72,7 @@ class ScreenPainter {
   private glow = '#3ddc8f';
   private mint = '#a8f0c8';
 
-  constructor(private readonly name: string, private readonly role: string) {
+  constructor(private readonly name: string) {
     this.canvas = document.createElement('canvas');
     this.canvas.width = SCREEN_W;
     this.canvas.height = SCREEN_H;
@@ -88,7 +86,7 @@ class ScreenPainter {
     this.mint = readVar('--color-accent-2-glow', '#a8f0c8');
   }
 
-  /** t is seconds since the scene started. Returns true if pixels changed. */
+  /** t is seconds since the scene started. */
   paint(t: number): void {
     const cycle = 11; // seconds: 5.5 site, 5.5 code
     const phase = t % cycle;
@@ -130,7 +128,7 @@ class ScreenPainter {
 
   private paintSite(phase: number, t: number) {
     const ctx = this.ctx;
-    this.chrome('lucianokdp.dev');
+    this.chrome('lucianookdp.dev');
 
     // Header
     ctx.fillStyle = '#e8eaf0';
@@ -138,14 +136,14 @@ class ScreenPainter {
     ctx.fillText('lucian∞kdp', 48, 88);
     ctx.fillStyle = '#8b919f';
     ctx.font = '14px "Inter Variable", system-ui, sans-serif';
-    ['Sobre', 'Projetos', 'Serviços', 'Contato'].forEach((label, i) => ctx.fillText(label, 560 + i * 92, 88));
+    ['About', 'Projects', 'Services', 'Contact'].forEach((label, i) => ctx.fillText(label, 560 + i * 92, 88));
     ctx.fillStyle = this.accent;
     ctx.beginPath();
     ctx.arc(960, 84, 9, 0, Math.PI * 2);
     ctx.fill();
 
     // Availability pill
-    roundRectPath(ctx, 48, 140, 236, 30, 15);
+    roundRectPath(ctx, 48, 140, 276, 30, 15);
     ctx.fillStyle = '#151a22';
     ctx.fill();
     ctx.fillStyle = this.mint;
@@ -154,7 +152,7 @@ class ScreenPainter {
     ctx.fill();
     ctx.fillStyle = '#8b919f';
     ctx.font = '12px "JetBrains Mono Variable", ui-monospace, monospace';
-    ctx.fillText('Disponível para projetos', 80, 159);
+    ctx.fillText('Available for projects', 80, 159);
 
     // Name
     ctx.fillStyle = '#e8eaf0';
@@ -168,7 +166,7 @@ class ScreenPainter {
 
     ctx.fillStyle = '#8b919f';
     ctx.font = '16px "Inter Variable", system-ui, sans-serif';
-    ctx.fillText(this.role, 48, 386);
+    ctx.fillText('Full-stack software engineer', 48, 386, 520);
 
     // Buttons (the cursor hovers the first one)
     const hover = phase > 2.2 && phase < 4.6;
@@ -177,13 +175,13 @@ class ScreenPainter {
     ctx.fill();
     ctx.fillStyle = hover ? '#04130b' : '#0b0d12';
     ctx.font = '600 15px "Inter Variable", system-ui, sans-serif';
-    ctx.fillText('Ver projetos  →', 78, 447);
+    ctx.fillText('View projects', 68, 447);
     roundRectPath(ctx, 232, 418, 150, 48, 24);
     ctx.strokeStyle = '#2b303c';
     ctx.lineWidth = 1.5;
     ctx.stroke();
     ctx.fillStyle = '#e8eaf0';
-    ctx.fillText('Falar comigo', 262, 447);
+    ctx.fillText('Get in touch', 250, 447);
 
     // Three generic project cards on the right (placeholder bars, so this
     // never needs updating when the featured projects change).
@@ -304,6 +302,9 @@ export interface LaptopSceneOptions {
 export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElement, options: LaptopSceneOptions): LaptopSceneHandle | null {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isSmall = window.matchMedia('(max-width: 768px)').matches;
+  const hasPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const hero = container.closest<HTMLElement>('#hero') ?? container;
+  let disposed = false;
 
   let renderer: THREE.WebGLRenderer;
   try {
@@ -323,10 +324,13 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   camera.lookAt(0, 0, 0);
 
   const pmrem = new THREE.PMREMGenerator(renderer);
-  const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  scene.environment = envTexture;
+  const room = new RoomEnvironment();
+  const environment = pmrem.fromScene(room, 0.04);
+  scene.environment = environment.texture;
+  room.dispose();
+  pmrem.dispose();
 
-  const disposables: { dispose: () => void }[] = [envTexture, pmrem];
+  const disposables: { dispose: () => void }[] = [environment];
   const track = <T extends { dispose: () => void }>(item: T): T => {
     disposables.push(item);
     return item;
@@ -337,23 +341,23 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   /* --- Materials ------------------------------------------------------- */
   const bodyMaterial = track(
     new THREE.MeshPhysicalMaterial({
-      color: isDark() ? 0x1a1f27 : 0x262c36,
-      metalness: 0.75,
-      roughness: 0.32,
-      clearcoat: 0.5,
-      clearcoatRoughness: 0.35,
-      envMapIntensity: 0.9
+      color: 0x252b34,
+      metalness: 0.72,
+      roughness: 0.4,
+      clearcoat: 0.16,
+      clearcoatRoughness: 0.45,
+      envMapIntensity: 0.55
     })
   );
   const keyMaterial = track(new THREE.MeshStandardMaterial({ color: 0x0f1218, metalness: 0.2, roughness: 0.6 }));
   const bezelMaterial = track(new THREE.MeshStandardMaterial({ color: 0x07080b, metalness: 0.1, roughness: 0.5 }));
   const trackpadMaterial = track(new THREE.MeshPhysicalMaterial({ color: 0x232932, metalness: 0.6, roughness: 0.4, clearcoat: 0.8 }));
-  const logoMaterial = track(new THREE.MeshStandardMaterial({ color: accentGlow, emissive: accentGlow, emissiveIntensity: 0.9 }));
+  const edgeMaterial = track(new THREE.MeshStandardMaterial({ color: 0x505966, metalness: 0.85, roughness: 0.3 }));
 
   /* --- Base ------------------------------------------------------------------ */
   const BASE_W = 3.3;
   const BASE_D = 2.15;
-  const BASE_H = 0.11;
+  const BASE_H = 0.08;
   const root = new THREE.Group();
   scene.add(root);
   const laptop = new THREE.Group();
@@ -367,44 +371,106 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   laptop.add(base);
   const TOP = BASE_H + 0.02;
 
-  // Keyboard well + keys
-  const wellGeometry = track(new THREE.PlaneGeometry(2.85, 0.95));
+  // Rounded keys share one geometry and one draw call; the legends use one atlas.
+  const keyboardWidth = 2.68;
+  const keyboardDepth = 1.13;
+  const keyboardZ = -0.34;
+  const wellGeometry = track(new THREE.ShapeGeometry(roundedRect(keyboardWidth + 0.08, keyboardDepth + 0.05, 0.06)));
   const well = new THREE.Mesh(wellGeometry, bezelMaterial);
   well.rotation.x = -Math.PI / 2;
-  well.position.set(0, TOP + 0.002, -0.42);
+  well.position.set(0, TOP + 0.001, keyboardZ);
   laptop.add(well);
 
-  const keyGeometry = track(new THREE.BoxGeometry(0.155, 0.03, 0.15));
-  const rows = [14, 14, 13, 12];
-  const keyCount = rows.reduce((a, b) => a + b, 0) + 1;
-  const keys = new THREE.InstancedMesh(keyGeometry, keyMaterial, keyCount);
-  const m = new THREE.Matrix4();
-  let k = 0;
-  rows.forEach((count, r) => {
-    const rowWidth = count * 0.19;
-    for (let i = 0; i < count; i += 1) {
-      m.makeTranslation(-rowWidth / 2 + 0.095 + i * 0.19, TOP + 0.015, -0.78 + r * 0.19);
-      keys.setMatrixAt(k++, m);
-    }
+  const rows = [
+    ['esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', '⏻'],
+    ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '⌫'],
+    ['tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '∖'],
+    ['caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'enter'],
+    ['shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'shift'],
+    ['ctrl', 'fn', 'alt', 'cmd', '', 'cmd', 'alt', '←', '↑', '→']
+  ];
+  const keyGeometry = track(new THREE.ExtrudeGeometry(roundedRect(1, 1, 0.13), {
+    depth: 0.018, bevelEnabled: false, curveSegments: 3
+  }));
+  keyGeometry.rotateX(-Math.PI / 2);
+  const keys = track(new THREE.InstancedMesh(keyGeometry, keyMaterial, rows.flat().length));
+  const matrix = new THREE.Matrix4();
+  const legends = document.createElement('canvas');
+  legends.width = 1536;
+  legends.height = 648;
+  const ctx = legends.getContext('2d')!;
+  ctx.fillStyle = '#bdc7d6';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  let keyIndex = 0;
+  rows.forEach((row, r) => {
+    const weights = row.map(label => label === '' ? 5 : label.length > 2 && r > 0 ? 1.6 : 1);
+    const unit = keyboardWidth / weights.reduce((sum, weight) => sum + weight, 0);
+    let x = -keyboardWidth / 2;
+    row.forEach((label, i) => {
+      const width = weights[i] * unit;
+      const z = keyboardZ - keyboardDepth / 2 + 0.095 + r * 0.187;
+      matrix.compose(new THREE.Vector3(x + width / 2, TOP + 0.004, z), new THREE.Quaternion(), new THREE.Vector3(width - 0.027, 1, r === 0 ? 0.11 : 0.148));
+      keys.setMatrixAt(keyIndex++, matrix);
+      ctx.font = `${label.length > 1 ? 16 : 22}px ui-monospace, monospace`;
+      ctx.fillText(label, (x + width / 2 + keyboardWidth / 2) / keyboardWidth * legends.width, (z - keyboardZ + keyboardDepth / 2) / keyboardDepth * legends.height);
+      x += width;
+    });
   });
-  // Spacebar
-  m.compose(new THREE.Vector3(0, TOP + 0.015, -0.02), new THREE.Quaternion(), new THREE.Vector3(6, 1, 1));
-  keys.setMatrixAt(k, m);
-  keys.instanceMatrix.needsUpdate = true;
   laptop.add(keys);
+  const legendTexture = track(new THREE.CanvasTexture(legends));
+  legendTexture.colorSpace = THREE.SRGBColorSpace;
+  legendTexture.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+  const legendMaterial = track(new THREE.MeshBasicMaterial({ map: legendTexture, transparent: true, depthWrite: false, toneMapped: false }));
+  const legendMesh = new THREE.Mesh(track(new THREE.PlaneGeometry(keyboardWidth, keyboardDepth)), legendMaterial);
+  legendMesh.rotation.x = -Math.PI / 2;
+  legendMesh.position.set(0, TOP + 0.023, keyboardZ);
+  laptop.add(legendMesh);
 
-  const trackpadGeometry = track(new THREE.ExtrudeGeometry(roundedRect(1.05, 0.62, 0.08), { depth: 0.01, bevelEnabled: false, curveSegments: 10 }));
+  const trackpadGeometry = track(new THREE.ShapeGeometry(roundedRect(1.16, 0.62, 0.06)));
+  const trackpadRim = new THREE.Mesh(trackpadGeometry, edgeMaterial);
+  trackpadRim.rotation.x = -Math.PI / 2;
+  trackpadRim.position.set(0, TOP + 0.001, 0.62);
+  laptop.add(trackpadRim);
   const trackpad = new THREE.Mesh(trackpadGeometry, trackpadMaterial);
   trackpad.rotation.x = -Math.PI / 2;
-  trackpad.position.set(0, TOP + 0.001, 0.55);
+  trackpad.scale.set(0.985, 0.975, 1);
+  trackpad.position.set(0, TOP + 0.002, 0.62);
   laptop.add(trackpad);
+
+  const hingeGeometry = track(new THREE.CylinderGeometry(0.045, 0.045, 0.48, 12));
+  for (const x of [-1.06, 1.06]) {
+    const hinge = new THREE.Mesh(hingeGeometry, edgeMaterial);
+    hinge.rotation.z = Math.PI / 2;
+    hinge.position.set(x, TOP, -BASE_D / 2 + 0.05);
+    laptop.add(hinge);
+  }
+  const portGeometry = track(new THREE.BoxGeometry(0.008, 0.037, 0.16));
+  for (const z of [-0.72, -0.44]) {
+    const port = new THREE.Mesh(portGeometry, bezelMaterial);
+    port.position.set(-BASE_W / 2 - 0.02, 0.039, z);
+    laptop.add(port);
+  }
+  const speakerGeometry = track(new THREE.CircleGeometry(0.009, 5));
+  const speakers = track(new THREE.InstancedMesh(speakerGeometry, bezelMaterial, 96));
+  const speakerRotation = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
+  let speakerIndex = 0;
+  for (const side of [-1, 1]) {
+    for (let row = 0; row < 16; row++) {
+      for (let col = 0; col < 3; col++) {
+        matrix.compose(new THREE.Vector3(side * (1.45 + col * 0.035), TOP + 0.002, -0.8 + row * 0.055), speakerRotation, new THREE.Vector3(1, 1, 1));
+        speakers.setMatrixAt(speakerIndex++, matrix);
+      }
+    }
+  }
+  laptop.add(speakers);
 
   /* --- Lid + screen ------------------------------------------------------------ */
   const LID_W = 3.3;
   const LID_H = 2.15;
-  const LID_T = 0.07;
+  const LID_T = 0.045;
   const lid = new THREE.Group();
-  lid.position.set(0, BASE_H, -BASE_D / 2 + 0.06);
+  lid.position.set(0, TOP + 0.065, -BASE_D / 2 + 0.06);
   laptop.add(lid);
 
   const lidGeometry = track(
@@ -414,23 +480,28 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   lidMesh.position.set(0, LID_H / 2, -LID_T);
   lid.add(lidMesh);
 
-  const bezelGeometry = track(new THREE.PlaneGeometry(LID_W - 0.14, LID_H - 0.14));
+  const bezelGeometry = track(new THREE.ShapeGeometry(roundedRect(LID_W - 0.1, LID_H - 0.1, 0.12)));
   const bezel = new THREE.Mesh(bezelGeometry, bezelMaterial);
   // The lid's bevel adds 0.015 in front of its face, so the bezel, screen and
   // camera dot all sit past it.
   bezel.position.set(0, LID_H / 2, 0.022);
   lid.add(bezel);
 
-  const painter = new ScreenPainter(options.name, options.role);
+  const painter = new ScreenPainter(options.name);
   const screenTexture = track(new THREE.CanvasTexture(painter.canvas));
   screenTexture.colorSpace = THREE.SRGBColorSpace;
   screenTexture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   const screenMaterial = track(
-    new THREE.MeshStandardMaterial({ map: screenTexture, emissive: 0xffffff, emissiveMap: screenTexture, emissiveIntensity: 1.1, roughness: 0.95, metalness: 0 })
+    new THREE.MeshBasicMaterial({ map: screenTexture, toneMapped: false })
   );
-  const SCREEN_PLANE_W = LID_W - 0.3;
+  const SCREEN_PLANE_W = LID_W - 0.24;
   const SCREEN_PLANE_H = SCREEN_PLANE_W / (SCREEN_W / SCREEN_H);
-  const screenGeometry = track(new THREE.PlaneGeometry(SCREEN_PLANE_W, SCREEN_PLANE_H));
+  const screenGeometry = track(new THREE.ShapeGeometry(roundedRect(SCREEN_PLANE_W, SCREEN_PLANE_H, 0.065)));
+  const screenUV = screenGeometry.getAttribute('uv');
+  const screenPosition = screenGeometry.getAttribute('position');
+  for (let i = 0; i < screenUV.count; i++) {
+    screenUV.setXY(i, screenPosition.getX(i) / SCREEN_PLANE_W + 0.5, screenPosition.getY(i) / SCREEN_PLANE_H + 0.5);
+  }
   const screen = new THREE.Mesh(screenGeometry, screenMaterial);
   screen.position.set(0, LID_H / 2 + 0.02, 0.03);
   lid.add(screen);
@@ -441,46 +512,36 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   camDot.position.set(0, LID_H - 0.06, 0.031);
   lid.add(camDot);
 
-  // Glowing mark on the lid back
-  const logoGeometry = track(new THREE.TorusGeometry(0.11, 0.02, 8, 32));
-  const logo = new THREE.Mesh(logoGeometry, logoMaterial);
-  logo.position.set(0, LID_H / 2, -LID_T - 0.005);
-  logo.scale.set(1.5, 1, 1);
+  // The same infinity mark as the header, printed on the outside of the lid.
+  const logoCanvas = document.createElement('canvas');
+  logoCanvas.width = 512;
+  logoCanvas.height = 256;
+  const logoContext = logoCanvas.getContext('2d')!;
+  logoContext.scale(5.12, 5.12);
+  logoContext.strokeStyle = '#fff';
+  logoContext.lineWidth = 11;
+  logoContext.lineCap = 'round';
+  logoContext.stroke(new Path2D('M25 10C10 10 10 40 25 40C35 40 40 30 50 25C60 20 65 10 75 10C90 10 90 40 75 40C65 40 60 30 50 25C40 20 35 10 25 10Z'));
+  const logoTexture = track(new THREE.CanvasTexture(logoCanvas));
+  logoTexture.colorSpace = THREE.SRGBColorSpace;
+  logoTexture.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+  const logoMaterial = track(new THREE.MeshBasicMaterial({
+    map: logoTexture, color: 0x22b573, transparent: true, toneMapped: false, depthWrite: false
+  }));
+  const logo = new THREE.Mesh(track(new THREE.PlaneGeometry(0.62, 0.31)), logoMaterial);
+  logo.position.set(0, LID_H / 2, -LID_T - 0.018);
+  logo.rotation.y = Math.PI;
   lid.add(logo);
 
-  const OPEN = -0.28; // tilted back ~16° past upright
-  const CLOSED = Math.PI / 2 - 0.02;
+  const OPEN = -0.2;
+  const CLOSED = Math.PI / 2;
   lid.rotation.x = CLOSED;
 
-  /* --- Ambient particle field ------------------------------------------ */
-  const fieldCount = isSmall ? 110 : 190;
-  const fieldPositions = new Float32Array(fieldCount * 3);
-  let seed = 11;
-  const rand = () => {
-    seed = (seed * 9301 + 49297) % 233280;
-    return seed / 233280;
-  };
-  for (let i = 0; i < fieldCount; i += 1) {
-    const r = 3.5 + rand() * 3.5;
-    const theta = rand() * Math.PI * 2;
-    const phi = Math.acos(2 * rand() - 1);
-    fieldPositions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-    fieldPositions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.7;
-    fieldPositions[i * 3 + 2] = r * Math.cos(phi) * 0.6 - 1.5;
-  }
-  const fieldGeometry = track(new THREE.BufferGeometry());
-  fieldGeometry.setAttribute('position', new THREE.BufferAttribute(fieldPositions, 3));
-  const fieldMaterial = track(
-    new THREE.PointsMaterial({ color: accentGlow, size: 0.035, transparent: true, opacity: isDark() ? 0.6 : 0.4, depthWrite: false, blending: THREE.AdditiveBlending })
-  );
-  const field = new THREE.Points(fieldGeometry, fieldMaterial);
-  scene.add(field);
-
   /* --- Lights --------------------------------------------------------------- */
-  const keyLight = new THREE.DirectionalLight(0xffffff, 1.6);
+  const keyLight = new THREE.DirectionalLight(0xe4ebff, 2);
   keyLight.position.set(3, 6, 5);
   scene.add(keyLight);
-  const greenLight = new THREE.PointLight(accentGlow, 10, 14, 2);
+  const greenLight = new THREE.PointLight(accentGlow, 3, 14, 2);
   greenLight.position.set(-3, 2, 3);
   scene.add(greenLight);
   const screenGlow = new THREE.PointLight(accentGlow, 0, 5, 2);
@@ -501,9 +562,10 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
     const wide = width / height > 1.05 && width >= 1024;
     target.narrow = !wide;
     if (wide) {
-      target.x = 2.1;
+      const halfViewWidth = camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect;
+      target.x = Math.min(2.1, halfViewWidth * 0.47);
       target.y = -0.55;
-      target.scale = 1;
+      target.scale = Math.min(1, halfViewWidth / 4.5);
     } else {
       target.x = 0;
       target.y = width < 640 ? 0.85 : 0.95;
@@ -521,11 +583,12 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   // smoothed value instead so it closes without stuttering.
   let smoothScroll = 0;
   function onPointerMove(event: PointerEvent) {
+    if (!hasPointer || event.pointerType === 'touch') return;
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -((event.clientY / window.innerHeight) * 2 - 1);
   }
   function readScroll() {
-    const rect = container.getBoundingClientRect();
+    const rect = hero.getBoundingClientRect();
     scrollProgress = Math.min(1, Math.max(0, -rect.top / Math.max(1, rect.height)));
   }
 
@@ -547,29 +610,25 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
     // laptop leaves the screen quickly, so the lid closes within the first
     // stretch of scrolling and the laptop rides along to stay in view.
     const intro = easeOutExpo(Math.min(1, elapsed / 1.6));
-    const closeSpeed = target.narrow ? 3.2 : 1.6;
+    const closeSpeed = target.narrow ? 4 : 2.2;
     const openAmount = intro * (1 - easeInOut(Math.min(1, sp * closeSpeed)));
     lid.rotation.x = CLOSED + (OPEN - CLOSED) * openAmount;
-    screenMaterial.emissiveIntensity = 0.2 + openAmount * 0.95;
-    screenGlow.intensity = openAmount * 4;
+    screenMaterial.color.setScalar(0.3 + openAmount * 0.7);
+    screenGlow.intensity = openAmount * 1.1;
 
-    root.rotation.y = -0.55 + Math.sin(elapsed * 0.3) * 0.08 + smoothPointer.x * 0.28;
-    root.rotation.x = 0.28 - smoothPointer.y * 0.1 + sp * (target.narrow ? 0.5 : 0.2);
-    root.position.y = target.y + Math.sin(elapsed * 0.9) * 0.05 + (target.narrow ? -sp * 1.6 : sp * 1.2);
-    root.position.x = target.x + smoothPointer.x * 0.12;
+    root.rotation.y = -0.38 + smoothPointer.x * 0.12;
+    root.rotation.x = 0.28 - smoothPointer.y * 0.05 + sp * 0.18;
+    root.position.y = target.y + Math.sin(elapsed * 0.7) * 0.018 + (target.narrow ? -sp : sp * 0.6);
+    root.position.x = target.x + smoothPointer.x * 0.04;
 
     // Repaint the screen at ~30fps while the lid is open and still; while it
     // is closing the texture upload would only steal frames from the motion.
     const lidMoving = Math.abs(scrollProgress - smoothScroll) > 0.003 || intro < 1;
-    if (openAmount > 0.15 && !lidMoving && elapsed - lastPaint > 1 / 30) {
+    if (openAmount > 0.15 && !lidMoving && elapsed - lastPaint > 1 / (isSmall ? 15 : 24)) {
       painter.paint(elapsed);
       screenTexture.needsUpdate = true;
       lastPaint = elapsed;
     }
-
-    field.rotation.y = elapsed * 0.02 + smoothPointer.x * 0.08;
-    greenLight.position.x = Math.cos(elapsed * 0.4) * 4 - 1;
-    greenLight.position.z = Math.sin(elapsed * 0.4) * 3 + 2;
 
     renderer.render(scene, camera);
   }
@@ -584,8 +643,9 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
     rafId = requestAnimationFrame(loop);
   }
   function start() {
-    if (running || reducedMotion) return;
+    if (running || reducedMotion || disposed) return;
     running = true;
+    lastFrame = -1;
     runStart = performance.now();
     rafId = requestAnimationFrame(loop);
   }
@@ -600,7 +660,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   screenTexture.needsUpdate = true;
   if (reducedMotion) {
     lid.rotation.x = OPEN;
-    screenMaterial.emissiveIntensity = 1.1;
+    root.rotation.set(0.28, -0.38, 0);
     renderer.render(scene, camera);
   } else {
     renderFrame(0);
@@ -610,6 +670,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
 
   // Fonts may finish loading after the first paint; repaint once they do.
   document.fonts?.ready.then(() => {
+    if (disposed) return;
     painter.paint(2.5);
     screenTexture.needsUpdate = true;
     if (reducedMotion) renderer.render(scene, camera);
@@ -637,13 +698,8 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   function onThemeChange() {
     const glow = readColor('--color-accent-glow', '#3ddc8f');
     painter.refreshColors();
-    bodyMaterial.color.set(isDark() ? 0x1a1f27 : 0x262c36);
-    fieldMaterial.color.copy(glow);
-    fieldMaterial.opacity = isDark() ? 0.6 : 0.4;
     greenLight.color.copy(glow);
     screenGlow.color.copy(glow);
-    logoMaterial.color.copy(glow);
-    logoMaterial.emissive.copy(glow);
     painter.paint(2.5);
     screenTexture.needsUpdate = true;
     if (reducedMotion) renderer.render(scene, camera);
@@ -655,6 +711,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
 
   return {
     dispose() {
+      disposed = true;
       stop();
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
