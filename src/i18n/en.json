@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Luciano K. Dal Pai · Full-Stack Software Engineer",
-    "description": "Full-stack developer focused on the web. I build landing pages, websites and web apps with React, TypeScript, Node.js and Python. Open to new projects."
+    "description": "Software engineer and technology enthusiast. I create solutions that solve problems and help people and businesses build their presence online."
   },
   "nav": {
     "primary": "Main navigation",
@@ -19,7 +19,7 @@
     "availability": "Available for new projects",
     "role": "Full-Stack Software Engineer",
     "tagline": "Software engineer focused on web development.",
-    "intro": "I build landing pages, websites and web apps that bring ideas to life.",
+    "intro": "I’m a technology enthusiast creating solutions that solve problems and help people and businesses build their presence online.",
     "ctaProjects": "View projects",
     "ctaContact": "Get in touch",
     "location": "Brazil · GMT-3",

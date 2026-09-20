@@ -43,10 +43,20 @@ const { dict } = Astro.props;
         />
       </div>
 
-      <p class="flex items-center gap-2.5 font-mono text-xs text-[var(--color-text-secondary)]" data-reveal data-reveal-delay="200">
-        <span class="availability-dot h-2 w-2 rounded-full bg-[var(--color-accent-2-glow)]" aria-hidden="true"></span>
-        {dict.contact.responseTime}
-      </p>
+      <div class="flex w-full flex-col gap-3 border-t border-[var(--color-border)] pt-4 font-mono text-[11px] leading-relaxed text-[var(--color-text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:gap-6" data-reveal data-reveal-delay="200">
+        <p class="flex items-center gap-2">
+          <span class="flex h-3.5 w-3.5 shrink-0 items-center justify-center" aria-hidden="true">
+            <span class="availability-dot h-1.5 w-1.5 rounded-full bg-[var(--color-accent-2-glow)]"></span>
+          </span>
+          <span>{dict.contact.responseTime}</span>
+        </p>
+        <p class="flex items-center gap-2">
+          <svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
+          </svg>
+          <span>{dict.hero.localTime}: <span data-local-time class="tabular-nums text-[var(--color-text)]">--:--</span></span>
+        </p>
+      </div>
     </div>
   </div>
 </section>

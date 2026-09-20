@@ -27,7 +27,7 @@ const statCards = [
   { label: dict.github.contributions, value: stats.totalContributions },
   { label: dict.github.repos, value: stats.totalRepos }
 ];
-const recentWeeks = stats.weeks.slice(-20);
+const recentWeeks = stats.weeks.slice(-52);
 ---
 
 <section id="stack" class="container-site scroll-mt-24 py-10 sm:py-14 lg:py-16">
@@ -35,8 +35,8 @@ const recentWeeks = stats.weeks.slice(-20);
 
   <div class="card mt-6 overflow-hidden p-5 sm:p-6" data-reveal>
     {hasData && (
-      <div class="grid gap-5 pb-5 sm:grid-cols-2 sm:items-center sm:gap-8">
-        <div class="grid grid-cols-2 gap-4">
+      <div class="grid gap-5 pb-5 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-8">
+        <div class="grid grid-cols-2 gap-4 sm:flex sm:gap-10">
           {statCards.map((card) => (
             <div class="min-w-0">
               <p class="stat-number font-display text-xl font-medium leading-none tracking-tight sm:text-2xl" data-count-to={card.value}>
@@ -54,10 +54,10 @@ const recentWeeks = stats.weeks.slice(-20);
             data-lenis-prevent
           >
             {recentWeeks.map((week) => (
-              <div class="grid grid-rows-7 gap-[3px]">
+              <div class="heat-col grid grid-rows-7 gap-[3px]">
                 {week.map((day) => (
                   <div
-                    class="heatmap-cell h-[9px] w-[9px] rounded-[2px] sm:h-[10px] sm:w-[10px]"
+                    class="heatmap-cell h-[9px] w-[9px] rounded-[2px] sm:h-[10px] sm:w-[10px] xl:h-[14px] xl:w-[14px]"
                     style={`background-color: color-mix(in srgb, var(--color-accent) ${day.level === 0 ? 0 : day.level * 22 + 12}%, var(--color-bg-subtle))`}
                     title={`${day.date}: ${day.count}`}
                   ></div>
@@ -75,7 +75,7 @@ const recentWeeks = stats.weeks.slice(-20);
       {groups.map((group) => (
         <div class="technology-row" data-reveal>
           <dt class="font-sans text-xs leading-relaxed text-[var(--color-text-secondary)]">{dict.stack.categories[group.key]}</dt>
-          <dd class="flex min-w-0 flex-wrap gap-x-3 gap-y-1 md:grid md:grid-cols-4">
+          <dd class="flex min-w-0 flex-wrap gap-x-3 gap-y-1">
             {group.items.map((item) => (
               <span class="tech-chip">{item}</span>
             ))}
@@ -96,16 +96,58 @@ const recentWeeks = stats.weeks.slice(-20);
   .technology-row + .technology-row {
     border-top: 1px solid var(--color-border);
   }
+  /* The heatmap runs oldest -> newest; trim from the left so wide screens
+     get a full year and narrow ones only the recent weeks. */
+  .heat-col:nth-child(-n + 32) { display: none; }
+  @media (min-width: 640px) { .heat-col:nth-child(-n + 32) { display: grid; } .heat-col:nth-child(-n + 22) { display: none; } }
+  @media (min-width: 1024px) { .heat-col:nth-child(-n + 22) { display: grid; } .heat-col:nth-child(-n + 8) { display: none; } }
+  @media (min-width: 1280px) { .heat-col:nth-child(-n + 8) { display: grid; } }
   .tech-chip {
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    background: var(--color-bg-subtle);
     font-size: 0.75rem;
     line-height: 1.6;
   }
+  @media (max-width: 639px) {
+    .technology-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.5rem;
+      padding-block: 0.875rem;
+    }
+    .technology-row dt {
+      font-weight: 600;
+      color: var(--color-text);
+    }
+    .technology-row dd { gap: 0.375rem; }
+
+  }
   @media (min-width: 640px) {
-    .technology-row { grid-template-columns: 9rem minmax(0, 1fr); }
+    .technology-rows {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+      padding-top: 1.5rem;
+    }
+    .technology-row {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      gap: 0.75rem;
+      padding: 0;
+    }
+    .technology-row + .technology-row { border-top: 0; }
+    .technology-row:last-child { grid-column: 1 / -1; }
+    .technology-row dt { font-weight: 600; color: var(--color-text); }
+    .technology-row dd { gap: 0.375rem; }
+  }
+  @media (min-width: 1024px) {
+    .technology-rows { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1.25rem; }
+    .technology-row:last-child { grid-column: auto; }
+    .technology-row + .technology-row {
+      border-left: 1px solid var(--color-border);
+      padding-left: 1.25rem;
+    }
   }
 </style>
 

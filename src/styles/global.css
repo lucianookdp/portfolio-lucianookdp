@@ -1120,7 +1120,7 @@
 }
 @media (max-width: 639px) {
   .process-scroll {
-    height: calc(var(--steps, 6) * 30svh + 80svh);
+    height: calc(var(--steps, 6) * 45svh + 100svh);
   }
   .process-stage {
     height: clamp(9rem, calc(100svh - 27rem), 22rem);
@@ -1149,6 +1149,23 @@
   }
   .tl-label {
     display: none;
+  }
+}
+/* Keep the walkthrough almost full-screen until all six steps have passed. */
+@media (max-width: 639px) and (min-height: 541px) {
+  .process-sticky {
+    height: calc(100svh - 6.25rem);
+    display: flex;
+    flex-direction: column;
+  }
+  .process-panels {
+    flex: 1;
+    min-height: 0;
+    grid-template-rows: minmax(9rem, 1fr) auto;
+  }
+  .process-stage {
+    height: auto;
+    max-height: none;
   }
 }
 @media (min-width: 640px) and (max-width: 1023px) {
