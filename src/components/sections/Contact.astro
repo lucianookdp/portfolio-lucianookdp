@@ -16,7 +16,7 @@ const { dict } = Astro.props;
     <div class="grid-bg" aria-hidden="true"></div>
 
     <div class="relative flex flex-col items-start gap-6 sm:gap-8">
-      <p class="eyebrow flex items-center gap-3">
+      <p class="eyebrow flex items-center gap-3" data-reveal>
         <span class="text-[var(--color-accent-text)]">({dict.contact.index})</span>
         <span class="h-px w-8 bg-[var(--color-border-strong)]" aria-hidden="true"></span>
         <span>{dict.contact.heading}</span>
@@ -38,6 +38,8 @@ const { dict } = Astro.props;
           copyLabel={dict.contact.copyEmail}
           copiedLabel={dict.contact.emailCopied}
           sendLabel={dict.contact.sendEmail}
+          emailSubject={dict.contact.emailSubject}
+          copyErrorLabel={dict.contact.copyError}
         />
       </div>
 

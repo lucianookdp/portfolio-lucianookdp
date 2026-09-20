@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Luciano K. Dal Pai · Engenheiro de Software Full-Stack",
-    "description": "Engenheiro de software full-stack no Brasil. Construo aplicações web e mobile com React, Node.js, Python e Flutter, do banco de dados à interface. Disponível para projetos."
+    "description": "Desenvolvedor full-stack com foco em web. Crio landing pages, sites e sistemas web com React, TypeScript, Node.js e Python. Disponível para novos projetos."
   },
   "nav": {
     "primary": "Navegação principal",
@@ -18,8 +18,8 @@
   "hero": {
     "availability": "Disponível para novos projetos",
     "role": "Engenheiro de Software Full-Stack",
-    "tagline": "Engenheiro de software, desenvolvedor full-stack e entusiasta de tecnologia.",
-    "intro": "Aqui você encontra meus projetos e o que venho desenvolvendo.",
+    "tagline": "Engenheiro de software com foco em desenvolvimento web.",
+    "intro": "Crio landing pages, sites e aplicações web para tirar ideias do papel.",
     "ctaProjects": "Ver projetos",
     "ctaContact": "Falar comigo",
     "location": "Brasil · GMT-3",
@@ -29,8 +29,9 @@
   "about": {
     "index": "01",
     "heading": "Sobre",
-    "lead": "Transformo problemas do dia a dia em software que as pessoas realmente usam.",
-    "body": "Ao longo da minha trajetória, venho estudando diferentes tecnologias e aplicando esse conhecimento em projetos reais, sempre em busca de soluções práticas para problemas do dia a dia."
+    "lead": "Sou engenheiro de software e desenvolvedor full-stack.",
+    "body": "Meu foco é desenvolvimento web, com atenção ao design, ao desempenho e à experiência de navegação. Desenvolvo sites e aplicações de acordo com os objetivos e as necessidades de cada projeto.",
+    "linkedin": "Veja minha trajetória no LinkedIn"
   },
   "projects": {
     "index": "02",
@@ -45,25 +46,25 @@
     "demoSoon": "Em breve"
   },
   "github": {
-    "index": "04",
+    "index": "05",
     "heading": "Atividade no GitHub",
     "subheading": "Dados buscados direto da API do GitHub em tempo de build.",
     "contributions": "contribuições no último ano",
     "repos": "repositórios públicos",
     "stars": "estrelas recebidas",
     "topLanguages": "Linguagens mais usadas",
-    "heatmapCaption": "Mapa de contribuições dos últimos 12 meses",
+    "heatmapCaption": "Atividade nas últimas 20 semanas",
     "updatedAt": "Atualizado em",
     "viewProfile": "Ver perfil no GitHub",
     "empty": "Os dados serão exibidos após o primeiro build no GitHub Actions."
   },
   "stack": {
-    "index": "04",
-    "heading": "Stack & atividade",
-    "subheading": "Tecnologias dos meus repositórios e minha atividade no GitHub.",
+    "index": "05",
+    "heading": "Tecnologias & atividade",
+    "subheading": "Ferramentas que uso e o que venho desenvolvendo no GitHub.",
     "categories": {
       "languages": "Linguagens",
-      "frontend": "Frontend & mobile",
+      "frontend": "Frontend",
       "backend": "Backend",
       "databases": "Bancos de dados",
       "tools": "Ferramentas & testes"
@@ -72,12 +73,12 @@
   "services": {
     "index": "03",
     "heading": "Serviços",
-    "body": "Estou sempre aberto a novas oportunidades e parcerias. Se você ou sua empresa tem um projeto em mente, ficarei feliz em conversar e entender como posso ajudar.",
+    "body": "Precisa apresentar sua ideia, criar um sistema ou resolver uma necessidade da sua empresa? Posso ajudar a planejar e desenvolver a solução.",
     "processHeading": "Como funciona",
     "steps": [
       {
-        "title": "Briefing",
-        "description": "Alinhamos objetivos, necessidades e metas do projeto com você."
+        "title": "Conversa inicial",
+        "description": "Conversamos sobre sua ideia, o que você precisa e o que faz sentido para o projeto."
       },
       {
         "title": "Design",
@@ -85,7 +86,7 @@
       },
       {
         "title": "Desenvolvimento",
-        "description": "Código limpo, rápido e otimizado, do zero ao deploy."
+        "description": "Desenvolvo as páginas e funcionalidades e coloco tudo para funcionar."
       },
       {
         "title": "Ajustes finais",
@@ -102,18 +103,39 @@
     ],
     "scrollHint": "Role para avançar",
     "next": "Próximo",
-    "done": "Todas as etapas"
+    "done": "Todas as etapas",
+    "offerings": [
+      {
+        "title": "Landing pages",
+        "description": "Uma única página para apresentar um produto ou serviço e facilitar o contato com você. Ideal para começar na internet ou divulgar uma novidade."
+      },
+      {
+        "title": "Sites institucionais",
+        "description": "Um site com várias páginas para apresentar sua empresa, seus serviços e outras informações importantes. Tudo organizado para que seus clientes encontrem o que procuram."
+      },
+      {
+        "title": "Sistemas web",
+        "description": "Um sistema feito para a sua empresa, com acesso para usuários, controle de informações e conexão com outras ferramentas. Cada função é planejada e desenvolvida de acordo com o que o seu negócio precisa."
+      },
+      {
+        "title": "Outras soluções",
+        "description": "Sua empresa precisa de algo diferente? Podemos conversar sobre o problema e encontrar uma solução com tecnologia, como automatizar tarefas, conectar ferramentas ou criar um programa para o seu trabalho."
+      }
+    ],
+    "selectHint": "Toque em uma etapa para ver os detalhes."
   },
   "contact": {
-    "index": "05",
+    "index": "04",
     "heading": "Contato",
     "title": "Vamos construir algo juntos?",
-    "subheading": "De preferência por email. O resto do meu trabalho está documentado no GitHub.",
+    "subheading": "Tem uma ideia ou quer conversar sobre um projeto? Me conta por email.",
     "loadingEmail": "Carregando email…",
     "copyEmail": "Copiar email",
     "emailCopied": "Email copiado!",
     "sendEmail": "Enviar email",
-    "responseTime": "Costumo responder em até 24h"
+    "responseTime": "Costumo responder em até 24h",
+    "emailSubject": "Quero conversar sobre um projeto",
+    "copyError": "Não foi possível copiar. Você pode selecionar o endereço acima ou usar o botão Enviar email."
   },
   "footer": {
     "rights": "Todos os direitos reservados.",

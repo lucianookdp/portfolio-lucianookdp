@@ -8,11 +8,14 @@ interface Props {
   copyLabel: string;
   copiedLabel: string;
   sendLabel: string;
+  emailSubject: string;
+  copyErrorLabel: string;
 }
 
-export default function ObfuscatedEmail({ userPart, domainPart, tldPart, loadingLabel, copyLabel, copiedLabel, sendLabel }: Props) {
+export default function ObfuscatedEmail({ userPart, domainPart, tldPart, loadingLabel, copyLabel, copiedLabel, sendLabel, emailSubject, copyErrorLabel }: Props) {
   const [email, setEmail] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
 
   useEffect(() => {
     setEmail(`${userPart}@${domainPart}.${tldPart}`);
@@ -30,24 +33,25 @@ export default function ObfuscatedEmail({ userPart, domainPart, tldPart, loading
 
   async function handleCopy() {
     if (!email) return;
+    setCopyFailed(false);
     try {
       await navigator.clipboard.writeText(email);
       setCopied(true);
     } catch {
-      // Clipboard access can be denied by the browser; the mailto link still works.
+      setCopyFailed(true);
     }
   }
 
   return (
     <div className="flex flex-col gap-6">
       <a
-        href={`mailto:${email}`}
-        className="tap-scale w-fit break-all font-display text-xl font-medium tracking-tight text-[var(--color-text)] underline decoration-[var(--color-accent)] decoration-2 underline-offset-8 transition-colors hover:text-[var(--color-accent-text)] sm:text-4xl"
+        href={`mailto:${email}?subject=${encodeURIComponent(emailSubject)}`}
+        className="tap-scale w-fit break-all font-display text-base min-[400px]:text-xl font-medium tracking-tight text-[var(--color-text)] underline decoration-[var(--color-accent)] decoration-2 underline-offset-8 transition-colors hover:text-[var(--color-accent-text)] sm:text-4xl"
       >
         {email}
       </a>
       <div className="flex flex-wrap items-center gap-3">
-        <a href={`mailto:${email}`} className="btn btn-accent">
+        <a href={`mailto:${email}?subject=${encodeURIComponent(emailSubject)}`} className="btn btn-accent">
           {sendLabel}
           <svg className="btn-arrow h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M5 12h14" />
@@ -68,6 +72,7 @@ export default function ObfuscatedEmail({ userPart, domainPart, tldPart, loading
           {copied ? copiedLabel : copyLabel}
         </button>
       </div>
+      {copyFailed && <p role="status" className="text-sm text-[var(--color-text-secondary)]">{copyErrorLabel}</p>}
     </div>
   );
 }

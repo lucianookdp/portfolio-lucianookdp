@@ -17,7 +17,7 @@ const headingClass = compact
 
 <div class={`flex flex-col gap-4 border-b border-[var(--color-border)] ${compact ? 'pb-5' : 'pb-6 sm:gap-6 sm:pb-8'} lg:flex-row lg:items-end lg:justify-between lg:gap-12`}>
   <div>
-    <p class="eyebrow flex items-center gap-3">
+    <p class="eyebrow flex items-center gap-3" data-reveal>
       <span class="text-[var(--color-accent-text)]">({index})</span>
       <span class="h-px w-8 bg-[var(--color-border-strong)]" aria-hidden="true"></span>
     </p>
@@ -25,5 +25,5 @@ const headingClass = compact
       {heading}
     </RevealText>
   </div>
-  {subheading && <p class="max-w-md font-sans text-sm text-[var(--color-text-secondary)] sm:text-base lg:shrink-0 lg:text-right">{subheading}</p>}
+  {subheading && <p class="max-w-md font-sans text-sm text-[var(--color-text-secondary)] sm:text-base lg:shrink-0 lg:text-right" data-reveal data-reveal-delay="80">{subheading}</p>}
 </div>

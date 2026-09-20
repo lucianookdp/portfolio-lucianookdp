@@ -13,14 +13,16 @@
     ],
     "translations": {
       "pt": {
-        "name": "cnpj-due-diligence",
+        "name": "Radar CNPJ",
         "problem": "Investigar uma empresa antes de fechar negócio com ela normalmente exige cruzar dados na mão em vários sites do governo, um por um.",
-        "result": "Plataforma que, a partir de um CNPJ, monta o grafo societário, cruza com listas restritivas oficiais e calcula um score de risco explicável de 0 a 100, com exportação do dossiê em PDF."
+        "result": "Plataforma que, a partir de um CNPJ, monta o grafo societário, cruza com listas restritivas oficiais e calcula um score de risco explicável de 0 a 100, com exportação do dossiê em PDF.",
+        "subtitle": "Consulta e análise de empresas"
       },
       "en": {
-        "name": "cnpj-due-diligence",
+        "name": "Radar CNPJ",
         "problem": "Vetting a Brazilian company before doing business with it usually means manually cross-checking data across several government websites, one by one.",
-        "result": "A platform that, given a CNPJ, builds the corporate ownership graph, cross-references official restrictive lists, and computes an explainable 0-100 risk score, with PDF dossier export."
+        "result": "A platform that, given a CNPJ, builds the corporate ownership graph, cross-references official restrictive lists, and computes an explainable 0-100 risk score, with PDF dossier export.",
+        "subtitle": "Brazilian company screening"
       }
     },
     "media": {
@@ -43,12 +45,14 @@
       "pt": {
         "name": "Rachaí",
         "problem": "Dividir as contas de uma viagem ou de uma república costuma virar planilha bagunçada e uma cadeia de transferências entre todo mundo.",
-        "result": "App sem cadastro onde o grupo registra os gastos e recebe o menor número de pagamentos possível para acertar tudo, em PT/EN e com várias moedas."
+        "result": "App sem cadastro onde o grupo registra os gastos e recebe o menor número de pagamentos possível para acertar tudo, em PT/EN e com várias moedas.",
+        "subtitle": "Divisão de despesas em grupo"
       },
       "en": {
         "name": "Rachaí",
         "problem": "Splitting the bills of a trip or a shared house usually turns into a messy spreadsheet and a chain of transfers between everyone.",
-        "result": "A no-signup app where the group logs expenses and gets back the fewest payments needed to settle up, in PT/EN and with multi-currency support."
+        "result": "A no-signup app where the group logs expenses and gets back the fewest payments needed to settle up, in PT/EN and with multi-currency support.",
+        "subtitle": "Shared expense splitting"
       }
     },
     "media": {
@@ -70,12 +74,14 @@
       "pt": {
         "name": "Scammeter",
         "problem": "Antes de comprar num site desconhecido, quase ninguém sabe conferir se a loja é real: os dados estão espalhados e o CNPJ da página nem sempre bate com quem recebe o Pix.",
-        "result": "Ferramenta que lê o site sozinha, encontra CNPJ e chave Pix, cruza com dados públicos da empresa e devolve uma nota de risco com os motivos de cada ponto."
+        "result": "Ferramenta que lê o site sozinha, encontra CNPJ e chave Pix, cruza com dados públicos da empresa e devolve uma nota de risco com os motivos de cada ponto.",
+        "subtitle": "Análise de risco de lojas online"
       },
       "en": {
         "name": "Scammeter",
         "problem": "Before buying from an unknown Brazilian site, almost nobody knows how to check if the shop is real: the data is scattered and the CNPJ on the page often doesn't match whoever receives the Pix payment.",
-        "result": "A tool that reads the site itself, finds the CNPJ and Pix key, cross-references public company records and returns a risk score with the reasons spelled out in plain language."
+        "result": "A tool that reads the site itself, finds the CNPJ and Pix key, cross-references public company records and returns a risk score with the reasons spelled out in plain language.",
+        "subtitle": "Online store risk checks"
       }
     },
     "media": {
@@ -97,12 +103,14 @@
       "pt": {
         "name": "LostAndFound",
         "problem": "Os achados e perdidos da faculdade eram anotados em planilha, sem registro confiável de quem retirou cada item.",
-        "result": "TCC em Engenharia de Software: a recepção cadastra os itens e cada retirada fica registrada. A demo é o mesmo código, com dados fictícios e sem back-end."
+        "result": "TCC em Engenharia de Software: a recepção cadastra os itens e cada retirada fica registrada. A demo é o mesmo código, com dados fictícios e sem back-end.",
+        "subtitle": "Gestão de achados e perdidos"
       },
       "en": {
         "name": "LostAndFound",
         "problem": "The campus lost-and-found was tracked in a spreadsheet, with no reliable record of who claimed each item.",
-        "result": "Software Engineering capstone: the front desk logs found items and every claim is recorded. The demo is the same code, with fictional data and no back-end."
+        "result": "Software Engineering capstone: the front desk logs found items and every claim is recorded. The demo is the same code, with fictional data and no back-end.",
+        "subtitle": "Lost and found management"
       }
     },
     "media": {

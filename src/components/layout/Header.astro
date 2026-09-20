@@ -17,8 +17,8 @@ const navItems = [
   { href: '#about', id: 'about', label: dict.nav.about },
   { href: '#projects', id: 'projects', label: dict.nav.projects },
   { href: '#services', id: 'services', label: dict.nav.services },
-  { href: '#stack', id: 'stack', label: dict.nav.stack },
-  { href: '#contact', id: 'contact', label: dict.nav.contact }
+  { href: '#contact', id: 'contact', label: dict.nav.contact },
+  { href: '#stack', id: 'stack', label: dict.nav.stack }
 ];
 
 const homePath = locale === 'pt' ? '/' : '/en';
@@ -82,7 +82,7 @@ const INFINITY_PATH =
         <span></span>
         <span></span>
       </button>
-      <CommandPalette client:load dict={dict.commandPalette} navItems={navItems} currentLocale={locale} ptPath={ptPath} enPath={enPath} />
+      <CommandPalette emailSubject={dict.contact.emailSubject} client:load dict={dict.commandPalette} navItems={navItems} currentLocale={locale} ptPath={ptPath} enPath={enPath} />
     </div>
   </div>
 </header>

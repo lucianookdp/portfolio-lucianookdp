@@ -64,6 +64,7 @@ const { as: Tag = 'div', class: className = '', id }: Props = Astro.props;
       });
       lineEl.appendChild(innerEl);
       el.appendChild(lineEl);
+      el.appendChild(document.createTextNode(' '));
     });
   }
 
@@ -108,13 +109,13 @@ const { as: Tag = 'div', class: className = '', id }: Props = Astro.props;
           const controls = animate(
             lines,
             { transform: 'translateY(0%)', opacity: 1 },
-            { duration: 0.8, delay: stagger(0.08), ease: [0.16, 1, 0.3, 1] }
+            { duration: 0.7, delay: stagger(0.08), ease: [0.16, 1, 0.3, 1] }
           );
           runningAnimations.set(root, controls);
           observer?.unobserve(root);
         });
       },
-      { threshold: 0.2, rootMargin: '0px 0px -10% 0px' }
+      { threshold: 0, rootMargin: '0px 0px -48px 0px' }
     );
 
     roots.forEach((root) => {
@@ -193,4 +194,9 @@ const { as: Tag = 'div', class: className = '', id }: Props = Astro.props;
   }
 
   document.addEventListener('astro:page-load', onPageLoad);
+  document.addEventListener('astro:before-swap', () => {
+    observer?.disconnect();
+    window.clearTimeout(resizeTimer);
+    window.clearTimeout(safetyTimer);
+  });
 </script>

@@ -5,6 +5,7 @@ import type { Dictionary } from '../../i18n/utils';
 
 interface Translation {
   name: string;
+  subtitle: string;
   // Not every project frames as problem/solution — a personal build can just
   // be described. Those entries omit `problem` and render `result` as prose.
   problem?: string;
@@ -45,6 +46,8 @@ const number = String(index).padStart(2, '0');
     </p>
 
     <RevealText as="h3" class="mt-3 font-display text-xl font-semibold sm:mt-5 sm:text-4xl lg:text-5xl">{translation.name}</RevealText>
+
+    <p class="mt-2 font-sans text-sm text-[var(--color-text-secondary)] sm:text-base">{translation.subtitle}</p>
 
     {stack.length > 0 && (
       <ul class="mt-3 flex flex-wrap gap-1 sm:mt-5 sm:gap-1.5" aria-label={dict.projects.stackLabel}>

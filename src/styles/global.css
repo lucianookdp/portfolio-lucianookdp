@@ -10,15 +10,15 @@
 /*  Near-black graphite base, emerald primary, mint secondary.          */
 /* ------------------------------------------------------------------ */
 :root {
-  --color-bg: #f4f5f8;
-  --color-bg-elevated: #ffffff;
-  --color-bg-subtle: #e9ebf0;
+  --color-bg: #edf0f4;
+  --color-bg-elevated: #f6f7fa;
+  --color-bg-subtle: #e3e7ed;
   --color-text: #0b0d12;
   --color-text-secondary: #596070;
-  --color-border: #dfe2e9;
+  --color-border: #d5dbe4;
   --color-border-strong: #c5cad6;
 
-  --color-accent: #178a52;
+  --color-accent: #16834c;
   --color-accent-glow: #2ab56e;
   --color-accent-2: #5fbf8f;
   --color-accent-2-glow: #7fd9a8;
@@ -29,10 +29,10 @@
   --color-accent-2-soft: color-mix(in srgb, var(--color-accent-2) 12%, transparent);
 
   --shadow-card: 0 1px 2px rgb(11 13 18 / 0.04), 0 12px 40px -16px rgb(11 13 18 / 0.18);
-  --shadow-glow: 0 24px 80px -24px color-mix(in srgb, var(--color-accent) 45%, transparent);
+  --shadow-glow: 0 16px 48px -24px color-mix(in srgb, var(--color-accent) 24%, transparent);
 
-  --aurora-1: color-mix(in srgb, var(--color-accent) 30%, transparent);
-  --aurora-2: color-mix(in srgb, #4b7a68 26%, transparent);
+  --aurora-1: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  --aurora-2: color-mix(in srgb, #4b7a68 12%, transparent);
   --aurora-3: color-mix(in srgb, var(--color-accent-2) 14%, transparent);
 
   --color-shader-mid: #d6e6dc;
@@ -572,13 +572,13 @@
   opacity: 0;
 }
 
-/* Generic fade-up for grids/cards: data-reveal, driven by lib/reveal.ts */
+/* Generic fade-up for grids/cards: data-reveal, driven by lib/interactions.ts */
 .js [data-reveal] {
   opacity: 0;
   transform: translateY(28px);
   transition:
-    opacity 900ms var(--ease-out-expo),
-    transform 900ms var(--ease-out-expo);
+    opacity 700ms var(--ease-out-expo),
+    transform 700ms var(--ease-out-expo);
   transition-delay: var(--reveal-delay, 0ms);
 }
 .js [data-reveal].is-revealed {
@@ -649,11 +649,6 @@
 .stack-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-}
-/* Cards stick under the header and the next one slides over them, on every
-   screen size; the offsets are tighter on phones so a full card fits. */
-.stack-list {
   gap: 0;
 }
 .stack-item {
@@ -666,6 +661,12 @@
 .stack-item:last-child {
   margin-bottom: 0;
 }
+@media (max-width: 639px) {
+  .stack-item {
+    /* Tall cards scroll completely into view before the next one overlaps. */
+    top: min(calc(5.5rem + var(--stack-index, 0) * 0.5rem), calc(100svh - var(--stack-height, 0px) - 1rem));
+  }
+}
 @media (min-width: 1024px) {
   .stack-item {
     top: calc(6.5rem + var(--stack-index, 0) * 1rem);
@@ -674,6 +675,7 @@
 }
 
 .project-panel {
+  background: var(--color-bg-elevated);
   overflow: hidden;
   border-radius: 1.25rem;
   --stack-shade: 0;
@@ -1117,6 +1119,18 @@
   }
 }
 @media (max-width: 639px) {
+  .process-scroll {
+    height: calc(var(--steps, 6) * 30svh + 80svh);
+  }
+  .process-stage {
+    height: clamp(9rem, calc(100svh - 27rem), 22rem);
+    min-height: 9rem;
+    max-height: 22rem;
+    aspect-ratio: auto;
+  }
+  .tl-step {
+    min-height: 44px;
+  }
   .tl-steps {
     gap: 0;
   }
@@ -1281,97 +1295,6 @@
 }
 .burger[aria-expanded='true'] span:last-child {
   transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-/* ------------------------------------------------------------------ */
-/*  Custom cursor                                                        */
-/* ------------------------------------------------------------------ */
-.cursor-dot,
-.cursor-ring {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 9999;
-  pointer-events: none;
-  border-radius: 9999px;
-  opacity: 0;
-  will-change: transform;
-}
-.cursor-dot {
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
-  background: var(--color-accent);
-}
-.cursor-ring {
-  width: 36px;
-  height: 36px;
-  margin: -18px 0 0 -18px;
-  border: 1.5px solid color-mix(in srgb, var(--color-accent) 70%, transparent);
-  transition:
-    width 300ms var(--ease-out-expo),
-    height 300ms var(--ease-out-expo),
-    margin 300ms var(--ease-out-expo),
-    background-color 300ms ease,
-    border-color 300ms ease;
-}
-html.has-cursor .cursor-dot,
-html.has-cursor .cursor-ring {
-  opacity: 1;
-}
-html.has-cursor.cursor-hover .cursor-ring {
-  width: 56px;
-  height: 56px;
-  margin: -28px 0 0 -28px;
-  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
-  border-color: transparent;
-}
-html.has-cursor.cursor-hover .cursor-dot {
-  transform: scale(0.5);
-}
-html.has-cursor.cursor-text .cursor-ring {
-  width: 4px;
-  height: 28px;
-  margin: -14px 0 0 -2px;
-  border-radius: 2px;
-  background: var(--color-accent);
-  border-color: transparent;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Preloader                                                            */
-/* ------------------------------------------------------------------ */
-.preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: grid;
-  place-items: center;
-  background: var(--color-bg);
-  transition: clip-path 900ms var(--ease-in-out-quart);
-  clip-path: inset(0 0 0 0);
-}
-html:not(.js) .preloader,
-.preloader.is-done {
-  clip-path: inset(0 0 100% 0);
-  pointer-events: none;
-}
-html:not(.js) .preloader {
-  display: none;
-}
-.preloader-mark path {
-  stroke-dasharray: 340;
-  stroke-dashoffset: 340;
-  animation: draw-mark 1.1s var(--ease-in-out-quart) forwards;
-}
-@keyframes draw-mark {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-.preloader-counter {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
 }
 
 /* ------------------------------------------------------------------ */
@@ -1559,9 +1482,6 @@ html:not(.js) .preloader {
   #open-command-palette.cmdk-hint {
     animation: none;
   }
-  .preloader {
-    display: none;
-  }
   .tilt,
   .spot-card,
   .stack-item,
@@ -1569,10 +1489,6 @@ html:not(.js) .preloader {
   .mobile-menu,
   .mobile-menu .menu-link {
     transition: none;
-  }
-  .cursor-dot,
-  .cursor-ring {
-    display: none;
   }
   .lang-bar > span {
     transition: none;
@@ -1606,4 +1522,29 @@ html:not(.js) .preloader {
   .scroll-hint-arrow {
     animation: none;
   }
+}
+
+/* Keep all content reachable on phones in landscape and other short screens. */
+.process-compact-hint { display: none; }
+@media (max-height: 540px) {
+  .process-scroll { height: auto; }
+  .process-sticky { position: static; }
+  .process-compact-hint { display: block; }
+  .process-scroll [data-scroll-hint],
+  .process-scroll [data-scroll-done],
+  .process-scroll .detail-progress { display: none; }
+  .process-stage { min-height: 9rem; max-height: 11rem; aspect-ratio: auto; }
+  .stack-item { position: relative; top: auto; will-change: auto; }
+}
+
+/* Light surfaces need deeper greens than the dark theme's mint highlights. */
+html:not(.dark) .text-gradient {
+  background-image: linear-gradient(120deg, #12703f, #16834c);
+}
+html:not(.dark) .btn-accent {
+  background: #12703f;
+}
+html:not(.dark) .btn-accent:hover {
+  background: #0e6035;
+  filter: none;
 }

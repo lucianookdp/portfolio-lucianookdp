@@ -4,7 +4,6 @@ import { ClientRouter } from 'astro:transitions';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import SkipLink from '../components/layout/SkipLink.astro';
-import Preloader from '../components/ui/Preloader.astro';
 import { getDictionary, type Locale } from '../i18n/utils';
 
 interface Props {
@@ -158,29 +157,10 @@ const personSchema = {
         var theme = stored === 'light' ? 'light' : 'dark';
         document.documentElement.classList.toggle('dark', theme === 'dark');
         var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', theme === 'dark' ? '#08090c' : '#f4f5f8');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#08090c' : '#edf0f4');
       }
       applyStoredTheme();
-      document.addEventListener('astro:after-swap', function () {
-        applyStoredTheme();
-        // A client-side navigation is never a first visit: the swapped-in
-        // <html> loses its classes, so mark it preloaded or the (unscripted)
-        // preloader overlay would cover the new page.
-        document.documentElement.classList.remove('preloading');
-        document.documentElement.classList.add('preloaded');
-      });
-
-      // Preloader runs once per session and never for reduced-motion users.
-      // The flag is set before first paint so the overlay is either fully
-      // shown or never rendered — no flash either way.
-      (function () {
-        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var seen = false;
-        try {
-          seen = sessionStorage.getItem('preloaded') === '1';
-        } catch (e) {}
-        document.documentElement.classList.add(reduced || seen ? 'preloaded' : 'preloading');
-      })();
+      document.addEventListener('astro:after-swap', applyStoredTheme);
     </script>
 
     <!-- Cloudflare Web Analytics: cookie-less pageview/visitor counts, no backend. -->
@@ -192,10 +172,7 @@ const personSchema = {
     ></script>
   </head>
   <body>
-    <Preloader />
     <div class="grain-overlay" aria-hidden="true"></div>
-    <div class="cursor-dot" aria-hidden="true"></div>
-    <div class="cursor-ring" aria-hidden="true"></div>
 
     <SkipLink label={dict.nav.skipToContent} />
     <Header dict={dict} locale={locale} ptPath={ptPath} enPath={enPath} />
@@ -206,7 +183,7 @@ const personSchema = {
 
     <script>
       import { initLenis, destroyLenis } from '../lib/lenis';
-      import { initInteractions } from '../lib/interactions';
+      import { initInteractions, destroyInteractions } from '../lib/interactions';
 
       function onPageLoad() {
         initLenis();
@@ -216,7 +193,10 @@ const personSchema = {
       // astro:page-load fires on the initial load as well as after every
       // client-side navigation, so one listener covers both.
       document.addEventListener('astro:page-load', onPageLoad);
-      document.addEventListener('astro:before-swap', destroyLenis);
+      document.addEventListener('astro:before-swap', () => {
+        destroyLenis();
+        destroyInteractions();
+      });
 
       console.log('%cLuciano K. Dal Pai', 'font-family:system-ui;font-size:20px;font-weight:700;color:#22b573;');
       console.log('%cconstruído com Astro, TypeScript, Three.js e Motion.', 'font-size:12px;color:#8b919f;');

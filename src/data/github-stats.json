@@ -1,38 +1,38 @@
 {
   "login": "lucianookdp",
-  "totalRepos": 38,
+  "totalRepos": 17,
   "totalStars": 1,
-  "totalContributions": 366,
+  "totalContributions": 356,
   "topLanguages": [
     {
       "name": "TypeScript",
       "color": "#3178c6",
-      "percentage": 25.1
+      "percentage": 35.4
     },
     {
       "name": "JavaScript",
       "color": "#f1e05a",
-      "percentage": 24.3
+      "percentage": 29.5
     },
     {
       "name": "Python",
       "color": "#3572A5",
-      "percentage": 12.3
-    },
-    {
-      "name": "PHP",
-      "color": "#4F5D95",
-      "percentage": 10
+      "percentage": 15.6
     },
     {
       "name": "CSS",
       "color": "#663399",
-      "percentage": 9.3
+      "percentage": 11.5
     },
     {
-      "name": "Blade",
-      "color": "#f7523f",
-      "percentage": 5.7
+      "name": "Astro",
+      "color": "#ff5a03",
+      "percentage": 5.6
+    },
+    {
+      "name": "HTML",
+      "color": "#e34c26",
+      "percentage": 2
     }
   ],
   "weeks": [
@@ -1845,24 +1845,24 @@
       },
       {
         "date": "2026-08-22",
-        "count": 18,
+        "count": 17,
         "level": 2
       }
     ],
     [
       {
         "date": "2026-08-23",
-        "count": 31,
+        "count": 29,
         "level": 3
       },
       {
         "date": "2026-08-24",
-        "count": 7,
+        "count": 6,
         "level": 1
       },
       {
         "date": "2026-08-25",
-        "count": 25,
+        "count": 19,
         "level": 2
       },
       {
@@ -1998,5 +1998,5 @@
       }
     ]
   ],
-  "generatedAt": "2026-09-19T10:27:47.120Z"
+  "generatedAt": "2026-09-19T21:41:28.278Z"
 }

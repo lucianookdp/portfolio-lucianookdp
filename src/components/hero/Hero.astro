@@ -69,15 +69,15 @@ const givenNames = nameWords.slice(0, -2).join(' ');
   import { splitChars } from '../../lib/interactions';
   import type { LaptopSceneHandle } from './LaptopScene';
 
+  let sceneObserver: IntersectionObserver | null = null;
   let stopScrollEffect: (() => void) | undefined;
   let scene: { container: HTMLElement; handle: LaptopSceneHandle } | null = null;
 
-  // Low-end or data-saving devices get a still image of the same laptop
-  // instead of the WebGL scene; so does anyone whose browser can't create a
-  // WebGL context.
+  // Reduced-motion, low-memory and data-saving devices use a still image.
+  // The same fallback is used if the browser cannot create a WebGL context.
   function prefersStill(): boolean {
-    const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
-    return (nav.deviceMemory !== undefined && nav.deviceMemory <= 2) || nav.connection?.saveData === true;
+    const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean; effectiveType?: string } };
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches || (nav.deviceMemory !== undefined && nav.deviceMemory <= 2) || nav.connection?.saveData === true || ['slow-2g', '2g', '3g'].includes(nav.connection?.effectiveType ?? '');
   }
 
   function showFallback(container: HTMLElement, canvas: HTMLCanvasElement) {
@@ -112,19 +112,7 @@ const givenNames = nameWords.slice(0, -2).join(' ');
     else showFallback(container, canvas);
   }
 
-  function waitForPreloader(): Promise<void> {
-    if (!document.documentElement.classList.contains('preloading')) return Promise.resolve();
-    return new Promise((resolve) => {
-      const done = () => {
-        window.removeEventListener('preloader:done', done);
-        resolve();
-      };
-      window.addEventListener('preloader:done', done);
-      window.setTimeout(done, 3000);
-    });
-  }
-
-  async function initHero() {
+  function initHero() {
     stopScrollEffect?.();
     stopScrollEffect = undefined;
 
@@ -138,7 +126,15 @@ const givenNames = nameWords.slice(0, -2).join(' ');
       return;
     }
 
-    if (sceneContainer && canvas) mountScene(sceneContainer, canvas);
+    sceneObserver?.disconnect();
+    if (sceneContainer && canvas) {
+      sceneObserver = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting) return;
+        sceneObserver?.disconnect();
+        mountScene(sceneContainer, canvas);
+      });
+      sceneObserver.observe(sceneContainer);
+    }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
@@ -146,8 +142,6 @@ const givenNames = nameWords.slice(0, -2).join(' ');
     const chars = Array.from(heroContent.querySelectorAll<HTMLElement>('[data-split-chars]')).flatMap((el) => splitChars(el));
     const lines = Array.from(heroContent.querySelectorAll<HTMLElement>('.hero-line'));
     const entranceEls = Array.from(heroContent.querySelectorAll<HTMLElement>('.hero-entrance'));
-
-    await waitForPreloader();
 
     const charAnimation = animate(
       chars,
@@ -185,4 +179,10 @@ const givenNames = nameWords.slice(0, -2).join(' ');
   }
 
   document.addEventListener('astro:page-load', initHero);
+  document.addEventListener('astro:before-swap', () => {
+    sceneObserver?.disconnect();
+    stopScrollEffect?.();
+    scene?.handle.dispose();
+    scene = null;
+  });
 </script>

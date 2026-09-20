@@ -3,35 +3,28 @@
     "TypeScript",
     "JavaScript",
     "Python",
-    "PHP",
-    "Dart",
-    "C#"
+    "PHP"
   ],
   "frontend": [
     "React",
     "Astro",
-    "Tailwind CSS",
-    "Vite",
-    "Flutter"
+    "Tailwind CSS"
   ],
   "backend": [
     "Node.js",
-    "Express",
     "Fastify",
-    "Laravel",
-    "Prisma"
+    "FastAPI",
+    "Laravel"
   ],
   "databases": [
     "PostgreSQL",
     "MySQL",
-    "SQLite",
-    "Firebase"
+    "SQLite"
   ],
   "tools": [
     "Git",
     "GitHub Actions",
     "Cypress",
-    "pytest",
-    "Unity"
+    "pytest"
   ]
 }

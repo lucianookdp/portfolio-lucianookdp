@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Luciano K. Dal Pai · Full-Stack Software Engineer",
-    "description": "Full-stack software engineer based in Brazil. I build web and mobile apps with React, Node.js, Python and Flutter, from the database to the interface. Open to new projects."
+    "description": "Full-stack developer focused on the web. I build landing pages, websites and web apps with React, TypeScript, Node.js and Python. Open to new projects."
   },
   "nav": {
     "primary": "Main navigation",
@@ -18,8 +18,8 @@
   "hero": {
     "availability": "Available for new projects",
     "role": "Full-Stack Software Engineer",
-    "tagline": "Software engineer, full-stack developer, and tech enthusiast.",
-    "intro": "Here you can explore my projects and see what I’ve been building.",
+    "tagline": "Software engineer focused on web development.",
+    "intro": "I build landing pages, websites and web apps that bring ideas to life.",
     "ctaProjects": "View projects",
     "ctaContact": "Get in touch",
     "location": "Brazil · GMT-3",
@@ -29,8 +29,9 @@
   "about": {
     "index": "01",
     "heading": "About",
-    "lead": "I turn everyday problems into software people actually use.",
-    "body": "Throughout my journey, I've been studying different technologies and applying that knowledge to real projects, always looking for practical solutions to everyday problems."
+    "lead": "I’m a software engineer and full-stack developer.",
+    "body": "My focus is web development, with attention to design, performance and the browsing experience. I build websites and applications around the goals and requirements of each project.",
+    "linkedin": "Explore my background on LinkedIn"
   },
   "projects": {
     "index": "02",
@@ -45,25 +46,25 @@
     "demoSoon": "Coming soon"
   },
   "github": {
-    "index": "04",
+    "index": "05",
     "heading": "GitHub activity",
     "subheading": "Data fetched straight from the GitHub API at build time.",
     "contributions": "contributions in the last year",
     "repos": "public repositories",
     "stars": "stars received",
     "topLanguages": "Most used languages",
-    "heatmapCaption": "Contribution heatmap for the last 12 months",
+    "heatmapCaption": "Activity over the last 20 weeks",
     "updatedAt": "Updated on",
     "viewProfile": "View GitHub profile",
     "empty": "Data will show up after the first build on GitHub Actions."
   },
   "stack": {
-    "index": "04",
-    "heading": "Stack & activity",
-    "subheading": "Technologies from my repositories and my GitHub activity.",
+    "index": "05",
+    "heading": "Technologies & activity",
+    "subheading": "The tools I use and what I’ve been building on GitHub.",
     "categories": {
       "languages": "Languages",
-      "frontend": "Frontend & mobile",
+      "frontend": "Frontend",
       "backend": "Backend",
       "databases": "Databases",
       "tools": "Tools & testing"
@@ -72,12 +73,12 @@
   "services": {
     "index": "03",
     "heading": "Services",
-    "body": "I'm always open to new opportunities and partnerships. If you or your company has a project in mind, I'd be happy to talk and see how I can help.",
+    "body": "Need to present your idea, build an application or address a business need? I can help plan and develop the solution.",
     "processHeading": "How it works",
     "steps": [
       {
-        "title": "Briefing",
-        "description": "We align goals, needs, and the project's scope together."
+        "title": "Getting started",
+        "description": "We talk about your idea, what you need and what makes sense for the project."
       },
       {
         "title": "Design",
@@ -85,7 +86,7 @@
       },
       {
         "title": "Development",
-        "description": "Clean, fast, optimized code, from scratch to deploy."
+        "description": "I build the pages and features and make sure everything works together."
       },
       {
         "title": "Final adjustments",
@@ -102,18 +103,39 @@
     ],
     "scrollHint": "Scroll to continue",
     "next": "Next",
-    "done": "All steps"
+    "done": "All steps",
+    "offerings": [
+      {
+        "title": "Landing pages",
+        "description": "A single page to present a product or service and make it easy to get in touch. Ideal for getting started online or promoting something new."
+      },
+      {
+        "title": "Business websites",
+        "description": "A website with several pages to introduce your company, services and other important information. Everything is organized so your customers can find what they need."
+      },
+      {
+        "title": "Web applications",
+        "description": "A system built for your company, with user access, information management and connections to other tools. Each feature is planned and built around what your business needs."
+      },
+      {
+        "title": "Other solutions",
+        "description": "Does your business need something different? We can discuss the problem and find a way to solve it with technology, such as automating tasks, connecting tools or building a program for your work."
+      }
+    ],
+    "selectHint": "Tap a step to see the details."
   },
   "contact": {
-    "index": "05",
+    "index": "04",
     "heading": "Contact",
     "title": "Let's build something together?",
-    "subheading": "Email works best. The rest of my work is documented on GitHub.",
+    "subheading": "Have an idea or want to discuss a project? Send me an email.",
     "loadingEmail": "Loading email…",
     "copyEmail": "Copy email",
     "emailCopied": "Email copied!",
     "sendEmail": "Send email",
-    "responseTime": "I usually reply within 24h"
+    "responseTime": "I usually reply within 24h",
+    "emailSubject": "Let’s talk about a project",
+    "copyError": "Could not copy the address. You can select it above or use the Send email button."
   },
   "footer": {
     "rights": "All rights reserved.",

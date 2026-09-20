@@ -13,12 +13,41 @@ const { dict } = Astro.props;
 <section id="about" class="container-site scroll-mt-24 py-16 sm:py-24 lg:py-32">
   <SectionHeading index={dict.about.index} heading={dict.about.heading} />
 
-  <div class="mt-10 max-w-4xl sm:mt-14">
+  <div class="about-intro relative mt-10 grid gap-6 pl-5 sm:mt-14 sm:gap-8 sm:pl-8 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:gap-16" data-reveal>
+    <span class="about-line" aria-hidden="true"></span>
     <RevealText as="p" class="font-display text-2xl font-medium leading-tight tracking-tight sm:text-4xl lg:text-5xl">
       {dict.about.lead}
     </RevealText>
-    <RevealText as="p" class="mt-6 max-w-2xl font-sans text-base leading-relaxed text-[var(--color-text-secondary)] sm:mt-8 sm:text-lg">
-      {dict.about.body}
-    </RevealText>
+    <div>
+      <RevealText as="p" class="max-w-2xl font-sans text-base leading-relaxed text-[var(--color-text-secondary)] sm:text-lg">
+        {dict.about.body}
+      </RevealText>
+      <a href="https://www.linkedin.com/in/lucianookdp/" target="_blank" rel="noopener noreferrer me" class="mt-5 inline-flex items-center gap-2.5 py-2 font-sans text-sm text-[var(--color-text-secondary)] underline-offset-4 transition-colors hover:text-[var(--color-accent-text)] hover:underline">
+        <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20.45 2H3.55C2.69 2 2 2.68 2 3.52v16.96c0 .84.69 1.52 1.55 1.52h16.9c.86 0 1.55-.68 1.55-1.52V3.52c0-.84-.69-1.52-1.55-1.52ZM7.93 18.75H4.98V9.2h2.95v9.55ZM6.45 7.9a1.71 1.71 0 1 1 0-3.42 1.71 1.71 0 0 1 0 3.42Zm12.3 10.85H15.8v-4.64c0-1.11-.02-2.54-1.55-2.54-1.55 0-1.79 1.21-1.79 2.46v4.72H9.51V9.2h2.83v1.3h.04c.39-.74 1.36-1.53 2.79-1.53 2.98 0 3.58 1.96 3.58 4.51v5.27Z" />
+        </svg>
+        <span>{dict.about.linkedin}</span>
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
   </div>
 </section>
+
+<style>
+  .about-line {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--color-accent), transparent);
+    transform-origin: top;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .about-intro.is-revealed .about-line {
+      animation: about-line-enter 900ms var(--ease-out-expo) both;
+    }
+  }
+  @keyframes about-line-enter {
+    from { transform: scaleY(0); opacity: 0; }
+    to { transform: scaleY(1); opacity: 1; }
+  }
+</style>

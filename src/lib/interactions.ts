@@ -6,70 +6,6 @@ const finePointer = () => window.matchMedia('(hover: hover) and (pointer: fine)'
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ------------------------------------------------------------------ */
-/*  Custom cursor: a dot that tracks 1:1 and a ring that lags behind.   */
-/* ------------------------------------------------------------------ */
-function initCursor(): Cleanup {
-  const dot = document.querySelector<HTMLElement>('.cursor-dot');
-  const ring = document.querySelector<HTMLElement>('.cursor-ring');
-  const root = document.documentElement;
-  if (!dot || !ring || !finePointer() || reducedMotion()) return () => {};
-
-  let x = window.innerWidth / 2;
-  let y = window.innerHeight / 2;
-  let ringX = x;
-  let ringY = y;
-  let rafId = 0;
-  let active = false;
-
-  const onMove = (event: PointerEvent) => {
-    x = event.clientX;
-    y = event.clientY;
-    if (!active) {
-      active = true;
-      ringX = x;
-      ringY = y;
-      root.classList.add('has-cursor');
-    }
-    dot.style.transform = `translate3d(${x}px, ${y}px, 0)${root.classList.contains('cursor-hover') ? ' scale(0.5)' : ''}`;
-  };
-
-  const onLeave = () => {
-    active = false;
-    root.classList.remove('has-cursor');
-  };
-
-  const isInteractive = (el: Element | null) =>
-    !!el && !!el.closest('a, button, [role="button"], [data-cursor="hover"], input, textarea, select, label, summary');
-  const isText = (el: Element | null) => !!el && !!el.closest('[data-cursor="text"]');
-
-  const onOver = (event: PointerEvent) => {
-    const target = event.target as Element | null;
-    root.classList.toggle('cursor-hover', isInteractive(target));
-    root.classList.toggle('cursor-text', isText(target));
-  };
-
-  const loop = () => {
-    ringX += (x - ringX) * 0.18;
-    ringY += (y - ringY) * 0.18;
-    ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
-    rafId = requestAnimationFrame(loop);
-  };
-  rafId = requestAnimationFrame(loop);
-
-  window.addEventListener('pointermove', onMove, { passive: true });
-  document.addEventListener('pointerover', onOver, { passive: true });
-  document.documentElement.addEventListener('mouseleave', onLeave);
-
-  return () => {
-    cancelAnimationFrame(rafId);
-    window.removeEventListener('pointermove', onMove);
-    document.removeEventListener('pointerover', onOver);
-    document.documentElement.removeEventListener('mouseleave', onLeave);
-    root.classList.remove('has-cursor', 'cursor-hover', 'cursor-text');
-  };
-}
-
-/* ------------------------------------------------------------------ */
 /*  Magnetic buttons: [data-magnetic] drifts toward the pointer.        */
 /* ------------------------------------------------------------------ */
 function initMagnetic(): Cleanup {
@@ -125,7 +61,7 @@ function initReveal(): Cleanup {
         observer.unobserve(entry.target);
       });
     },
-    { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+    { threshold: 0, rootMargin: '0px 0px -48px 0px' }
   );
 
   els.forEach((el) => {
@@ -153,7 +89,7 @@ function initReveal(): Cleanup {
 /*  Spotlight cards: feed pointer position into --spot-x / --spot-y     */
 /* ------------------------------------------------------------------ */
 function initSpotlight(): Cleanup {
-  if (!finePointer()) return () => {};
+  if (!finePointer() || reducedMotion()) return () => {};
   const cleanups: Cleanup[] = [];
   document.querySelectorAll<HTMLElement>('.spot-card').forEach((card) => {
     const onMove = (event: PointerEvent) => {
@@ -208,14 +144,23 @@ function initTilt(): Cleanup {
 
 /* ------------------------------------------------------------------ */
 /*  Stacked project panels: each sticky card shrinks as the next one    */
-/*  slides over it (desktop only, where the cards are sticky).          */
+/*  slides over it, including on phones.                               */
 /* ------------------------------------------------------------------ */
 function initStack(): Cleanup {
   const items = Array.from(document.querySelectorAll<HTMLElement>('.stack-item'));
   items.forEach((item, index) => item.style.setProperty('--stack-index', String(index)));
   if (items.length < 2 || reducedMotion()) return () => {};
 
+  const sizes = new ResizeObserver((entries) => {
+    entries.forEach(({ target }) => {
+      const item = target as HTMLElement;
+      item.style.setProperty('--stack-height', `${item.offsetHeight}px`);
+    });
+  });
+  items.forEach((item) => sizes.observe(item));
+
   let stops: Cleanup[] = [];
+  const stackViewport = window.matchMedia('(min-height: 541px)');
 
   const bind = () => {
     stops.forEach((stop) => stop());
@@ -225,6 +170,7 @@ function initStack(): Cleanup {
       item.style.setProperty('--stack-shade', '0');
     });
 
+    if (!stackViewport.matches) return;
     items.forEach((item, index) => {
       const next = items[index + 1];
       if (!next) return;
@@ -237,8 +183,41 @@ function initStack(): Cleanup {
   };
 
   bind();
+  stackViewport.addEventListener('change', bind);
 
   return () => {
+    sizes.disconnect();
+    stackViewport.removeEventListener('change', bind);
+    stops.forEach((stop) => stop());
+  };
+}
+
+/* Touch screens use scroll progress in place of pointer hover. */
+function initServiceScroll(): Cleanup {
+  if (reducedMotion()) return () => {};
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('.offering'));
+  const touch = window.matchMedia('(hover: none) and (pointer: coarse)');
+  let stops: Cleanup[] = [];
+  const bind = () => {
+    stops.forEach((stop) => stop());
+    stops = [];
+    cards.forEach((card) => {
+      card.style.transform = '';
+      card.style.removeProperty('--mobile-glow');
+      if (!touch.matches) return;
+      stops.push(scroll(
+        animate(card, {
+          transform: ['perspective(1200px) rotateX(4deg) scale(0.98)', 'perspective(1200px) rotateX(0deg) scale(1)', 'perspective(1200px) rotateX(-4deg) scale(0.98)'],
+          '--mobile-glow': [0, 1, 0]
+        }, { ease: 'linear' }),
+        { target: card.parentElement!, offset: ['start end', 'end start'] }
+      ));
+    });
+  };
+  bind();
+  touch.addEventListener('change', bind);
+  return () => {
+    touch.removeEventListener('change', bind);
     stops.forEach((stop) => stop());
   };
 }
@@ -303,7 +282,12 @@ export function splitChars(el: HTMLElement): HTMLElement[] {
 let teardown: Cleanup | null = null;
 
 export function initInteractions(): void {
-  teardown?.();
-  const cleanups = [initCursor(), initMagnetic(), initReveal(), initSpotlight(), initTilt(), initStack(), initClock()];
+  destroyInteractions();
+  const cleanups = [initMagnetic(), initReveal(), initSpotlight(), initTilt(), initStack(), initServiceScroll(), initClock()];
   teardown = () => cleanups.forEach((fn) => fn());
+}
+
+export function destroyInteractions(): void {
+  teardown?.();
+  teardown = null;
 }

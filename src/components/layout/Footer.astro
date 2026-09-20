@@ -13,15 +13,15 @@ const navItems = [
   { href: '#about', label: dict.nav.about },
   { href: '#projects', label: dict.nav.projects },
   { href: '#services', label: dict.nav.services },
-  { href: '#stack', label: dict.nav.stack },
-  { href: '#contact', label: dict.nav.contact }
+  { href: '#contact', label: dict.nav.contact },
+  { href: '#stack', label: dict.nav.stack }
 ];
 ---
 
 <footer class="relative overflow-hidden border-t border-[var(--color-border)]">
   <div class="container-site relative py-12 sm:py-16">
     <div class="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_2fr] md:gap-12">
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4" data-reveal>
         <a href={locale === 'pt' ? '/' : '/en'} class="inline-flex items-center font-sans text-lg font-semibold tracking-tight" aria-label="lucianookdp">
           <span aria-hidden="true">lucian</span>
           <svg aria-hidden="true" viewBox="4 4 92 42" class="mx-[-0.015em] h-[0.62em] w-auto translate-y-[0.02em] text-[var(--color-accent)]">
@@ -41,7 +41,7 @@ const navItems = [
         </p>
       </div>
 
-      <div class="grid grid-cols-2 gap-8">
+      <div class="grid grid-cols-2 gap-8" data-reveal data-reveal-delay="80">
       <div>
         <p class="eyebrow">{dict.footer.navigate}</p>
         <ul class="mt-4 flex flex-col gap-2 font-sans text-sm">
@@ -67,7 +67,7 @@ const navItems = [
       </div>
     </div>
 
-    <div class="mt-12 border-t border-[var(--color-border)] pt-6 font-sans text-xs text-[var(--color-text-secondary)] sm:mt-14">
+    <div class="mt-12 border-t border-[var(--color-border)] pt-6 font-sans text-xs text-[var(--color-text-secondary)] sm:mt-14" data-reveal>
       <p>&copy; {year} Luciano K. Dal Pai. {dict.footer.rights}</p>
     </div>
   </div>
