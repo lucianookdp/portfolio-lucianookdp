@@ -14,15 +14,15 @@
     "translations": {
       "pt": {
         "name": "Radar CNPJ",
-        "problem": "Investigar uma empresa antes de fechar negócio com ela normalmente exige cruzar dados na mão em vários sites do governo, um por um.",
-        "result": "Plataforma que, a partir de um CNPJ, monta o grafo societário, cruza com listas restritivas oficiais e calcula um score de risco explicável de 0 a 100, com exportação do dossiê em PDF.",
-        "subtitle": "Consulta e análise de empresas"
+        "problem": "Consultar uma empresa pode exigir buscas em diferentes bases públicas.",
+        "result": "Reúne dados a partir do CNPJ, mostra vínculos entre empresas e sócios e consulta listas oficiais de restrições. Apresenta uma pontuação de risco com explicações e permite exportar um relatório em PDF.",
+        "subtitle": "Informações de empresas em um só lugar"
       },
       "en": {
         "name": "Radar CNPJ",
-        "problem": "Vetting a Brazilian company before doing business with it usually means manually cross-checking data across several government websites, one by one.",
-        "result": "A platform that, given a CNPJ, builds the corporate ownership graph, cross-references official restrictive lists, and computes an explainable 0-100 risk score, with PDF dossier export.",
-        "subtitle": "Brazilian company screening"
+        "problem": "Researching a Brazilian company can mean searching several public databases.",
+        "result": "Looks up a company by its CNPJ, Brazil’s business registration number, maps ownership links and checks official restriction lists. It provides an explained risk score and a downloadable PDF report.",
+        "subtitle": "Company information in one place"
       }
     },
     "media": {
@@ -44,15 +44,15 @@
     "translations": {
       "pt": {
         "name": "Rachaí",
-        "problem": "Dividir as contas de uma viagem ou de uma república costuma virar planilha bagunçada e uma cadeia de transferências entre todo mundo.",
-        "result": "App sem cadastro onde o grupo registra os gastos e recebe o menor número de pagamentos possível para acertar tudo, em PT/EN e com várias moedas.",
-        "subtitle": "Divisão de despesas em grupo"
+        "problem": "Depois de uma viagem ou de despesas compartilhadas, é preciso acertar quem deve a quem.",
+        "result": "Registra os gastos do grupo e sugere os pagamentos para acertar as contas. Não exige cadastro e aceita diferentes moedas, com versões em português e inglês.",
+        "subtitle": "Contas de grupo sem complicação"
       },
       "en": {
         "name": "Rachaí",
-        "problem": "Splitting the bills of a trip or a shared house usually turns into a messy spreadsheet and a chain of transfers between everyone.",
-        "result": "A no-signup app where the group logs expenses and gets back the fewest payments needed to settle up, in PT/EN and with multi-currency support.",
-        "subtitle": "Shared expense splitting"
+        "problem": "After a trip or shared expenses, the group needs to work out who owes whom.",
+        "result": "Records group expenses and suggests payments to settle balances. No signup is required. It supports multiple currencies and is available in Portuguese and English.",
+        "subtitle": "Shared expenses made simpler"
       }
     },
     "media": {
@@ -73,15 +73,15 @@
     "translations": {
       "pt": {
         "name": "Scammeter",
-        "problem": "Antes de comprar num site desconhecido, quase ninguém sabe conferir se a loja é real: os dados estão espalhados e o CNPJ da página nem sempre bate com quem recebe o Pix.",
-        "result": "Ferramenta que lê o site sozinha, encontra CNPJ e chave Pix, cruza com dados públicos da empresa e devolve uma nota de risco com os motivos de cada ponto.",
-        "subtitle": "Análise de risco de lojas online"
+        "problem": "Os dados de uma loja nem sempre são fáceis de encontrar ou comparar antes de uma compra.",
+        "result": "Busca o CNPJ e a chave Pix no site, compara as informações com registros públicos e apresenta sinais de risco com explicações.",
+        "subtitle": "Informações para avaliar uma loja online"
       },
       "en": {
         "name": "Scammeter",
-        "problem": "Before buying from an unknown Brazilian site, almost nobody knows how to check if the shop is real: the data is scattered and the CNPJ on the page often doesn't match whoever receives the Pix payment.",
-        "result": "A tool that reads the site itself, finds the CNPJ and Pix key, cross-references public company records and returns a risk score with the reasons spelled out in plain language.",
-        "subtitle": "Online store risk checks"
+        "problem": "A store’s details can be difficult to find and compare before making a purchase.",
+        "result": "Finds the store’s Brazilian business registration number and Pix payment key, compares them with public records and explains potential risk signals.",
+        "subtitle": "Information to assess an online store"
       }
     },
     "media": {
@@ -102,15 +102,15 @@
     "translations": {
       "pt": {
         "name": "LostAndFound",
-        "problem": "Os achados e perdidos da faculdade eram anotados em planilha, sem registro confiável de quem retirou cada item.",
-        "result": "TCC em Engenharia de Software: a recepção cadastra os itens e cada retirada fica registrada. A demo é o mesmo código, com dados fictícios e sem back-end.",
-        "subtitle": "Gestão de achados e perdidos"
+        "problem": "Registrar objetos encontrados e acompanhar as retiradas exige mais do que uma lista de itens.",
+        "result": "Permite cadastrar objetos e registrar quem os retirou. Foi desenvolvido como trabalho de conclusão de curso em Engenharia de Software. A demonstração usa dados fictícios e funciona sem conexão com o servidor.",
+        "subtitle": "Controle de achados e perdidos"
       },
       "en": {
         "name": "LostAndFound",
-        "problem": "The campus lost-and-found was tracked in a spreadsheet, with no reliable record of who claimed each item.",
-        "result": "Software Engineering capstone: the front desk logs found items and every claim is recorded. The demo is the same code, with fictional data and no back-end.",
-        "subtitle": "Lost and found management"
+        "problem": "Keeping track of found objects and their collection requires more than a list of items.",
+        "result": "Records found items and who collected them. Built as a Software Engineering capstone project. The demo uses sample data and runs without a server connection.",
+        "subtitle": "Tracking lost and found items"
       }
     },
     "media": {

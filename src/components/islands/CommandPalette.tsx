@@ -27,7 +27,6 @@ interface NavItem {
 interface Props {
   dict: Dict;
   navItems: NavItem[];
-  emailSubject: string;
   currentLocale: 'pt' | 'en';
   ptPath: string;
   enPath: string;
@@ -38,7 +37,7 @@ const groupClass =
 const itemClass =
   'flex cursor-pointer items-center justify-between gap-4 rounded-xl px-3 py-2.5 font-sans text-sm text-[var(--color-text)] transition-colors data-[selected=true]:bg-[var(--color-accent-soft)] data-[selected=true]:text-[var(--color-accent-text)]';
 
-export default function CommandPalette({ dict, navItems, currentLocale, ptPath, enPath, emailSubject }: Props) {
+export default function CommandPalette({ dict, navItems, currentLocale, ptPath, enPath }: Props) {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<Theme>('light');
 
@@ -91,7 +90,7 @@ export default function CommandPalette({ dict, navItems, currentLocale, ptPath, 
 
   function sendEmail() {
     setOpen(false);
-    window.location.href = `mailto:${'engslucianok'}@${'gmail.com'}?subject=${encodeURIComponent(emailSubject)}`;
+    window.location.href = `mailto:${'engslucianok'}@${'gmail.com'}`;
   }
 
   return (

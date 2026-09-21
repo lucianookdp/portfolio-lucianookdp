@@ -1,79 +1,79 @@
 {
   "meta": {
-    "title": "Luciano K. Dal Pai · Engenheiro de Software Full-Stack",
-    "description": "Engenheiro de software e entusiasta de tecnologia. Crio soluções para resolver problemas e ajudar pessoas e empresas a conquistar seu espaço na internet."
+    "title": "Luciano K. Dal Pai · Desenvolvimento de software",
+    "description": "Landing pages, sites e sistemas desenvolvidos por Luciano K. Dal Pai. Conheça os projetos, veja os serviços e entre em contato."
   },
   "nav": {
     "primary": "Navegação principal",
-    "about": "Sobre",
+    "about": "Sobre mim",
     "projects": "Projetos",
     "services": "Serviços",
-    "stack": "Stack",
+    "stack": "Tecnologias",
     "contact": "Contato",
     "skipToContent": "Pular para o conteúdo",
     "openMenu": "Abrir menu",
     "closeMenu": "Fechar menu",
-    "menuHint": "Navegue pelo site"
+    "menuHint": "Escolha uma seção"
   },
   "hero": {
-    "availability": "Disponível para novos projetos",
-    "role": "Engenheiro de Software Full-Stack",
+    "availability": "Disponível para novos trabalhos",
+    "role": "Engenheiro de software · Full-stack",
     "tagline": "Engenheiro de software com foco em desenvolvimento web.",
-    "intro": "Sou entusiasta de tecnologia e crio soluções para resolver problemas e ajudar pessoas e empresas a conquistar seu espaço na internet.",
-    "ctaProjects": "Ver projetos",
-    "ctaContact": "Falar comigo",
+    "intro": "Entusiasta de tecnologia e desenvolvimento web.",
+    "ctaProjects": "Conhecer projetos",
+    "ctaContact": "Entrar em contato",
     "location": "Brasil · GMT-3",
     "localTime": "Horário local",
-    "sceneLabel": "Notebook 3D com o site aberto na tela"
+    "sceneLabel": "Notebook em 3D exibindo este portfólio"
   },
   "about": {
     "index": "01",
-    "heading": "Sobre",
-    "lead": "Sou engenheiro de software e desenvolvedor full-stack.",
-    "body": "Meu foco é desenvolvimento web, com atenção ao design, ao desempenho e à experiência de navegação. Desenvolvo sites e aplicações de acordo com os objetivos e as necessidades de cada projeto.",
-    "linkedin": "Veja minha trajetória no LinkedIn"
+    "heading": "Sobre mim",
+    "lead": "Desenvolvedor full-stack.",
+    "body": "Desenvolvo sites e sistemas para pessoas e empresas. Ajudo a resolver problemas do negócio e a criar um espaço na internet para apresentar seu trabalho.",
+    "linkedin": "Conheça minha trajetória no LinkedIn"
   },
   "projects": {
     "index": "02",
-    "heading": "Projetos em destaque",
-    "subheading": "Uma seleção do que venho construindo, com o problema que cada um resolve.",
-    "problem": "Problema",
-    "result": "Resultado",
+    "heading": "Projetos",
+    "subheading": "Alguns dos trabalhos que desenvolvi.",
+    "problem": "Contexto",
+    "result": "O que faz",
     "stackLabel": "Tecnologias",
-    "viewRepo": "Repositório",
-    "viewDemo": "Ver ao vivo",
-    "viewMoreGithub": "Ver mais projetos no GitHub",
-    "demoSoon": "Em breve"
+    "viewRepo": "Ver código",
+    "viewDemo": "Abrir demonstração",
+    "viewMoreGithub": "Outros projetos no GitHub",
+    "demoSoon": "Demonstração em breve"
   },
   "github": {
     "index": "05",
     "heading": "Atividade no GitHub",
-    "subheading": "Dados buscados direto da API do GitHub em tempo de build.",
-    "contributions": "contribuições no último ano",
+    "subheading": "Um resumo da minha atividade pública no GitHub.",
+    "contributions": "contribuições nos últimos 12 meses",
     "repos": "repositórios públicos",
     "stars": "estrelas recebidas",
     "topLanguages": "Linguagens mais usadas",
-    "heatmapCaption": "Atividade nas últimas 20 semanas",
-    "updatedAt": "Atualizado em",
-    "viewProfile": "Ver perfil no GitHub",
-    "empty": "Os dados serão exibidos após o primeiro build no GitHub Actions."
+    "heatmapCaption": "Contribuições no GitHub nas últimas 20 semanas",
+    "updatedAt": "Última atualização",
+    "viewProfile": "Meu perfil no GitHub",
+    "empty": "Atividade indisponível no momento."
   },
   "stack": {
     "index": "05",
-    "heading": "Tecnologias & atividade",
-    "subheading": "Ferramentas que uso e o que venho desenvolvendo no GitHub.",
+    "heading": "Tecnologias e atividade",
+    "subheading": "As ferramentas com que trabalho e minha atividade no GitHub.",
     "categories": {
       "languages": "Linguagens",
       "frontend": "Frontend",
       "backend": "Backend",
       "databases": "Bancos de dados",
-      "tools": "Ferramentas & testes"
+      "tools": "Ferramentas e testes"
     }
   },
   "services": {
     "index": "03",
     "heading": "Serviços",
-    "body": "Precisa apresentar sua ideia, criar um sistema ou resolver uma necessidade da sua empresa? Posso ajudar a planejar e desenvolver a solução.",
+    "body": "Veja como posso ajudar você ou sua empresa.",
     "processHeading": "Como funciona",
     "steps": [
       {
@@ -128,35 +128,34 @@
     "index": "04",
     "heading": "Contato",
     "title": "Vamos construir algo juntos?",
-    "subheading": "Tem uma ideia ou quer conversar sobre um projeto? Me conta por email.",
+    "subheading": "Entre em contato por email. Por lá conversamos sobre o seu projeto e os valores.",
     "loadingEmail": "Carregando email…",
     "copyEmail": "Copiar email",
     "emailCopied": "Email copiado!",
     "sendEmail": "Enviar email",
     "responseTime": "Costumo responder em até 24h",
-    "emailSubject": "Quero conversar sobre um projeto",
     "copyError": "Não foi possível copiar. Você pode selecionar o endereço acima ou usar o botão Enviar email."
   },
   "footer": {
     "rights": "Todos os direitos reservados.",
     "localTime": "Horário local",
-    "navigate": "Navegar",
-    "elsewhere": "Outros"
+    "navigate": "Explore",
+    "elsewhere": "Me encontre também"
   },
   "commandPalette": {
-    "label": "Paleta de comandos",
-    "openButton": "Abrir paleta de comandos",
-    "placeholder": "Digite um comando ou busque...",
-    "empty": "Nenhum resultado encontrado.",
-    "groupNavigation": "Navegação",
+    "label": "Atalhos do site",
+    "openButton": "Abrir atalhos",
+    "placeholder": "Buscar página ou ação…",
+    "empty": "Não encontrei esse atalho.",
+    "groupNavigation": "Seções",
     "groupActions": "Ações",
-    "groupLinks": "Links externos",
+    "groupLinks": "Perfis",
     "toggleTheme": "Alternar tema",
     "toggleThemeLight": "Mudar para modo claro",
     "toggleThemeDark": "Mudar para modo escuro",
     "switchLanguage": "Switch to English",
     "openGithub": "Abrir GitHub",
     "sendEmail": "Enviar email",
-    "hint": "para abrir"
+    "hint": "para ver os atalhos"
   }
 }

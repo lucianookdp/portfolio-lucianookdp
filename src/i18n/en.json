@@ -1,79 +1,79 @@
 {
   "meta": {
-    "title": "Luciano K. Dal Pai · Full-Stack Software Engineer",
-    "description": "Software engineer and technology enthusiast. I create solutions that solve problems and help people and businesses build their presence online."
+    "title": "Luciano K. Dal Pai · Software development",
+    "description": "Landing pages, websites and applications built by Luciano K. Dal Pai. Explore my projects, find out how I can help and get in touch."
   },
   "nav": {
     "primary": "Main navigation",
-    "about": "About",
+    "about": "About me",
     "projects": "Projects",
     "services": "Services",
-    "stack": "Stack",
+    "stack": "Technologies",
     "contact": "Contact",
     "skipToContent": "Skip to content",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
-    "menuHint": "Browse the site"
+    "menuHint": "Choose a section"
   },
   "hero": {
-    "availability": "Available for new projects",
-    "role": "Full-Stack Software Engineer",
+    "availability": "Available for new work",
+    "role": "Software engineer · Full-stack",
     "tagline": "Software engineer focused on web development.",
-    "intro": "I’m a technology enthusiast creating solutions that solve problems and help people and businesses build their presence online.",
-    "ctaProjects": "View projects",
+    "intro": "Technology and web development enthusiast.",
+    "ctaProjects": "Explore projects",
     "ctaContact": "Get in touch",
     "location": "Brazil · GMT-3",
     "localTime": "Local time",
-    "sceneLabel": "3D laptop with the website open on its screen"
+    "sceneLabel": "3D laptop displaying this portfolio"
   },
   "about": {
     "index": "01",
-    "heading": "About",
-    "lead": "I’m a software engineer and full-stack developer.",
-    "body": "My focus is web development, with attention to design, performance and the browsing experience. I build websites and applications around the goals and requirements of each project.",
-    "linkedin": "Explore my background on LinkedIn"
+    "heading": "About me",
+    "lead": "Full-stack developer.",
+    "body": "I build websites and applications for people and businesses. I help solve business problems and create a place online to showcase your work.",
+    "linkedin": "Find out more about my background on LinkedIn"
   },
   "projects": {
     "index": "02",
-    "heading": "Featured projects",
-    "subheading": "A selection of what I've been building, and the problem each one solves.",
-    "problem": "Problem",
-    "result": "Result",
+    "heading": "Projects",
+    "subheading": "A selection of my work.",
+    "problem": "Context",
+    "result": "What it does",
     "stackLabel": "Technologies",
-    "viewRepo": "Repository",
-    "viewDemo": "See it live",
-    "viewMoreGithub": "See more projects on GitHub",
-    "demoSoon": "Coming soon"
+    "viewRepo": "View code",
+    "viewDemo": "Try the demo",
+    "viewMoreGithub": "More projects on GitHub",
+    "demoSoon": "Demo coming soon"
   },
   "github": {
     "index": "05",
     "heading": "GitHub activity",
-    "subheading": "Data fetched straight from the GitHub API at build time.",
-    "contributions": "contributions in the last year",
+    "subheading": "An overview of my public activity on GitHub.",
+    "contributions": "contributions in the last 12 months",
     "repos": "public repositories",
     "stars": "stars received",
     "topLanguages": "Most used languages",
-    "heatmapCaption": "Activity over the last 20 weeks",
-    "updatedAt": "Updated on",
-    "viewProfile": "View GitHub profile",
-    "empty": "Data will show up after the first build on GitHub Actions."
+    "heatmapCaption": "GitHub contributions over the last 20 weeks",
+    "updatedAt": "Last updated",
+    "viewProfile": "My GitHub profile",
+    "empty": "Activity is currently unavailable."
   },
   "stack": {
     "index": "05",
-    "heading": "Technologies & activity",
-    "subheading": "The tools I use and what I’ve been building on GitHub.",
+    "heading": "Technologies and activity",
+    "subheading": "The tools I work with and my activity on GitHub.",
     "categories": {
       "languages": "Languages",
       "frontend": "Frontend",
       "backend": "Backend",
       "databases": "Databases",
-      "tools": "Tools & testing"
+      "tools": "Tools and testing"
     }
   },
   "services": {
     "index": "03",
     "heading": "Services",
-    "body": "Need to present your idea, build an application or address a business need? I can help plan and develop the solution.",
+    "body": "Here’s how I can help you or your business.",
     "processHeading": "How it works",
     "steps": [
       {
@@ -128,35 +128,34 @@
     "index": "04",
     "heading": "Contact",
     "title": "Let's build something together?",
-    "subheading": "Have an idea or want to discuss a project? Send me an email.",
+    "subheading": "Get in touch by email. There we can discuss your project and pricing.",
     "loadingEmail": "Loading email…",
     "copyEmail": "Copy email",
     "emailCopied": "Email copied!",
     "sendEmail": "Send email",
     "responseTime": "I usually reply within 24h",
-    "emailSubject": "Let’s talk about a project",
     "copyError": "Could not copy the address. You can select it above or use the Send email button."
   },
   "footer": {
     "rights": "All rights reserved.",
     "localTime": "Local time",
-    "navigate": "Navigate",
-    "elsewhere": "Other"
+    "navigate": "Explore",
+    "elsewhere": "Find me elsewhere"
   },
   "commandPalette": {
-    "label": "Command palette",
-    "openButton": "Open command palette",
-    "placeholder": "Type a command or search...",
-    "empty": "No results found.",
-    "groupNavigation": "Navigation",
+    "label": "Site shortcuts",
+    "openButton": "Open shortcuts",
+    "placeholder": "Find a page or action…",
+    "empty": "No matching shortcuts.",
+    "groupNavigation": "Sections",
     "groupActions": "Actions",
-    "groupLinks": "External links",
+    "groupLinks": "Profiles",
     "toggleTheme": "Toggle theme",
     "toggleThemeLight": "Switch to light mode",
     "toggleThemeDark": "Switch to dark mode",
     "switchLanguage": "Mudar para Português",
     "openGithub": "Open GitHub",
     "sendEmail": "Send email",
-    "hint": "to open"
+    "hint": "for shortcuts"
   }
 }
