@@ -26,7 +26,7 @@ const { index, id, repoUrl, demoUrl, stack, translation, dict } = Astro.props;
 const media = findProjectMedia(id);
 
 const COVER_ICONS: Record<string, string> = {
-  rachai: `<path d="M5 3.5h14v5.5l-2.4-1.2-2.3 1.6L12 7.8l-2.3 1.6-2.3-1.6L5 9V3.5Z" /><path d="M5 15l2.4 1.2 2.3-1.6 2.3 1.6 2.3-1.6 2.3 1.6L19 15v5.5H5V15Z" />`,
+  'eleicoes-brasil': `<path d="M4 13h16v7H4z" /><path d="M8.5 13V4.5h7V13" /><path d="m10 8.2 1.6 1.6L15 6.4" />`,
   'lost-and-found': `<path d="m12 3 7 3v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Z" /><path d="m9 12 2 2 4-4" />`,
   scammeter: `<path d="m12 3 7 3v5.5c0 4.4-3 8-7 9.5-4-1.5-7-5.1-7-9.5V6l7-3Z" /><path d="M12 8.5v4" /><circle cx="12" cy="15.8" r=".6" fill="currentColor" />`,
   'cnpj-due-diligence': `<path d="M12 3v18" /><path d="M6 7h12" /><path d="M6 21h12" /><path d="M6 7 3 13a3 3 0 0 0 6 0L6 7Z" /><path d="M18 7l-3 6a3 3 0 0 0 6 0l-3-6Z" />`

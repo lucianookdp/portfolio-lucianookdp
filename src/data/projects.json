@@ -30,33 +30,33 @@
     }
   },
   {
-    "id": "rachai",
+    "id": "eleicoes-brasil",
     "enabled": true,
-    "repoUrl": "https://github.com/lucianookdp/rachai-web",
-    "demoUrl": "https://userachai.com.br",
+    "repoUrl": "https://github.com/lucianookdp/eleicoes-brasil",
+    "demoUrl": "https://eleicoes.lucianookdp.dev/",
     "stack": [
-      "React",
       "TypeScript",
+      "Next.js",
+      "React",
       "Fastify",
-      "Prisma",
       "PostgreSQL"
     ],
     "translations": {
       "pt": {
-        "name": "Rachaí",
-        "problem": "Depois de uma viagem ou de despesas compartilhadas, é preciso acertar quem deve a quem.",
-        "result": "Registra os gastos do grupo e sugere os pagamentos para acertar as contas. Não exige cadastro e aceita diferentes moedas, com versões em português e inglês.",
-        "subtitle": "Contas de grupo sem complicação"
+        "name": "Eleições Brasil",
+        "problem": "Durante a apuração, acompanhar os números de cada cargo e de cada região exige abrir vários lugares ao mesmo tempo.",
+        "result": "Lê os arquivos públicos do TSE e mostra a apuração conforme ela avança: urnas apuradas, votos por candidato, mapa por estado e resultados de cada município. Também permite rever como estava a apuração em qualquer horário da noite.",
+        "subtitle": "Apuração das eleições em tempo real"
       },
       "en": {
-        "name": "Rachaí",
-        "problem": "After a trip or shared expenses, the group needs to work out who owes whom.",
-        "result": "Records group expenses and suggests payments to settle balances. No signup is required. It supports multiple currencies and is available in Portuguese and English.",
-        "subtitle": "Shared expenses made simpler"
+        "name": "Eleições Brasil",
+        "problem": "While the votes are counted, following each race and region means watching several sources at once.",
+        "result": "Reads the public result files from Brazil’s electoral authority and shows the count as it progresses: ballot boxes counted, votes per candidate, a map by state and results for every municipality. It can also replay how the count looked at any point in the night.",
+        "subtitle": "Live election results from the official count"
       }
     },
     "media": {
-      "slot": "rachai"
+      "slot": "eleicoes-brasil"
     }
   },
   {
