@@ -44,15 +44,15 @@
     "translations": {
       "pt": {
         "name": "Eleições Brasil",
-        "problem": "Durante a apuração, acompanhar os números de cada cargo e de cada região exige abrir vários lugares ao mesmo tempo.",
-        "result": "Lê os arquivos públicos do TSE e mostra a apuração conforme ela avança: urnas apuradas, votos por candidato, mapa por estado e resultados de cada município. Também permite rever como estava a apuração em qualquer horário da noite.",
-        "subtitle": "Apuração das eleições em tempo real"
+        "problem": "Na noite da apuração os números mudam a cada parcial e ficam espalhados entre cargos, estados e municípios.",
+        "result": "Cada nova parcial do TSE chega à tela em segundos, sem recarregar a página: urnas apuradas, confronto dos dois primeiros colocados, mapa por estado e resultados de todos os cargos em cada estado e município. Inclui ainda linha do tempo da noite, comparação entre estados, bancadas eleitas e modo telão para TV. Os números vêm dos arquivos oficiais sem alteração, sem pesquisa nem projeção.",
+        "subtitle": "Apuração em tempo real com os dados oficiais do TSE"
       },
       "en": {
         "name": "Eleições Brasil",
-        "problem": "While the votes are counted, following each race and region means watching several sources at once.",
-        "result": "Reads the public result files from Brazil’s electoral authority and shows the count as it progresses: ballot boxes counted, votes per candidate, a map by state and results for every municipality. It can also replay how the count looked at any point in the night.",
-        "subtitle": "Live election results from the official count"
+        "problem": "On election night the numbers change with every new batch and sit spread across races, states and municipalities.",
+        "result": "Every new batch from the TSE, Brazil’s electoral authority, reaches the screen within seconds and without a page reload: ballot boxes counted, the two leading candidates side by side, a map by state and results for every race in each state and municipality. It also has a timeline of the night, state comparisons, the elected congress and a big-screen mode for TV. The numbers come from the official files unchanged, with no polling or forecasting.",
+        "subtitle": "Live results from the official TSE count"
       }
     },
     "media": {
