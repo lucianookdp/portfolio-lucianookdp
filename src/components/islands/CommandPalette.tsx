@@ -1,8 +1,4 @@
-import { useEffect, useState } from 'react';
-import { Command } from 'cmdk';
-import { navigate } from 'astro:transitions/client';
-import { getStoredTheme, toggleTheme, type Theme } from '../../lib/theme';
-import { scrollToTarget } from '../../lib/lenis';
+import { useEffect, useRef, useState, type ComponentType } from 'react';
 
 interface Dict {
   label: string;
@@ -19,35 +15,45 @@ interface Dict {
   hint: string;
 }
 
-interface NavItem {
-  id: string;
-  label: string;
-}
-
 interface Props {
   dict: Dict;
-  navItems: NavItem[];
+  navItems: { id: string; label: string }[];
   currentLocale: 'pt' | 'en';
   ptPath: string;
   enPath: string;
 }
 
-const groupClass =
-  '[&_[cmdk-group-heading]]:block [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-[0.14em] [&_[cmdk-group-heading]]:text-[var(--color-text-secondary)]';
-const itemClass =
-  'flex cursor-pointer items-center justify-between gap-4 rounded-xl px-3 py-2.5 font-sans text-sm text-[var(--color-text)] transition-colors data-[selected=true]:bg-[var(--color-accent-soft)] data-[selected=true]:text-[var(--color-accent-text)]';
+export interface CommandPaletteDialogProps extends Props {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  search: string;
+  onSearchChange: (search: string) => void;
+}
 
-export default function CommandPalette({ dict, navItems, currentLocale, ptPath, enPath }: Props) {
+type PaletteDialog = ComponentType<CommandPaletteDialogProps>;
+let dialogPromise: Promise<PaletteDialog> | undefined;
+
+function loadDialog() {
+  // Share the download across openings and Astro navigations.
+  return (dialogPromise ??= import('./CommandPaletteDialog')
+    .then((module) => module.default)
+    .catch((error) => {
+      dialogPromise = undefined;
+      throw error;
+    }));
+}
+
+export default function CommandPalette(props: Props) {
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<Theme>('light');
+  const [search, setSearch] = useState('');
+  const [Dialog, setDialog] = useState<PaletteDialog | null>(null);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    setTheme(getStoredTheme());
-
     function onKeyDown(event: KeyboardEvent) {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault();
-        setOpen((prev) => !prev);
+        if (!event.repeat) setOpen((previous) => !previous);
       }
     }
     function onExternalOpen() {
@@ -62,99 +68,97 @@ export default function CommandPalette({ dict, navItems, currentLocale, ptPath, 
     };
   }, []);
 
-  function goToSection(id: string) {
-    setOpen(false);
-    requestAnimationFrame(() => scrollToTarget(`#${id}`));
-  }
+  useEffect(() => {
+    if (!open) setSearch('');
+  }, [open]);
 
-  function handleToggleTheme() {
-    setTheme(toggleTheme());
-    setOpen(false);
-  }
+  useEffect(() => {
+    if (!open || Dialog) return;
+    let active = true;
+    setFailed(false);
+    loadDialog().then(
+      (component) => {
+        if (active) setDialog(() => component);
+      },
+      () => {
+        if (active) setFailed(true);
+      },
+    );
+    return () => {
+      active = false;
+    };
+  }, [open, Dialog]);
 
-  function handleSwitchLanguage() {
-    setOpen(false);
-    const next = currentLocale === 'pt' ? 'en' : 'pt';
-    try {
-      localStorage.setItem('lang', next);
-    } catch {
-      // Storage can be unavailable; navigation still works.
-    }
-    navigate(next === 'en' ? enPath : ptPath);
-  }
+  if (!open) return null;
 
-  function openExternal(url: string) {
-    setOpen(false);
-    window.open(url, '_blank', 'noopener,noreferrer');
-  }
-
-  function sendEmail() {
-    setOpen(false);
-    window.location.href = `mailto:${'engslucianok'}@${'gmail.com'}`;
+  if (Dialog) {
+    return <Dialog {...props} open={open} onOpenChange={setOpen} search={search} onSearchChange={setSearch} />;
   }
 
   return (
-    <Command.Dialog
-      open={open}
-      onOpenChange={setOpen}
-      label={dict.label}
-      className="glass fixed left-1/2 top-24 z-[100] w-[min(92vw,34rem)] -translate-x-1/2 overflow-hidden rounded-2xl shadow-2xl"
-      overlayClassName="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm"
-      contentClassName="p-0"
+    <LoadingPalette
+      dict={props.dict}
+      currentLocale={props.currentLocale}
+      search={search}
+      onSearchChange={setSearch}
+      onClose={() => setOpen(false)}
+      failed={failed}
+    />
+  );
+}
+
+function LoadingPalette({ dict, currentLocale, search, onSearchChange, onClose, failed }: {
+  dict: Dict;
+  currentLocale: Props['currentLocale'];
+  search: string;
+  onSearchChange: (search: string) => void;
+  onClose: () => void;
+  failed: boolean;
+}) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const english = currentLocale === 'en';
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    // Native modal focus trapping works before the heavier cmdk dialog arrives.
+    dialog?.showModal();
+    return () => dialog?.close();
+  }, []);
+
+  return (
+    <dialog
+      ref={dialogRef}
+      aria-label={dict.label}
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
+      onClick={(event) => {
+        if (event.target !== event.currentTarget) return;
+        const bounds = event.currentTarget.getBoundingClientRect();
+        if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) onClose();
+      }}
+      className="glass fixed left-1/2 top-24 m-0 w-[min(92vw,34rem)] max-w-none -translate-x-1/2 overflow-hidden rounded-2xl border-0 p-0 text-[var(--color-text)] shadow-2xl backdrop:bg-black/50 backdrop:backdrop-blur-sm"
     >
       <div className="flex items-center gap-3 border-b border-[var(--color-border)] px-4">
-        <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-[var(--color-text-secondary)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m21 21-4.3-4.3" />
-        </svg>
-        <Command.Input
+        <input
+          autoFocus
+          aria-label={dict.placeholder}
           placeholder={dict.placeholder}
+          value={search}
+          onChange={(event) => onSearchChange(event.target.value)}
           className="w-full bg-transparent py-4 font-sans text-base text-[var(--color-text)] outline-none placeholder:text-[var(--color-text-secondary)]"
         />
-        <kbd className="hidden rounded-md border border-[var(--color-border-strong)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-text-secondary)] sm:block">esc</kbd>
+        <button type="button" onClick={onClose} aria-label={english ? 'Close' : 'Fechar'} className="rounded-md border border-[var(--color-border-strong)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-text-secondary)]">esc</button>
       </div>
-      <Command.List className="max-h-80 overflow-y-auto p-2" data-lenis-prevent>
-        <Command.Empty className="px-3 py-6 text-center font-sans text-sm text-[var(--color-text-secondary)]">{dict.empty}</Command.Empty>
-
-        <Command.Group heading={dict.groupNavigation} className={groupClass}>
-          {navItems.map((item, index) => (
-            <Command.Item key={item.id} onSelect={() => goToSection(item.id)} className={itemClass}>
-              <span>{item.label}</span>
-              <span className="font-mono text-[10px] text-[var(--color-text-secondary)]">0{index + 1}</span>
-            </Command.Item>
-          ))}
-        </Command.Group>
-
-        <Command.Separator className="my-2 h-px bg-[var(--color-border)]" />
-
-        <Command.Group heading={dict.groupActions} className={groupClass}>
-          <Command.Item onSelect={handleToggleTheme} className={itemClass}>
-            {theme === 'dark' ? dict.toggleThemeLight : dict.toggleThemeDark}
-          </Command.Item>
-          <Command.Item onSelect={handleSwitchLanguage} className={itemClass}>
-            {dict.switchLanguage}
-          </Command.Item>
-        </Command.Group>
-
-        <Command.Separator className="my-2 h-px bg-[var(--color-border)]" />
-
-        <Command.Group heading={dict.groupLinks} className={groupClass}>
-          <Command.Item onSelect={() => openExternal('https://github.com/lucianookdp')} className={itemClass}>
-            <span>{dict.openGithub}</span>
-            <span aria-hidden="true">↗</span>
-          </Command.Item>
-          <Command.Item onSelect={sendEmail} className={itemClass}>
-            <span>{dict.sendEmail}</span>
-            <span aria-hidden="true">↗</span>
-          </Command.Item>
-        </Command.Group>
-      </Command.List>
-      <div className="flex items-center gap-2 border-t border-[var(--color-border)] px-4 py-2.5 font-mono text-[10px] text-[var(--color-text-secondary)]">
-        <kbd className="rounded border border-[var(--color-border-strong)] px-1">↑↓</kbd>
-        <kbd className="rounded border border-[var(--color-border-strong)] px-1">↵</kbd>
-        <span>·</span>
-        <span>g + a/p/v/s/c</span>
+      <div className="px-3 py-6 text-center font-sans text-sm text-[var(--color-text-secondary)]">
+        <p role={failed ? 'alert' : 'status'}>
+          {failed
+            ? english ? 'Could not load commands.' : 'Não foi possível carregar os comandos.'
+            : english ? 'Loading commands…' : 'Carregando comandos…'}
+        </p>
+        {failed && <button type="button" onClick={() => window.location.reload()} className="mt-3 rounded-xl border border-[var(--color-border-strong)] px-3 py-2 text-[var(--color-accent-text)]">{english ? 'Reload page' : 'Recarregar página'}</button>}
       </div>
-    </Command.Dialog>
+    </dialog>
   );
 }

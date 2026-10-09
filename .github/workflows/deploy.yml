@@ -30,10 +30,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check components and mobile motion
+        run: |
+          npm run check
+          node scripts/check-mobile-motion.mjs
+
       - name: Build
         run: npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enforce performance budget
+        run: node scripts/check-performance-budget.mjs
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5

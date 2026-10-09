@@ -21,8 +21,8 @@ const givenNames = nameWords.slice(0, -2).join(' ');
   <div class="grid-bg" aria-hidden="true"></div>
 
   <div id="hero-scene" class="absolute inset-0" data-name={displayName} data-role={dict.hero.role}>
-    <canvas id="hero-canvas" class="hero-canvas block h-full w-full" role="img" aria-label={dict.hero.sceneLabel}></canvas>
-    <img id="hero-fallback" class="hero-fallback" src="/media/laptop.webp" alt={dict.hero.sceneLabel} width="1500" height="1260" decoding="async" hidden />
+    <canvas id="hero-canvas" class="hero-canvas block h-full w-full" role="img" aria-label={dict.hero.sceneLabel} aria-hidden="true"></canvas>
+    <img id="hero-fallback" class="hero-fallback is-ready" src="/media/laptop.webp" alt={dict.hero.sceneLabel} width="1500" height="1260" decoding="async" fetchpriority="high" />
   </div>
 
   <div id="hero-content" class="container-site relative z-10 pb-12 pt-[46svh] sm:pb-16 sm:pt-[40svh] lg:pb-20 lg:pt-40">
@@ -66,6 +66,37 @@ const givenNames = nameWords.slice(0, -2).join(' ');
   let sceneObserver: IntersectionObserver | null = null;
   let stopScrollEffect: (() => void) | undefined;
   let scene: { container: HTMLElement; handle: LaptopSceneHandle } | null = null;
+  let cancelSceneStart: (() => void) | undefined;
+  let sceneGeneration = 0;
+  const hasScene = (container: HTMLElement) => scene?.container === container;
+
+  // Let HTML, fonts and the lightweight poster paint before compiling WebGL.
+  // Every callback is cancellable during Astro navigation or when scrolled away.
+  function afterFirstPaint(callback: () => void): () => void {
+    let cancelled = false;
+    let frame = 0;
+    let idle: number | undefined;
+    let timer: number | undefined;
+    const run = () => { if (!cancelled) callback(); };
+    const onLoad = () => {
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(() => {
+          if (cancelled) return;
+          if (typeof window.requestIdleCallback === 'function') idle = window.requestIdleCallback(run, { timeout: 1500 });
+          else timer = window.setTimeout(run, 100);
+        });
+      });
+    };
+    if (document.readyState === 'complete') onLoad();
+    else window.addEventListener('load', onLoad, { once: true });
+    return () => {
+      cancelled = true;
+      window.removeEventListener('load', onLoad);
+      cancelAnimationFrame(frame);
+      if (idle !== undefined) window.cancelIdleCallback(idle);
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
+  }
 
   // Reduced-motion, low-memory and data-saving devices use a still image.
   // The same fallback is used if the browser cannot create a WebGL context.
@@ -77,12 +108,15 @@ const givenNames = nameWords.slice(0, -2).join(' ');
   function showFallback(container: HTMLElement, canvas: HTMLCanvasElement) {
     const img = container.querySelector<HTMLImageElement>('#hero-fallback');
     if (!img) return;
+    container.classList.remove('is-live');
     canvas.hidden = true;
+    canvas.setAttribute('aria-hidden', 'true');
     img.hidden = false;
+    img.removeAttribute('aria-hidden');
     requestAnimationFrame(() => img.classList.add('is-ready'));
   }
 
-  async function mountScene(container: HTMLElement, canvas: HTMLCanvasElement) {
+  async function mountScene(container: HTMLElement, canvas: HTMLCanvasElement, generation: number) {
     if (scene && scene.container === container) return;
     scene?.handle.dispose();
     scene = null;
@@ -94,7 +128,9 @@ const givenNames = nameWords.slice(0, -2).join(' ');
     let handle: LaptopSceneHandle | null = null;
     try {
       const { createLaptopScene } = await import('./LaptopScene');
-      if (!container.isConnected) return;
+      if (!container.isConnected || generation !== sceneGeneration) return;
+      if (hasScene(container)) return;
+      if (document.visibilityState === 'hidden' || container.getBoundingClientRect().bottom <= 0) return;
       handle = createLaptopScene(container, canvas, {
         name: container.dataset.name ?? 'Luciano K. Dal Pai',
         role: container.dataset.role ?? ''
@@ -102,11 +138,18 @@ const givenNames = nameWords.slice(0, -2).join(' ');
     } catch {
       handle = null;
     }
-    if (handle) scene = { container, handle };
+    if (handle) {
+      scene = { container, handle };
+      container.classList.add('is-live');
+      canvas.removeAttribute('aria-hidden');
+      container.querySelector('#hero-fallback')?.setAttribute('aria-hidden', 'true');
+    }
     else showFallback(container, canvas);
   }
 
   function initHero() {
+    cancelSceneStart?.();
+    const generation = ++sceneGeneration;
     stopScrollEffect?.();
     stopScrollEffect = undefined;
 
@@ -122,12 +165,26 @@ const givenNames = nameWords.slice(0, -2).join(' ');
 
     sceneObserver?.disconnect();
     if (sceneContainer && canvas) {
-      sceneObserver = new IntersectionObserver(([entry]) => {
-        if (!entry.isIntersecting) return;
-        sceneObserver?.disconnect();
-        mountScene(sceneContainer, canvas);
-      });
-      sceneObserver.observe(sceneContainer);
+      if (prefersStill()) showFallback(sceneContainer, canvas);
+      else {
+        let visible = false;
+        let cancelScheduled: (() => void) | undefined;
+        const schedule = () => {
+          cancelScheduled?.();
+          if (!visible || document.visibilityState === 'hidden' || scene?.container === sceneContainer) return;
+          cancelScheduled = afterFirstPaint(() => { void mountScene(sceneContainer, canvas, generation); });
+        };
+        sceneObserver = new IntersectionObserver(([entry]) => {
+          visible = entry.isIntersecting;
+          schedule();
+        });
+        sceneObserver.observe(sceneContainer);
+        document.addEventListener('visibilitychange', schedule);
+        cancelSceneStart = () => {
+          cancelScheduled?.();
+          document.removeEventListener('visibilitychange', schedule);
+        };
+      }
     }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -174,6 +231,8 @@ const givenNames = nameWords.slice(0, -2).join(' ');
 
   document.addEventListener('astro:page-load', initHero);
   document.addEventListener('astro:before-swap', () => {
+    ++sceneGeneration;
+    cancelSceneStart?.();
     sceneObserver?.disconnect();
     stopScrollEffect?.();
     scene?.handle.dispose();

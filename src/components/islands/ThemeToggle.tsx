@@ -10,7 +10,10 @@ export default function ThemeToggle({ labelLight, labelDark }: Props) {
   const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
-    setTheme(getStoredTheme());
+    const syncTheme = () => setTheme(getStoredTheme());
+    syncTheme();
+    window.addEventListener('theme-change', syncTheme);
+    return () => window.removeEventListener('theme-change', syncTheme);
   }, []);
 
   const label = theme === 'dark' ? labelLight : labelDark;
