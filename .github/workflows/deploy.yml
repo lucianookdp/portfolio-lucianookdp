@@ -35,6 +35,9 @@ jobs:
           npm run check
           node scripts/check-mobile-motion.mjs
 
+      - name: Check UI resilience and rendering
+        run: node --test scripts/check-resilience.mjs
+
       - name: Build
         run: npm run build
         env:

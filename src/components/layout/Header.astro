@@ -76,6 +76,7 @@ const INFINITY_PATH =
         id="menu-toggle"
         class="burger tap-scale text-[var(--color-text)] md:hidden"
         aria-label={dict.nav.openMenu}
+        data-close-label={dict.nav.closeMenu}
         aria-expanded="false"
         aria-controls="mobile-menu"
       >
@@ -87,7 +88,7 @@ const INFINITY_PATH =
   </div>
 </header>
 
-<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label={dict.nav.primary} aria-hidden="true" inert>
   <div class="aurora" aria-hidden="true"><span class="aurora-blob"></span></div>
   <div class="relative flex h-full flex-col justify-between pt-24">
     <p class="eyebrow">{dict.nav.menuHint}</p>
@@ -156,11 +157,13 @@ const INFINITY_PATH =
     cmdkButton?.addEventListener('click', onCmdkClick);
     if (cmdkButton) cleanups.push(() => cmdkButton.removeEventListener('click', onCmdkClick));
 
-    if (cmdkButton && !localStorage.getItem('cmdk-hint-seen')) {
+    let hintSeen = false;
+    try { hintSeen = localStorage.getItem('cmdk-hint-seen') === '1'; } catch { /* Optional storage. */ }
+    if (cmdkButton && !hintSeen) {
       const showHint = () => cmdkButton.classList.add('cmdk-hint');
       const dismissHint = () => {
         cmdkButton.classList.remove('cmdk-hint');
-        localStorage.setItem('cmdk-hint-seen', '1');
+        try { localStorage.setItem('cmdk-hint-seen', '1'); } catch { /* Optional storage. */ }
         window.removeEventListener('command-palette:open', dismissHint);
         cmdkButton.removeEventListener('click', dismissHint);
         document.removeEventListener('keydown', onKeydownDismiss);
@@ -233,37 +236,69 @@ const INFINITY_PATH =
     const menu = document.getElementById('mobile-menu');
     const openLabel = menuToggle?.getAttribute('aria-label') ?? '';
     let menuOpen = false;
+    const background = [document.querySelector<HTMLElement>('main'), document.querySelector<HTMLElement>('footer')].filter((el): el is HTMLElement => !!el);
+    let previousInert: boolean[] = [];
+    const focusableMenu = () => Array.from(menu?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex="0"]') ?? []);
 
-    function setMenu(open: boolean) {
+    function setMenu(open: boolean, restoreFocus = true) {
       if (!menu || !menuToggle) return;
+      if (menuOpen === open) return;
       menuOpen = open;
+      menu.inert = !open;
       menu.classList.toggle('is-open', open);
       menu.setAttribute('aria-hidden', String(!open));
       menuToggle.setAttribute('aria-expanded', String(open));
       menuToggle.setAttribute('aria-label', open ? menuToggle.dataset.closeLabel ?? openLabel : openLabel);
-      if (open) lockScroll();
-      else unlockScroll();
+      if (open) {
+        previousInert = background.map(el => el.inert);
+        background.forEach(el => { el.inert = true; });
+        lockScroll();
+        focusableMenu()[0]?.focus();
+      } else {
+        background.forEach((el, index) => { el.inert = previousInert[index]; });
+        unlockScroll();
+        if (restoreFocus) menuToggle.focus();
+      }
     }
     function onMenuToggle() {
       setMenu(!menuOpen);
     }
+    let menuNavigationTimer = 0;
     function onMenuLinkClick(event: Event) {
       const link = event.currentTarget as HTMLAnchorElement;
       const href = link.getAttribute('href') ?? '';
       if (!href.startsWith('#')) return;
       event.preventDefault();
-      setMenu(false);
-      window.setTimeout(() => scrollToTarget(href), 250);
+      setMenu(false, false);
+      window.clearTimeout(menuNavigationTimer);
+      menuNavigationTimer = window.setTimeout(() => {
+        scrollToTarget(href);
+        const target = document.querySelector<HTMLElement>(href);
+        target?.setAttribute('tabindex', '-1');
+        target?.focus({ preventScroll: true });
+      }, 250);
     }
     function onMenuKeydown(event: KeyboardEvent) {
-      if (event.key === 'Escape' && menuOpen) setMenu(false);
+      if (!menuOpen) return;
+      if (event.key === 'Escape') { event.preventDefault(); setMenu(false); return; }
+      if (event.key !== 'Tab' || !menuToggle) return;
+      const items = [menuToggle, ...focusableMenu()];
+      const current = items.indexOf(document.activeElement as HTMLElement);
+      if (current === -1 || (!event.shiftKey && current === items.length - 1) || (event.shiftKey && current === 0)) {
+        event.preventDefault();
+        items[event.shiftKey ? items.length - 1 : 0]?.focus();
+      }
     }
+    function onMenuResize() { if (menuOpen && window.matchMedia('(min-width: 768px)').matches) setMenu(false); }
+    window.addEventListener('resize', onMenuResize);
     menuToggle?.addEventListener('click', onMenuToggle);
     document.addEventListener('keydown', onMenuKeydown);
     const menuLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-menu-link]'));
     menuLinks.forEach((link) => link.addEventListener('click', onMenuLinkClick));
     cleanups.push(() => {
       if (menuOpen) setMenu(false);
+      window.clearTimeout(menuNavigationTimer);
+      window.removeEventListener('resize', onMenuResize);
       menuToggle?.removeEventListener('click', onMenuToggle);
       document.removeEventListener('keydown', onMenuKeydown);
       menuLinks.forEach((link) => link.removeEventListener('click', onMenuLinkClick));

@@ -32,12 +32,21 @@ export default function ThemeToggle({ labelLight, labelDark }: Props) {
     document.documentElement.style.setProperty('--theme-toggle-y', `${rect.top + rect.height / 2}px`);
     document.documentElement.classList.add('theme-transition');
 
-    const transition = document.startViewTransition(() => {
+    let applied = false;
+    const updateTheme = () => {
+      if (applied) return;
+      applied = true;
       setTheme(toggleTheme());
-    });
-    transition.finished.finally(() => {
-      document.documentElement.classList.remove('theme-transition');
-    });
+    };
+    const cleanup = () => document.documentElement.classList.remove('theme-transition');
+    try {
+      const transition = document.startViewTransition(updateTheme);
+      transition.updateCallbackDone.catch(() => { updateTheme(); cleanup(); });
+      transition.finished.then(cleanup, cleanup);
+    } catch {
+      updateTheme();
+      cleanup();
+    }
   }
 
   return (
