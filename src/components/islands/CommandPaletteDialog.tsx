@@ -22,6 +22,10 @@ export default function CommandPaletteDialog({ dict, navItems, currentLocale, pt
 
   function goToSection(id: string) {
     onOpenChange(false);
+    if (!document.getElementById(id)) {
+      navigate(`${currentLocale === 'pt' ? ptPath : enPath}#${id}`);
+      return;
+    }
     requestAnimationFrame(() => scrollToTarget(`#${id}`));
   }
 

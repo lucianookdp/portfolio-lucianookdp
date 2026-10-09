@@ -39,6 +39,9 @@ jobs:
         run: node scripts/check-mobile-motion.mjs
 
       # No API token: use committed GitHub stats for reproducible build sizes.
+      - name: Check UI resilience and rendering
+        run: node --test scripts/check-resilience.mjs
+
       - name: Build
         run: npm run build
 

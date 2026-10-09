@@ -9,13 +9,14 @@ interface Props {
 const { dict, locale } = Astro.props;
 const year = new Date().getFullYear();
 
+const sectionPrefix = ['/', '/en', '/en/'].includes(Astro.url.pathname) ? '' : (locale === 'pt' ? '/' : '/en');
 const navItems = [
   { href: '#about', label: dict.nav.about },
   { href: '#projects', label: dict.nav.projects },
   { href: '#services', label: dict.nav.services },
   { href: '#contact', label: dict.nav.contact },
   { href: '#stack', label: dict.nav.stack }
-];
+].map(item => ({ ...item, href: `${sectionPrefix}${item.href}` }));
 ---
 
 <footer class="relative overflow-hidden border-t border-[var(--color-border)]">
