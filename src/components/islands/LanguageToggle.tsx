@@ -1,5 +1,3 @@
-import { motion } from 'motion/react';
-
 interface Props {
   currentLocale: 'pt' | 'en';
   ptPath: string;
@@ -19,10 +17,9 @@ export default function LanguageToggle({ currentLocale, ptPath, enPath }: Props)
 
   return (
     <div className="relative flex items-center rounded-full border border-[var(--color-border-strong)] p-0.5 font-mono text-[11px] font-medium">
-      <motion.span
-        className="absolute inset-y-0.5 w-8 rounded-full bg-[var(--color-accent)]"
-        animate={{ x: isPt ? 0 : '100%' }}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      <span
+        className="absolute inset-y-0.5 w-8 rounded-full bg-[var(--color-accent)] transition-transform duration-300 motion-reduce:transition-none"
+        style={{ transform: isPt ? 'translateX(0)' : 'translateX(100%)', transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
         aria-hidden="true"
       />
       <a

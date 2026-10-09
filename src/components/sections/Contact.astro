@@ -30,7 +30,7 @@ const { dict } = Astro.props;
 
       <div data-reveal data-reveal-delay="120" class="w-full">
         <ObfuscatedEmail
-          client:load
+          client:visible={{ rootMargin: '400px' }}
           userPart="engslucianok"
           domainPart="gmail"
           tldPart="com"

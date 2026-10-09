@@ -551,6 +551,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
 
   /* --- Layout ------------------------------------------------------------------ */
   const target = { x: 0, y: 0, scale: 1, narrow: false };
+  let scrollNeedsUpdate = true;
   function layout() {
     const width = container.clientWidth;
     const height = container.clientHeight;
@@ -573,6 +574,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
     }
     root.position.set(target.x, target.y, 0);
     root.scale.setScalar(target.scale);
+    scrollNeedsUpdate = true;
   }
 
   /* --- Interaction --------------------------------------------------------- */
@@ -588,15 +590,21 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
     pointer.y = -((event.clientY / window.innerHeight) * 2 - 1);
   }
   function readScroll() {
+    if (!scrollNeedsUpdate) return;
     const rect = hero.getBoundingClientRect();
     scrollProgress = Math.min(1, Math.max(0, -rect.top / Math.max(1, rect.height)));
+    scrollNeedsUpdate = false;
+  }
+  function onScroll() {
+    // Coalesce scroll events into one geometry read on the next rendered frame.
+    scrollNeedsUpdate = true;
   }
 
   /* --- Frame ----------------------------------------------------------------- */
   let lastPaint = -1;
   let lastFrame = -1;
   function renderFrame(elapsed: number) {
-    // Frame-rate independent smoothing (same feel at 60 or 120 Hz).
+    // Frame-rate independent smoothing keeps the same feel at 30 or 60 Hz.
     const dt = lastFrame < 0 ? 1 / 60 : Math.min(0.1, elapsed - lastFrame);
     lastFrame = elapsed;
     const k = 1 - Math.exp(-dt * 7);
@@ -621,7 +629,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
     root.position.y = target.y + Math.sin(elapsed * 0.7) * 0.018 + (target.narrow ? -sp : sp * 0.6);
     root.position.x = target.x + smoothPointer.x * 0.04;
 
-    // Repaint the screen at ~30fps while the lid is open and still; while it
+    // Repaint the screen at 15/24 fps while the lid is open and still; while it
     // is closing the texture upload would only steal frames from the motion.
     const lidMoving = Math.abs(scrollProgress - smoothScroll) > 0.003 || intro < 1;
     if (openAmount > 0.15 && !lidMoving && elapsed - lastPaint > 1 / (isSmall ? 15 : 24)) {
@@ -635,18 +643,29 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
 
   let rafId = 0;
   let running = false;
+  let inViewport = false;
   let elapsedBase = 0;
   let runStart = 0;
+  const frameInterval = 1000 / (isSmall ? 30 : 60);
+  let nextRenderAt = 0;
   function loop(now: number) {
     if (!running) return;
-    renderFrame(elapsedBase + (now - runStart) / 1000);
+    // High-refresh displays do not need extra WebGL draws for this slow motion.
+    // A small tolerance absorbs rAF timestamp jitter without reducing 60 to 30 fps.
+    if (now + 0.5 >= nextRenderAt) {
+      renderFrame(elapsedBase + (now - runStart) / 1000);
+      nextRenderAt += frameInterval;
+      if (nextRenderAt < now - 0.5) nextRenderAt = now + frameInterval;
+    }
     rafId = requestAnimationFrame(loop);
   }
   function start() {
-    if (running || reducedMotion || disposed) return;
+    if (running || reducedMotion || disposed || !inViewport || document.visibilityState !== 'visible') return;
     running = true;
+    scrollNeedsUpdate = true;
     lastFrame = -1;
     runStart = performance.now();
+    nextRenderAt = runStart + frameInterval;
     rafId = requestAnimationFrame(loop);
   }
   function stop() {
@@ -664,13 +683,13 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
     renderer.render(scene, camera);
   } else {
     renderFrame(0);
-    start();
   }
   canvas.classList.add('is-ready');
 
   // Fonts may finish loading after the first paint; repaint once they do.
   document.fonts?.ready.then(() => {
     if (disposed) return;
+    scrollNeedsUpdate = true;
     painter.paint(2.5);
     screenTexture.needsUpdate = true;
     if (reducedMotion) renderer.render(scene, camera);
@@ -684,7 +703,8 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
 
   const intersectionObserver = new IntersectionObserver(
     ([entry]) => {
-      if (entry.isIntersecting && document.visibilityState === 'visible') start();
+      inViewport = entry.isIntersecting;
+      if (inViewport) start();
       else stop();
     },
     { threshold: 0 }
@@ -693,7 +713,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
 
   function onVisibilityChange() {
     if (document.visibilityState === 'hidden') stop();
-    else if (container.getBoundingClientRect().bottom > 0) start();
+    else start();
   }
   function onThemeChange() {
     const glow = readColor('--color-accent-glow', '#3ddc8f');
@@ -706,6 +726,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   }
 
   window.addEventListener('pointermove', onPointerMove, { passive: true });
+  window.addEventListener('scroll', onScroll, { passive: true });
   document.addEventListener('visibilitychange', onVisibilityChange);
   window.addEventListener('theme-change', onThemeChange);
 
@@ -716,6 +737,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('scroll', onScroll);
       document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('theme-change', onThemeChange);
       disposables.forEach((item) => item.dispose());

@@ -459,6 +459,9 @@
 .hero-fallback.is-ready {
   opacity: 1;
 }
+#hero-scene.is-live .hero-fallback {
+  opacity: 0;
+}
 @media (min-width: 1024px) {
   .hero-fallback {
     left: auto;
