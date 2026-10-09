@@ -13,13 +13,14 @@ interface Props {
 
 const { dict, locale, ptPath, enPath } = Astro.props;
 
+const sectionPrefix = ['/', '/en', '/en/'].includes(Astro.url.pathname) ? '' : (locale === 'pt' ? '/' : '/en');
 const navItems = [
   { href: '#about', id: 'about', label: dict.nav.about },
   { href: '#projects', id: 'projects', label: dict.nav.projects },
   { href: '#services', id: 'services', label: dict.nav.services },
   { href: '#contact', id: 'contact', label: dict.nav.contact },
   { href: '#stack', id: 'stack', label: dict.nav.stack }
-];
+].map(item => ({ ...item, href: `${sectionPrefix}${item.href}` }));
 
 const homePath = locale === 'pt' ? '/' : '/en';
 const INFINITY_PATH =
@@ -188,7 +189,10 @@ const INFINITY_PATH =
     const indicator = document.getElementById('nav-indicator');
     const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'));
     const sections = navLinks
-      .map((link) => document.querySelector<HTMLElement>(link.getAttribute('href') ?? ''))
+      .map((link) => {
+        const href = link.getAttribute('href') ?? '';
+        return href.startsWith('#') ? document.querySelector<HTMLElement>(href) : null;
+      })
       .filter((el): el is HTMLElement => el !== null);
 
     function setActive(index: number, animated: boolean) {

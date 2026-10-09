@@ -27,4 +27,4 @@ No navegador em 320 px: sem overflow horizontal; foco inicial no menu, Tab do ú
 - A API PageSpeed retornou HTTP 429 por limite de uso. Nenhuma nota Lighthouse ou ganho de tempo de carregamento foi atribuído.
 - A cena Three.js permanece um módulo adiado de cerca de 571 KiB raw / 144 KiB gzip, mantendo a aparência. O build ainda alerta sobre esse chunk, já separado do carregamento estático inicial.
 - O domínio apresenta página genérica da Hostinger em /qa-missing-page; /404.html entrega a página personalizada. A hospedagem precisa encaminhar respostas 404 para /404.html preservando o status 404. O acesso GitHub não oferece acesso ao painel dessa configuração; não foi alterada uma regra de servidor sem verificar a plataforma.
-- Os links de seção no cabeçalho/rodapé da página 404 ainda são fragmentos locais. Os botões Voltar ao início / Back to home oferecem recuperação, mas os links de seção precisam levar à home nessa página.
+- Corrigidos também os links do cabeçalho/rodapé e da paleta na página 404 para levar às seções da home. O título 404 agora é um h1, mantendo o visual.
