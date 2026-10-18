@@ -34,6 +34,7 @@ const STEP_ICONS = [
     {dict.services.offerings.map((offering, index) => (
       <div class="offering-reveal" data-reveal data-reveal-delay={index * 80}>
         <div class="offering spot-card tilt h-full" data-tilt-max="3">
+        <span class="offering-accent" aria-hidden="true"></span>
         <span class="offering-icon" aria-hidden="true">
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             {index === 0 && <>
@@ -64,19 +65,31 @@ const STEP_ICONS = [
     ))}
   </div>
 
-  <div class="services-mobile-process" aria-labelledby="mobile-process-heading">
-    <h3 id="mobile-process-heading" class="font-display text-xl font-semibold">{dict.services.processHeading}</h3>
+  <div class="process-heading" data-reveal>
+    <span class="process-heading-symbol" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3" /><circle cx="24" cy="24" r="3" /><path d="M11 8h9a4 4 0 0 1 0 8h-8a4 4 0 0 0 0 8h9" /></svg>
+    </span>
+    <div>
+      <p class="eyebrow">{dict.services.processEyebrow}</p>
+      <h3 id="service-process-heading" class="process-heading-title font-display font-semibold">{dict.services.processHeading}</h3>
+      <p class="process-heading-description">{dict.services.processIntro}</p>
+    </div>
+  </div>
+  <div class="services-mobile-process" aria-labelledby="service-process-heading">
     <p class="mt-2 text-sm leading-relaxed text-[var(--color-text-secondary)]">{dict.services.selectHint}</p>
     <ol class="mobile-process-list">
       {steps.map((step, index) => (
-        <li>
+        <li data-reveal data-reveal-delay={index * 50}>
           <details class="mobile-process-step" name="service-process" open={index === 0}>
             <summary>
-              <span class="mobile-process-number font-mono" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-              <span class="mobile-process-title">{step.title}</span>
+              <span class="mobile-process-number" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={STEP_ICONS[index] ?? STEP_ICONS[2]} /></span>
+              <span class="mobile-process-label">
+                <span class="mobile-process-count font-mono">{String(index + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}</span>
+                <span class="mobile-process-title">{step.title}</span>
+              </span>
               <svg class="mobile-process-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
             </summary>
-            <p class="mobile-process-description">{step.description}</p>
+            <div class="mobile-process-body"><p class="mobile-process-description">{step.description}</p></div>
           </details>
         </li>
       ))}
@@ -484,4 +497,56 @@ const STEP_ICONS = [
     .mobile-process-step[open] .mobile-process-chevron { transform: rotate(180deg); }
     .mobile-process-description { padding: 0 1rem 1.25rem; font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); }
   }
+
+  /* Emerald accents and staggered entrances stay consistent with the page. */
+  .offering { transition: border-color 300ms ease, box-shadow 300ms ease; }
+  .offering > .offering-accent { position: absolute; top: -1px; left: 1.25rem; right: 1.25rem; height: 1px; z-index: 2; pointer-events: none; background: linear-gradient(90deg, transparent, var(--color-accent-glow), transparent); opacity: 0.55; }
+  .process-heading { display: flex; align-items: flex-start; gap: 1rem; margin-top: 3.5rem; }
+  .process-heading-symbol { display: grid; place-items: center; flex: 0 0 3rem; height: 3rem; border: 1px solid var(--color-border-strong); border-radius: 1rem; color: var(--color-accent-text); background: var(--color-accent-soft); }
+  .process-heading-symbol svg { width: 1.75rem; height: 1.75rem; }
+  .process-heading-title { margin-top: 0.5rem; font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.2; letter-spacing: -0.03em; }
+  .process-heading-description { max-width: 44ch; margin-top: 0.625rem; color: var(--color-text-secondary); font-size: 0.9375rem; line-height: 1.65; }
+  @media (min-width: 1024px) {
+    .process-sticky { padding: 1.5rem; border: 1px solid var(--color-border-strong); border-radius: 1.75rem; background: linear-gradient(150deg, var(--color-accent-soft), transparent 45%), var(--color-bg); }
+  }
+  @media (max-width: 1023px) {
+    .services-mobile-process { margin-top: 1rem; }
+    .mobile-process-list { position: relative; gap: 0.875rem; }
+    .mobile-process-list::before { content: ''; position: absolute; top: 2rem; bottom: 2rem; left: 2.375rem; width: 1px; background: linear-gradient(var(--color-accent-text), var(--color-border-strong)); opacity: 0.5; }
+    .mobile-process-step { position: relative; border-radius: 1.25rem; transition: border-color 250ms ease, background-color 250ms ease, box-shadow 250ms ease; }
+    .mobile-process-step summary { grid-template-columns: 2.5rem minmax(0, 1fr) 1.125rem; gap: 0.875rem; min-height: 5.25rem; padding: 1rem 1.125rem; }
+    .mobile-process-step summary:focus-visible { border-radius: 1.25rem; }
+    .mobile-process-number { width: 2.5rem; height: 2.5rem; border: 1px solid var(--color-border-strong); border-radius: 0.875rem; background: var(--color-bg); }
+    .mobile-process-number svg { width: 1.25rem; height: 1.25rem; }
+    .mobile-process-label { display: flex; flex-direction: column; gap: 0.25rem; }
+    .mobile-process-count { color: var(--color-text-secondary); font-size: 0.625rem; line-height: 1; letter-spacing: 0.12em; }
+    .mobile-process-step[open] { background: linear-gradient(135deg, var(--color-accent-soft), transparent 65%), var(--color-bg-elevated); box-shadow: 0 12px 28px -24px var(--color-accent-glow); }
+    .mobile-process-step[open] .mobile-process-number { color: var(--color-on-accent); background: var(--color-accent); border-color: var(--color-accent); }
+    .mobile-process-step[open] .mobile-process-count { color: var(--color-accent-text); }
+    .mobile-process-body { padding: 0 1.125rem 1.25rem; }
+    .mobile-process-body::before { content: ''; display: block; height: 1px; margin-bottom: 1rem; background: linear-gradient(90deg, var(--color-border-strong), transparent); }
+    .mobile-process-description { padding: 0; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .offering-reveal.is-revealed .offering-title { animation: service-copy-enter 600ms var(--ease-out-expo) both; animation-delay: calc(var(--reveal-delay, 0ms) + 100ms); }
+    .offering-reveal.is-revealed .offering-description { animation: service-copy-enter 650ms var(--ease-out-expo) both; animation-delay: calc(var(--reveal-delay, 0ms) + 170ms); }
+    .offering-reveal.is-revealed .offering-accent { animation: service-accent-enter 1s var(--ease-out-expo) both; animation-delay: var(--reveal-delay, 0ms); }
+    .process-heading.is-revealed .process-heading-symbol svg { animation: offering-icon-draw 1s var(--ease-out-expo) both; }
+    .mobile-process-chevron { transition: transform 300ms var(--ease-out-expo), color 250ms ease; }
+    .mobile-process-number { transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease; }
+    .mobile-process-step[open] .mobile-process-body { animation: service-copy-enter 350ms var(--ease-out-expo) both; }
+    .mobile-process-step[open] .mobile-process-number svg { animation: service-node-enter 400ms var(--ease-out-expo) both; }
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .offering:hover { box-shadow: 0 16px 36px -28px var(--color-accent-glow); }
+    .mobile-process-step summary:hover .mobile-process-title { color: var(--color-accent-text); }
+  }
+  @media (hover: none) and (pointer: coarse) and (prefers-reduced-motion: no-preference) {
+    .offering:active .offering-icon svg { transform: translateY(-2px); }
+    .mobile-process-step summary:active .mobile-process-number svg { transform: scale(0.9); }
+  }
+  @media (prefers-reduced-motion: reduce) { .mobile-process-step { transition: none; } }
+  @keyframes service-copy-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes service-accent-enter { from { opacity: 0; transform: scaleX(0.15); } to { opacity: 0.55; transform: scaleX(1); } }
+  @keyframes service-node-enter { from { opacity: 0.5; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 </style>
