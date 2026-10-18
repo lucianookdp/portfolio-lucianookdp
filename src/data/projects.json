@@ -44,12 +44,12 @@
       "pt": {
         "name": "Consulta CNPJ",
         "subtitle": "Informações de empresas para decidir melhor.",
-        "result": "Veja informações de uma empresa, conheça seus sócios e entenda os alertas antes de negociar. Demonstração com empresas e dados fictícios."
+        "result": "Veja informações de uma empresa, conheça seus sócios e entenda os alertas antes de negociar. Consulte tudo em um só lugar e salve um relatório."
       },
       "en": {
         "name": "Company Lookup",
         "subtitle": "Company information to help you decide.",
-        "result": "Look up a company, see who owns it and review warnings before doing business. This demonstration uses fictional companies and sample information."
+        "result": "Look up a company, see who owns it and review warnings before doing business. Find the information in one place and save a report to share."
       }
     },
     "media": {
@@ -73,12 +73,12 @@
       "pt": {
         "name": "Racha Contas",
         "subtitle": "Divida despesas com amigos sem complicação.",
-        "result": "Organize os gastos de viagens, jantares e outros encontros com amigos. Veja quanto cada pessoa deve pagar. Demonstração com dados fictícios."
+        "result": "Organize os gastos de viagens, jantares e outros encontros com amigos. Veja quanto cada pessoa deve pagar e acerte as contas sem complicação."
       },
       "en": {
         "name": "Split the Bill",
         "subtitle": "Share expenses with friends, without hassle.",
-        "result": "Organize shared expenses for trips, dinners and other plans with friends. See how much each person owes. This demonstration uses sample data."
+        "result": "Organize shared expenses for trips, dinners and other plans with friends. See how much each person owes and settle up without the confusion."
       }
     },
     "media": {
@@ -101,12 +101,12 @@
       "pt": {
         "name": "Achados e Perdidos",
         "subtitle": "Objetos encontrados e devoluções organizadas.",
-        "result": "Encontre objetos perdidos e acompanhe sua devolução em um só lugar. Veja onde cada item foi entregue. Demonstração com objetos e dados fictícios."
+        "result": "Encontre objetos perdidos e acompanhe sua devolução em um só lugar. Veja onde cada item foi entregue e mantenha os registros organizados."
       },
       "en": {
         "name": "Lost & Found",
         "subtitle": "Found items and returns, all in one place.",
-        "result": "Find lost belongings and keep track of their return in one place. See where each item was handed in. This demonstration uses fictional items."
+        "result": "Find lost belongings and keep track of their return in one place. See where each item was handed in and keep the records neatly organized."
       }
     },
     "media": {
