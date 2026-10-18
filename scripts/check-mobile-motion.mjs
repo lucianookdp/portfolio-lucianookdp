@@ -33,6 +33,7 @@ for (const [touch, reduced, tall] of [[true, false, true], [true, false, false],
   assert.equal(effects.filter(({target}) => services.includes(target)).length, !reduced && touch ? 4 : 0);
   for (const effect of effects.filter(({target}) => services.includes(target))) {
     assert.deepEqual(Array.from(effect.frames['--mobile-glow']), [0, 1, 0]);
+    assert.equal(effect.frames.transform, undefined, 'Touch service cards stay flat and readable while scrolling');
     assert.equal(effect.options.target, effect.target.parentElement);
   }
   exports.destroyInteractions();

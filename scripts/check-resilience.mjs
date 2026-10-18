@@ -278,3 +278,29 @@ for (const mode of ['success', 'denied', 'unavailable']) {
     if (mode === 'success') assert.equal(written, 'contact@example.test');
   });
 }
+
+for (const compact of [true, false]) {
+  test('service process ' + (compact ? 'leaves compact layouts free to scroll' : 'keeps the desktop walkthrough'), () => {
+    const env = environment();
+    const root = env.element(), panel = env.element(), title = env.element(), description = env.element();
+    root.offsetHeight = 1800; panel.offsetHeight = 500;
+    const steps = Array.from({ length: 6 }, (_, i) => {
+      const step = env.element(); step.dataset = { title: 'Step ' + i, description: 'Description ' + i }; return step;
+    });
+    root.querySelectorAll = selector => selector === '[data-step]' ? steps : [];
+    root.querySelector = selector => ({ '[data-process-panel]': panel, '[data-detail]': env.element(), '[data-detail-title]': title, '[data-detail-description]': description }[selector] ?? null);
+    env.document.querySelector = () => root;
+    env.window.matchMedia = query => ({ matches: query.includes('max-width') ? compact : false });
+    const scrolls = [];
+    const api = execute(astroScript('src/components/sections/Services.astro'), {
+      ...env, getComputedStyle: () => ({ top: '96px' }),
+      require: () => ({ scrollToTarget: (...args) => scrolls.push(args) })
+    }, 'globalThis.qa = { initProcess };');
+    api.initProcess();
+    steps[5].dispatchEvent({ type: 'click', currentTarget: steps[5] });
+    assert.equal(scrolls.length, compact ? 0 : 1);
+    if (compact) { assert.equal(title.textContent, 'Step 5'); assert.equal(description.textContent, 'Description 5'); }
+    api.initProcess();
+    assert.equal(env.window.listeners.get('scroll').size, 1, 'Navigation must not accumulate scroll listeners');
+  });
+}

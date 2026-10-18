@@ -30,7 +30,7 @@ const STEP_ICONS = [
     </RevealText>
   </div>
 
-  <div class="mt-8 grid gap-4 sm:mt-10 md:grid-cols-2">
+  <div class="services-offerings mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4">
     {dict.services.offerings.map((offering, index) => (
       <div class="offering-reveal" data-reveal data-reveal-delay={index * 80}>
         <div class="offering spot-card tilt h-full" data-tilt-max="3">
@@ -58,10 +58,29 @@ const STEP_ICONS = [
           </svg>
         </span>
         <h3 class="offering-title font-display font-semibold">{offering.title}</h3>
-        <p class="mt-3 max-w-prose font-sans text-base leading-relaxed text-[var(--color-text-secondary)]">{offering.description}</p>
+        <p class="offering-description font-sans text-base leading-relaxed text-[var(--color-text-secondary)]">{offering.description}</p>
         </div>
       </div>
     ))}
+  </div>
+
+  <div class="services-mobile-process" aria-labelledby="mobile-process-heading">
+    <h3 id="mobile-process-heading" class="font-display text-xl font-semibold">{dict.services.processHeading}</h3>
+    <p class="mt-2 text-sm leading-relaxed text-[var(--color-text-secondary)]">{dict.services.selectHint}</p>
+    <ol class="mobile-process-list">
+      {steps.map((step, index) => (
+        <li>
+          <details class="mobile-process-step" name="service-process" open={index === 0}>
+            <summary>
+              <span class="mobile-process-number font-mono" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+              <span class="mobile-process-title">{step.title}</span>
+              <svg class="mobile-process-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </summary>
+            <p class="mobile-process-description">{step.description}</p>
+          </details>
+        </li>
+      ))}
+    </ol>
   </div>
 
   <!-- The panel sticks while this wrapper scrolls; each slice of the scroll
@@ -236,7 +255,7 @@ const STEP_ICONS = [
 
   // Scroll-driven walkthrough: the panel sticks while the wrapper scrolls, and
   // the scroll position inside the wrapper picks the active step. Clicking a
-  // node scrolls to that step's slice.
+  // node scrolls to that step's slice. Compact layouts use native disclosures.
   let teardown: (() => void) | null = null;
 
   function initProcess() {
@@ -263,7 +282,7 @@ const STEP_ICONS = [
     const count = steps.length;
     if (count === 0) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const shortScreen = window.matchMedia('(max-height: 540px)');
+    const compactScreen = window.matchMedia('(max-width: 1023px), (max-height: 540px)');
 
     let index = -1;
 
@@ -319,7 +338,7 @@ const STEP_ICONS = [
     let ticking = false;
     const update = () => {
       ticking = false;
-      if (shortScreen.matches) {
+      if (compactScreen.matches) {
         if (index < 0) setActive(0);
         return;
       }
@@ -345,7 +364,7 @@ const STEP_ICONS = [
     const select = (event: Event) => {
       const i = steps.indexOf(event.currentTarget as HTMLElement);
       if (i === -1) return;
-      if (shortScreen.matches) {
+      if (compactScreen.matches) {
         setActive(i);
         return;
       }
@@ -397,6 +416,7 @@ const STEP_ICONS = [
   }
   .offering-icon svg { width: 2rem; height: 2rem; }
   .offering-title { font-size: 1.25rem; line-height: 1.25; }
+  .offering-description { margin-top: 0.75rem; max-width: 65ch; }
   @media (min-width: 640px) {
     .offering { padding: 2rem; }
   }
@@ -431,5 +451,35 @@ const STEP_ICONS = [
   @keyframes offering-icon-enter {
     from { opacity: 0; transform: translateY(8px) scale(0.9); }
     to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .services-mobile-process { display: none; }
+  @media (max-width: 1023px) {
+    .services-mobile-process { display: block; margin-top: 2.5rem; }
+    .process-scroll { display: none; }
+    .offering {
+      display: grid;
+      grid-template-columns: 2.75rem minmax(0, 1fr);
+      column-gap: 0.875rem;
+      row-gap: 0.875rem;
+      align-content: start;
+      padding: 1.25rem;
+      border-radius: 1.25rem;
+    }
+    .offering-icon { width: 2.75rem; height: 2.75rem; margin: 0; border-radius: 0.75rem; }
+    .offering-icon svg { width: 1.625rem; height: 1.625rem; }
+    .offering-title { align-self: center; font-size: 1.125rem; line-height: 1.35; overflow-wrap: anywhere; }
+    .offering-description { grid-column: 1 / -1; margin: 0; font-size: 0.9375rem; line-height: 1.65; }
+    .mobile-process-list { display: grid; gap: 0.625rem; margin-top: 1.25rem; }
+    .mobile-process-step { border: 1px solid var(--color-border-strong); border-radius: 1rem; background: var(--color-bg-elevated); overflow: clip; }
+    .mobile-process-step summary { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr) 1.125rem; align-items: center; gap: 0.75rem; min-height: 4.25rem; padding: 0.875rem 1rem; cursor: pointer; list-style: none; }
+    .mobile-process-step summary::-webkit-details-marker { display: none; }
+    .mobile-process-step summary:focus-visible { outline: 2px solid var(--color-accent-text); outline-offset: -4px; border-radius: 1rem; }
+    .mobile-process-number { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 0.625rem; color: var(--color-accent-text); background: var(--color-accent-soft); font-size: 0.75rem; }
+    .mobile-process-title { font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
+    .mobile-process-chevron { width: 1.125rem; height: 1.125rem; color: var(--color-text-secondary); }
+    .mobile-process-step[open] { border-color: var(--color-accent-text); }
+    .mobile-process-step[open] .mobile-process-chevron { transform: rotate(180deg); }
+    .mobile-process-description { padding: 0 1rem 1.25rem; font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); }
   }
 </style>
