@@ -1,6 +1,7 @@
 [
   {
     "id": "cnpj-due-diligence",
+    "demoMaintenance": true,
     "enabled": true,
     "repoUrl": "https://github.com/lucianookdp/cnpj-due-diligence",
     "demoUrl": "https://lucianookdp.github.io/cnpj-due-diligence/",
@@ -61,6 +62,7 @@
   },
   {
     "id": "scammeter",
+    "demoMaintenance": true,
     "enabled": true,
     "repoUrl": "https://github.com/lucianookdp/scammeter",
     "demoUrl": "https://lucianookdp.github.io/scammeter/",
@@ -90,6 +92,7 @@
   },
   {
     "id": "lost-and-found",
+    "demoMaintenance": true,
     "enabled": true,
     "repoUrl": "https://github.com/lucianookdp/LostAndFound",
     "demoUrl": "https://lucianookdp.github.io/LostAndFound/",
