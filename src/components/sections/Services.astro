@@ -65,14 +65,19 @@ const STEP_ICONS = [
     ))}
   </div>
 
+  <div class="service-process" data-process-region>
   <div class="process-heading" data-reveal>
     <span class="process-heading-symbol" aria-hidden="true">
       <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3" /><circle cx="24" cy="24" r="3" /><path d="M11 8h9a4 4 0 0 1 0 8h-8a4 4 0 0 0 0 8h9" /></svg>
     </span>
-    <div>
+    <div class="process-heading-copy">
       <p class="eyebrow">{dict.services.processEyebrow}</p>
       <h3 id="service-process-heading" class="process-heading-title font-display font-semibold">{dict.services.processHeading}</h3>
       <p class="process-heading-description">{dict.services.processIntro}</p>
+    </div>
+    <div class="process-controls" data-process-controls hidden>
+      <span class="process-timer" aria-hidden="true"><span class="process-timer-fill" data-process-timer></span></span>
+      <button type="button" class="process-toggle" data-process-toggle data-pause-label={dict.services.pauseAutoplay} data-play-label={dict.services.playAutoplay}>{dict.services.pauseAutoplay}</button>
     </div>
   </div>
   <div class="services-mobile-process" aria-labelledby="service-process-heading">
@@ -261,10 +266,12 @@ const STEP_ICONS = [
       </div>
     </div>
   </div>
+  </div>
 </section>
 
 <script>
   import { scrollToTarget } from '../../lib/lenis';
+  import { createProcessAutoplay } from '../../lib/process-autoplay';
 
   // Scroll-driven walkthrough: the panel sticks while the wrapper scrolls, and
   // the scroll position inside the wrapper picks the active step. Clicking a
@@ -297,6 +304,11 @@ const STEP_ICONS = [
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const compactScreen = window.matchMedia('(max-width: 1023px), (max-height: 540px)');
 
+    const region = document.querySelector<HTMLElement>('[data-process-region]');
+    const autoplayButton = region?.querySelector<HTMLButtonElement>('[data-process-toggle]');
+    const mobileSteps = Array.from(region?.querySelectorAll<HTMLDetailsElement>('.mobile-process-step') ?? []);
+    const mobileSummaries = mobileSteps.map(step => step.querySelector('summary'));
+    let autoplay: ReturnType<typeof createProcessAutoplay> | undefined;
     let index = -1;
 
     const setActive = (i: number) => {
@@ -349,6 +361,7 @@ const STEP_ICONS = [
     };
 
     let ticking = false;
+    let rafId = 0;
     const update = () => {
       ticking = false;
       if (compactScreen.matches) {
@@ -367,10 +380,11 @@ const STEP_ICONS = [
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
-      requestAnimationFrame(update);
+      rafId = requestAnimationFrame(update);
     };
     const onResize = () => {
       refreshTravel();
+      if (compactScreen.matches && index >= 0) mobileSteps.forEach((step, i) => { step.open = i === index; });
       onScroll();
     };
 
@@ -391,7 +405,25 @@ const STEP_ICONS = [
     window.addEventListener('resize', onResize);
     update();
 
+    function onMobileSelect(event: Event) {
+      const selected = mobileSummaries.indexOf(event.currentTarget as HTMLElement);
+      if (selected >= 0) setActive(selected);
+    }
+    mobileSummaries.forEach(summary => summary?.addEventListener('click', onMobileSelect));
+    if (region && autoplayButton) autoplay = createProcessAutoplay({
+      root: region,
+      button: autoplayButton,
+      advance: () => {
+        const next = (index + 1) % count;
+        setActive(next);
+        if (compactScreen.matches) mobileSteps.forEach((step, i) => { step.open = i === next; });
+      }
+    });
+
     teardown = () => {
+      autoplay?.destroy();
+      cancelAnimationFrame(rafId);
+      mobileSummaries.forEach(summary => summary?.removeEventListener('click', onMobileSelect));
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
       steps.forEach((step) => step.removeEventListener('click', select));
@@ -549,4 +581,18 @@ const STEP_ICONS = [
   @keyframes service-copy-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   @keyframes service-accent-enter { from { opacity: 0; transform: scaleX(0.15); } to { opacity: 0.55; transform: scaleX(1); } }
   @keyframes service-node-enter { from { opacity: 0.5; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+  .process-heading { flex-wrap: wrap; }
+  .process-heading-copy { flex: 1; min-width: 0; }
+  .process-controls { display: flex; align-items: center; gap: 0.75rem; flex-basis: 100%; margin-left: 4rem; }
+  .process-controls[hidden] { display: none; }
+  .process-timer { display: block; width: 4rem; height: 3px; overflow: hidden; border-radius: 999px; background: var(--color-border-strong); }
+  .process-timer-fill { display: block; width: 100%; height: 100%; transform: scaleX(0); transform-origin: left; background: var(--color-accent-text); }
+  [data-autoplay-state='playing'] .process-timer-fill { animation: process-countdown var(--process-duration, 6000ms) linear forwards; }
+  .process-toggle { min-height: 44px; padding: 0.5rem 0.875rem; border: 1px solid var(--color-border-strong); border-radius: 999px; background: var(--color-bg-elevated); color: var(--color-text); font-size: 0.75rem; cursor: pointer; }
+  .process-toggle:hover { border-color: var(--color-accent-text); }
+  .process-toggle:focus-visible { outline: 2px solid var(--color-accent-text); outline-offset: 3px; }
+  @media (min-width: 1024px) { .process-controls { flex-basis: auto; margin-left: auto; align-self: center; } }
+  @media (prefers-reduced-motion: reduce) { .process-timer-fill { animation: none !important; } }
+  @keyframes process-countdown { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 </style>
