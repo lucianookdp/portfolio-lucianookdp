@@ -304,3 +304,67 @@ for (const compact of [true, false]) {
     assert.equal(env.window.listeners.get('scroll').size, 1, 'Navigation must not accumulate scroll listeners');
   });
 }
+
+function autoplayFixture(reduced = false) {
+  const env = environment();
+  const root = env.element(), button = env.element(), progress = env.element(), controls = env.element();
+  button.dataset = { playLabel: 'Resume', pauseLabel: 'Pause' };
+  root.querySelector = selector => selector === '[data-process-timer]' ? progress : controls;
+  const media = { ...eventTarget(), matches: reduced };
+  env.window.matchMedia = () => media;
+  let notify, advances = 0, disconnected = false;
+  const api = execute(source('src/lib/process-autoplay.ts'), { ...env,
+    IntersectionObserver: class {
+      constructor(callback) { notify = callback; }
+      observe() {}
+      disconnect() { disconnected = true; }
+    }
+  });
+  const controller = api.createProcessAutoplay({ root, button, advance() { advances++; } });
+  return { ...env, root, button, controls, media, controller,
+    show(visible = true) { notify([{ isIntersecting: visible, intersectionRatio: visible ? 1 : 0 }]); },
+    advances: () => advances, disconnected: () => disconnected
+  };
+}
+
+test('process autoplay starts only on screen and advances once per timeout', () => {
+  const f = autoplayFixture();
+  assert.equal(f.timers.size, 0);
+  f.show(); assert.equal(f.timers.size, 1);
+  f.show(); assert.equal(f.timers.size, 1);
+  f.flush(f.timers);
+  assert.equal(f.advances(), 1); assert.equal(f.timers.size, 1);
+  f.controller.destroy();
+});
+test('manual interaction pauses the process until explicitly resumed', () => {
+  const f = autoplayFixture(); f.show();
+  f.root.dispatchEvent({ type: 'click', target: f.root });
+  assert.equal(f.timers.size, 0); assert.equal(f.button.textContent, 'Resume');
+  f.show(false); f.show(); assert.equal(f.timers.size, 0);
+  f.button.dispatchEvent({ type: 'click', target: f.button });
+  assert.equal(f.timers.size, 1); assert.equal(f.button.textContent, 'Pause');
+  f.root.dispatchEvent({ type: 'focusin', target: f.root });
+  assert.equal(f.timers.size, 0);
+  f.controller.destroy();
+});
+test('autoplay stops outside the section, in hidden tabs and after navigation cleanup', () => {
+  const f = autoplayFixture(); f.show();
+  f.document.visibilityState = 'hidden'; f.document.dispatchEvent({ type: 'visibilitychange' });
+  assert.equal(f.timers.size, 0);
+  f.document.visibilityState = 'visible'; f.document.dispatchEvent({ type: 'visibilitychange' });
+  assert.equal(f.timers.size, 1);
+  f.show(false); assert.equal(f.timers.size, 0);
+  f.show(); f.controller.destroy();
+  assert.equal(f.timers.size, 0); assert.equal(f.disconnected(), true);
+  assert.equal(f.document.listeners.get('visibilitychange').size, 0);
+  assert.equal(f.root.listeners.get('click').size, 0);
+  f.flush(f.timers); assert.equal(f.advances(), 0);
+});
+test('reduced motion disables automatic step changes and countdown controls', () => {
+  const f = autoplayFixture(true); f.show();
+  assert.equal(f.timers.size, 0); assert.equal(f.controls.hidden, true);
+  f.media.matches = false; f.media.dispatchEvent({ type: 'change' });
+  assert.equal(f.timers.size, 1); assert.equal(f.controls.hidden, false);
+  f.media.matches = true; f.media.dispatchEvent({ type: 'change' });
+  assert.equal(f.timers.size, 0); f.controller.destroy();
+});
