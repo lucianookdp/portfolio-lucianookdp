@@ -207,7 +207,6 @@ function initServiceScroll(): Cleanup {
       if (!touch.matches) return;
       stops.push(scroll(
         animate(card, {
-          transform: ['perspective(1200px) rotateX(4deg) scale(0.98)', 'perspective(1200px) rotateX(0deg) scale(1)', 'perspective(1200px) rotateX(-4deg) scale(0.98)'],
           '--mobile-glow': [0, 1, 0]
         }, { ease: 'linear' }),
         { target: card.parentElement!, offset: ['start end', 'end start'] }
