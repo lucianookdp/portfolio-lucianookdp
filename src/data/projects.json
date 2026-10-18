@@ -1,5 +1,35 @@
 [
   {
+    "id": "eleicoes-brasil",
+    "enabled": true,
+    "repoUrl": "https://github.com/lucianookdp/eleicoes-brasil",
+    "demoUrl": "https://eleicoes.lucianookdp.dev/",
+    "stack": [
+      "TypeScript",
+      "Next.js",
+      "React",
+      "Fastify",
+      "PostgreSQL"
+    ],
+    "translations": {
+      "pt": {
+        "name": "Eleições Brasil",
+        "problem": "Na noite da apuração os números mudam a cada parcial e ficam espalhados entre cargos, estados e municípios.",
+        "result": "Cada nova parcial do TSE chega à tela em segundos, sem recarregar a página: urnas apuradas, confronto dos dois primeiros colocados, mapa por estado e resultados de todos os cargos em cada estado e município. Inclui ainda linha do tempo da noite, comparação entre estados, bancadas eleitas e modo telão para TV. Os números vêm dos arquivos oficiais sem alteração, sem pesquisa nem projeção.",
+        "subtitle": "Apuração em tempo real com os dados oficiais do TSE"
+      },
+      "en": {
+        "name": "Eleições Brasil",
+        "problem": "On election night the numbers change with every new batch and sit spread across races, states and municipalities.",
+        "result": "Every new batch from the TSE, Brazil’s electoral authority, reaches the screen within seconds and without a page reload: ballot boxes counted, the two leading candidates side by side, a map by state and results for every race in each state and municipality. It also has a timeline of the night, state comparisons, the elected congress and a big-screen mode for TV. The numbers come from the official files unchanged, with no polling or forecasting.",
+        "subtitle": "Live results from the official TSE count"
+      }
+    },
+    "media": {
+      "slot": "eleicoes-brasil"
+    }
+  },
+  {
     "id": "cnpj-due-diligence",
     "demoMaintenance": true,
     "enabled": true,
@@ -31,63 +61,34 @@
     }
   },
   {
-    "id": "eleicoes-brasil",
+    "id": "rachai",
+    "demoMaintenance": true,
     "enabled": true,
-    "repoUrl": "https://github.com/lucianookdp/eleicoes-brasil",
-    "demoUrl": "https://eleicoes.lucianookdp.dev/",
+    "repoUrl": "https://github.com/lucianookdp/rachai-web",
+    "demoUrl": "https://lucianookdp.github.io/rachai-web/",
     "stack": [
       "TypeScript",
-      "Next.js",
       "React",
       "Fastify",
+      "Prisma",
       "PostgreSQL"
     ],
     "translations": {
       "pt": {
-        "name": "Eleições Brasil",
-        "problem": "Na noite da apuração os números mudam a cada parcial e ficam espalhados entre cargos, estados e municípios.",
-        "result": "Cada nova parcial do TSE chega à tela em segundos, sem recarregar a página: urnas apuradas, confronto dos dois primeiros colocados, mapa por estado e resultados de todos os cargos em cada estado e município. Inclui ainda linha do tempo da noite, comparação entre estados, bancadas eleitas e modo telão para TV. Os números vêm dos arquivos oficiais sem alteração, sem pesquisa nem projeção.",
-        "subtitle": "Apuração em tempo real com os dados oficiais do TSE"
+        "name": "Rachaí",
+        "problem": "Dividir as despesas de um grupo pode virar uma confusão de contas, pagamentos e mensagens.",
+        "result": "Permite criar um grupo com código e PIN, escolher a moeda e registrar despesas em conjunto. Calcula o saldo de cada participante e sugere quem deve pagar a quem, reduzindo a quantidade de transferências necessárias.",
+        "subtitle": "Divisão de despesas em grupo, sem complicação"
       },
       "en": {
-        "name": "Eleições Brasil",
-        "problem": "On election night the numbers change with every new batch and sit spread across races, states and municipalities.",
-        "result": "Every new batch from the TSE, Brazil’s electoral authority, reaches the screen within seconds and without a page reload: ballot boxes counted, the two leading candidates side by side, a map by state and results for every race in each state and municipality. It also has a timeline of the night, state comparisons, the elected congress and a big-screen mode for TV. The numbers come from the official files unchanged, with no polling or forecasting.",
-        "subtitle": "Live results from the official TSE count"
+        "name": "Rachaí",
+        "problem": "Splitting group expenses can become a tangle of calculations, payments and messages.",
+        "result": "Create a group with a code and PIN, choose a currency and log expenses together. It calculates each participant’s balance and suggests who should pay whom, minimizing the number of transfers needed.",
+        "subtitle": "Group expenses, split simply"
       }
     },
     "media": {
-      "slot": "eleicoes-brasil"
-    }
-  },
-  {
-    "id": "scammeter",
-    "demoMaintenance": true,
-    "enabled": true,
-    "repoUrl": "https://github.com/lucianookdp/scammeter",
-    "demoUrl": "https://lucianookdp.github.io/scammeter/",
-    "stack": [
-      "TypeScript",
-      "Fastify",
-      "Vite",
-      "Railway"
-    ],
-    "translations": {
-      "pt": {
-        "name": "Scammeter",
-        "problem": "Os dados de uma loja nem sempre são fáceis de encontrar ou comparar antes de uma compra.",
-        "result": "Busca o CNPJ e a chave Pix no site, compara as informações com registros públicos e apresenta sinais de risco com explicações.",
-        "subtitle": "Informações para avaliar uma loja online"
-      },
-      "en": {
-        "name": "Scammeter",
-        "problem": "A store’s details can be difficult to find and compare before making a purchase.",
-        "result": "Finds the store’s Brazilian business registration number and Pix payment key, compares them with public records and explains potential risk signals.",
-        "subtitle": "Information to assess an online store"
-      }
-    },
-    "media": {
-      "slot": "scammeter"
+      "slot": "rachai"
     }
   },
   {
