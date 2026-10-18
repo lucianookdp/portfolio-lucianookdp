@@ -31,7 +31,7 @@
   },
   {
     "id": "cnpj-due-diligence",
-    "demoMaintenance": true,
+    "demoMaintenance": false,
     "enabled": true,
     "repoUrl": "https://github.com/lucianookdp/cnpj-due-diligence",
     "demoUrl": "https://lucianookdp.github.io/cnpj-due-diligence/",
@@ -62,7 +62,7 @@
   },
   {
     "id": "rachai",
-    "demoMaintenance": true,
+    "demoMaintenance": false,
     "enabled": true,
     "repoUrl": "https://github.com/lucianookdp/rachai-web",
     "demoUrl": "https://lucianookdp.github.io/rachai-web/",
@@ -93,7 +93,7 @@
   },
   {
     "id": "lost-and-found",
-    "demoMaintenance": true,
+    "demoMaintenance": false,
     "enabled": true,
     "repoUrl": "https://github.com/lucianookdp/LostAndFound",
     "demoUrl": "https://lucianookdp.github.io/LostAndFound/",

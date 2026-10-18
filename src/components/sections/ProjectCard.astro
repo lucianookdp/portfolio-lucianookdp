@@ -76,7 +76,7 @@ const number = String(index).padStart(2, '0');
     <div class="mt-auto flex flex-wrap gap-2 pt-4 sm:gap-3 sm:pt-10">
       {demoUrl && !demoMaintenance && (
         <a href={demoUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" data-magnetic="0.2">
-          {dict.projects.viewDemo}
+          {id === 'eleicoes-brasil' ? dict.projects.viewLive : dict.projects.viewDemo}
           <svg class="btn-arrow h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M7 17 17 7" /><path d="M8 7h9v9" />
           </svg>
