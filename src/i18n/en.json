@@ -41,7 +41,8 @@
     "result": "What it does",
     "stackLabel": "Technologies",
     "viewRepo": "View code",
-    "viewDemo": "Try the demo",
+    "viewDemo": "Demo",
+    "viewLive": "View Site",
     "viewMoreGithub": "More projects on GitHub",
     "demoMaintenance": "Under maintenance",
     "demoSoon": "Demo coming soon"
