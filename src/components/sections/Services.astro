@@ -393,6 +393,8 @@ const STEP_ICONS = [
 </script>
 
 <style>
+  /* Equal rows follow the tallest card, so text can grow without clipping. */
+  .services-offerings { grid-auto-rows: 1fr; }
   .offering {
     padding: 1.5rem;
     border: 1px solid var(--color-border-strong);
