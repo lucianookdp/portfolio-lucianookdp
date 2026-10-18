@@ -384,6 +384,7 @@ const STEP_ICONS = [
     };
     const onResize = () => {
       refreshTravel();
+      if (compactScreen.matches && index >= 0) mobileSteps.forEach((step, i) => { step.open = i === index; });
       onScroll();
     };
 
