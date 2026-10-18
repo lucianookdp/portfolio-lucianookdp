@@ -14,15 +14,13 @@
     "translations": {
       "pt": {
         "name": "Eleições Brasil",
-        "problem": "Na noite da apuração os números mudam a cada parcial e ficam espalhados entre cargos, estados e municípios.",
-        "result": "Cada nova parcial do TSE chega à tela em segundos, sem recarregar a página: urnas apuradas, confronto dos dois primeiros colocados, mapa por estado e resultados de todos os cargos em cada estado e município. Inclui ainda linha do tempo da noite, comparação entre estados, bancadas eleitas e modo telão para TV. Os números vêm dos arquivos oficiais sem alteração, sem pesquisa nem projeção.",
-        "subtitle": "Apuração em tempo real com os dados oficiais do TSE"
+        "subtitle": "Resultados das eleições com dados oficiais.",
+        "result": "Acompanhe votos, candidatos e resultados por cidade e estado em um só lugar. Os números são atualizados com os dados oficiais da Justiça Eleitoral."
       },
       "en": {
-        "name": "Eleições Brasil",
-        "problem": "On election night the numbers change with every new batch and sit spread across races, states and municipalities.",
-        "result": "Every new batch from the TSE, Brazil’s electoral authority, reaches the screen within seconds and without a page reload: ballot boxes counted, the two leading candidates side by side, a map by state and results for every race in each state and municipality. It also has a timeline of the night, state comparisons, the elected congress and a big-screen mode for TV. The numbers come from the official files unchanged, with no polling or forecasting.",
-        "subtitle": "Live results from the official TSE count"
+        "name": "Brazil Elections",
+        "subtitle": "Election results from official public data.",
+        "result": "Follow votes, candidates and results by city and state in one place. The numbers are updated using official data from Brazil’s electoral authority."
       }
     },
     "media": {
@@ -44,16 +42,14 @@
     ],
     "translations": {
       "pt": {
-        "name": "Radar CNPJ",
-        "problem": "Consultar uma empresa pode exigir buscas em diferentes bases públicas.",
-        "result": "Reúne dados a partir do CNPJ, mostra vínculos entre empresas e sócios e consulta listas oficiais de restrições. Apresenta uma pontuação de risco com explicações e permite exportar um relatório em PDF.",
-        "subtitle": "Informações de empresas em um só lugar"
+        "name": "Consulta CNPJ",
+        "subtitle": "Informações de empresas para decidir melhor.",
+        "result": "Veja informações de uma empresa, conheça seus sócios e entenda os alertas antes de negociar. Demonstração com empresas e dados fictícios."
       },
       "en": {
-        "name": "Radar CNPJ",
-        "problem": "Researching a Brazilian company can mean searching several public databases.",
-        "result": "Looks up a company by its CNPJ, Brazil’s business registration number, maps ownership links and checks official restriction lists. It provides an explained risk score and a downloadable PDF report.",
-        "subtitle": "Company information in one place"
+        "name": "Company Lookup",
+        "subtitle": "Company information to help you decide.",
+        "result": "Look up a company, see who owns it and review warnings before doing business. This demonstration uses fictional companies and sample information."
       }
     },
     "media": {
@@ -75,16 +71,14 @@
     ],
     "translations": {
       "pt": {
-        "name": "Rachaí",
-        "problem": "Dividir as despesas de um grupo pode virar uma confusão de contas, pagamentos e mensagens.",
-        "result": "Permite criar um grupo com código e PIN, escolher a moeda e registrar despesas em conjunto. Calcula o saldo de cada participante e sugere quem deve pagar a quem, reduzindo a quantidade de transferências necessárias.",
-        "subtitle": "Divisão de despesas em grupo, sem complicação"
+        "name": "Racha Contas",
+        "subtitle": "Divida despesas com amigos sem complicação.",
+        "result": "Organize os gastos de viagens, jantares e outros encontros com amigos. Veja quanto cada pessoa deve pagar. Demonstração com dados fictícios."
       },
       "en": {
-        "name": "Rachaí",
-        "problem": "Splitting group expenses can become a tangle of calculations, payments and messages.",
-        "result": "Create a group with a code and PIN, choose a currency and log expenses together. It calculates each participant’s balance and suggests who should pay whom, minimizing the number of transfers needed.",
-        "subtitle": "Group expenses, split simply"
+        "name": "Split the Bill",
+        "subtitle": "Share expenses with friends, without hassle.",
+        "result": "Organize shared expenses for trips, dinners and other plans with friends. See how much each person owes. This demonstration uses sample data."
       }
     },
     "media": {
@@ -105,16 +99,14 @@
     ],
     "translations": {
       "pt": {
-        "name": "LostAndFound",
-        "problem": "Registrar objetos encontrados e acompanhar as retiradas exige mais do que uma lista de itens.",
-        "result": "Permite cadastrar objetos e registrar quem os retirou. Foi desenvolvido como trabalho de conclusão de curso em Engenharia de Software. A demonstração usa dados fictícios e funciona sem conexão com o servidor.",
-        "subtitle": "Controle de achados e perdidos"
+        "name": "Achados e Perdidos",
+        "subtitle": "Objetos encontrados e devoluções organizadas.",
+        "result": "Encontre objetos perdidos e acompanhe sua devolução em um só lugar. Veja onde cada item foi entregue. Demonstração com objetos e dados fictícios."
       },
       "en": {
-        "name": "LostAndFound",
-        "problem": "Keeping track of found objects and their collection requires more than a list of items.",
-        "result": "Records found items and who collected them. Built as a Software Engineering capstone project. The demo uses sample data and runs without a server connection.",
-        "subtitle": "Tracking lost and found items"
+        "name": "Lost & Found",
+        "subtitle": "Found items and returns, all in one place.",
+        "result": "Find lost belongings and keep track of their return in one place. See where each item was handed in. This demonstration uses fictional items."
       }
     },
     "media": {
