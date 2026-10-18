@@ -25,7 +25,7 @@ const projectsSchema = {
       name: project.translations[locale].name,
       description: project.translations[locale].result,
       codeRepository: project.repoUrl,
-      ...(project.demoUrl ? { url: project.demoUrl } : {}),
+      ...(project.demoUrl && !('demoMaintenance' in project && project.demoMaintenance) ? { url: project.demoUrl } : {}),
       programmingLanguage: project.stack,
       author: { '@type': 'Person', name: 'Luciano K. Dal Pai', url: String(Astro.site) }
     }
@@ -45,6 +45,7 @@ const projectsSchema = {
         id={project.id}
         repoUrl={project.repoUrl}
         demoUrl={project.demoUrl}
+        demoMaintenance={'demoMaintenance' in project && project.demoMaintenance === true}
         stack={project.stack}
         translation={project.translations[locale]}
         dict={dict}
