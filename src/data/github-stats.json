@@ -1,115 +1,41 @@
 {
   "login": "lucianookdp",
-  "totalRepos": 18,
+  "totalRepos": 19,
   "totalStars": 1,
-  "totalContributions": 358,
+  "totalContributions": 471,
   "topLanguages": [
     {
       "name": "TypeScript",
       "color": "#3178c6",
-      "percentage": 53.5
+      "percentage": 57.1
     },
     {
       "name": "JavaScript",
       "color": "#f1e05a",
-      "percentage": 19.7
+      "percentage": 19.5
     },
     {
       "name": "Python",
       "color": "#3572A5",
-      "percentage": 12.4
+      "percentage": 9.9
     },
     {
       "name": "CSS",
       "color": "#663399",
-      "percentage": 8.3
+      "percentage": 7.3
     },
     {
       "name": "Astro",
       "color": "#ff5a03",
-      "percentage": 4
+      "percentage": 3.9
     },
     {
       "name": "HTML",
       "color": "#e34c26",
-      "percentage": 1.8
+      "percentage": 1.6
     }
   ],
   "weeks": [
-    [
-      {
-        "date": "2025-10-05",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-06",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-10-07",
-        "count": 3,
-        "level": 1
-      },
-      {
-        "date": "2025-10-08",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-09",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-10",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-11",
-        "count": 0,
-        "level": 0
-      }
-    ],
-    [
-      {
-        "date": "2025-10-12",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-13",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-14",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-15",
-        "count": 1,
-        "level": 1
-      },
-      {
-        "date": "2025-10-16",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-17",
-        "count": 0,
-        "level": 0
-      },
-      {
-        "date": "2025-10-18",
-        "count": 0,
-        "level": 0
-      }
-    ],
     [
       {
         "date": "2025-10-19",
@@ -1970,8 +1896,82 @@
         "date": "2026-10-05",
         "count": 0,
         "level": 0
+      },
+      {
+        "date": "2026-10-06",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-08",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-09",
+        "count": 32,
+        "level": 3
+      },
+      {
+        "date": "2026-10-10",
+        "count": 26,
+        "level": 2
+      }
+    ],
+    [
+      {
+        "date": "2026-10-11",
+        "count": 15,
+        "level": 2
+      },
+      {
+        "date": "2026-10-12",
+        "count": 3,
+        "level": 1
+      },
+      {
+        "date": "2026-10-13",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-14",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-10-15",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-10-16",
+        "count": 4,
+        "level": 1
+      },
+      {
+        "date": "2026-10-17",
+        "count": 3,
+        "level": 1
+      }
+    ],
+    [
+      {
+        "date": "2026-10-18",
+        "count": 34,
+        "level": 3
+      },
+      {
+        "date": "2026-10-19",
+        "count": 0,
+        "level": 0
       }
     ]
   ],
-  "generatedAt": "2026-10-05T13:27:46.949Z"
+  "generatedAt": "2026-10-19T11:58:32.874Z"
 }
