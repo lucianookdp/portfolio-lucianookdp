@@ -15,7 +15,6 @@ interface Translation {
 interface Props {
   index: number;
   id: string;
-  repoUrl: string;
   demoUrl: string | null;
   demoMaintenance?: boolean;
   stack: string[];
@@ -23,7 +22,7 @@ interface Props {
   dict: Dictionary;
 }
 
-const { index, id, repoUrl, demoUrl, demoMaintenance = false, stack, translation, dict } = Astro.props;
+const { index, id, demoUrl, demoMaintenance = false, stack, translation, dict } = Astro.props;
 const media = findProjectMedia(id);
 
 const COVER_ICONS: Record<string, string> = {
@@ -98,12 +97,6 @@ const number = String(index).padStart(2, '0');
           {dict.projects.demoSoon}
         </span>
       )}
-      <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" data-magnetic="0.2">
-        {dict.projects.viewRepo}
-        <svg class="btn-arrow h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M7 17 17 7" /><path d="M8 7h9v9" />
-        </svg>
-      </a>
     </div>
   </div>
 
