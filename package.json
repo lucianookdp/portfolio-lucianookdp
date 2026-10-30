@@ -7,13 +7,12 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/fetch-github-stats.mjs && node scripts/generate-favicons.mjs && node scripts/generate-og-image.mjs && astro build",
+    "build": "node scripts/fetch-github-stats.mjs && node scripts/generate-og-image.mjs && astro build",
     "preview": "astro preview",
     "fetch:stats": "node scripts/fetch-github-stats.mjs",
     "generate:og": "node scripts/generate-og-image.mjs",
     "astro": "astro",
-    "check": "astro check",
-    "generate:icons": "node scripts/generate-favicons.mjs"
+    "check": "astro check"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.4",

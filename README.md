@@ -17,8 +17,12 @@ npm run dev
 
 - fetches the GitHub data (needs `GITHUB_TOKEN` in the environment; without it,
   falls back to the cache in `src/data/github-stats.json`);
-- generates the favicons from `public/favicon.svg`;
-- generates the sharing images (`og.png` and `og-en.png`).
+- generates the sharing images (`og.png` and `og-en.png`) with the brand lockup.
+
+The icons in `public/` (`favicon.ico`, `favicon-48.png`, `apple-touch-icon.png`,
+`icon-512.png`) are the official exports from the lucianookdp brand kit, and
+`src/data/brand.json` holds its symbol and name paths verbatim. Replace them
+from the kit instead of redrawing.
 
 ## Structure
 
@@ -27,10 +31,10 @@ src/
   components/hero/        the 3D laptop (LaptopScene.ts) and the hero
   components/sections/    about, projects, services, stack and contact
   components/islands/     React components (theme, language, ⌘K, e-mail)
-  data/                   projects, stack and the GitHub cache
+  data/                   projects, stack, brand marks and the GitHub cache
   i18n/                   copy in pt and en
   lib/                    smooth scroll, animations and utilities
-scripts/                  icon, OG image and stats generation
+scripts/                  OG image and stats generation
 ```
 
 The copy lives in `src/i18n/*.json` and the projects in

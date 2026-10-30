@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import brand from '../../data/brand.json';
 
 /**
  * Hero 3D scene: a laptop, built procedurally, with a live screen. The screen
@@ -64,6 +65,19 @@ const CODE_LINES: [string, string][][] = [
   [['kw', 'await '], ['id', 'app'], ['op', '.'], ['fn', 'listen'], ['op', '({ port: '], ['num', '3000'], ['op', ' });']],
   [['cm', '// ✓ ready on localhost:3000']]
 ];
+
+// Official brand marks (see src/components/ui/Logo.astro), as canvas paths.
+const SYMBOL_PATHS = brand.symbol.paths.map((d) => new Path2D(d));
+const WORDMARK_PATH = new Path2D(brand.wordmark.path);
+
+/** Fills the lk symbol with its top-left corner at the current origin, `height` px tall. */
+function fillSymbol(ctx: CanvasRenderingContext2D, height: number, color: string) {
+  ctx.save();
+  ctx.scale(height / brand.symbol.height, height / brand.symbol.height);
+  ctx.fillStyle = color;
+  SYMBOL_PATHS.forEach((path) => ctx.fill(path));
+  ctx.restore();
+}
 
 class ScreenPainter {
   readonly canvas: HTMLCanvasElement;
@@ -130,10 +144,16 @@ class ScreenPainter {
     const ctx = this.ctx;
     this.chrome('lucianookdp.dev');
 
-    // Header
+    // Header: the horizontal lockup, 26px tall.
+    const lockupScale = 26 / brand.lockup.height;
+    ctx.save();
+    ctx.translate(48, 70);
+    ctx.scale(lockupScale, lockupScale);
+    fillSymbol(ctx, brand.symbol.height * brand.lockup.symbolScale, this.accent);
+    ctx.translate(brand.lockup.wordmarkX, brand.lockup.wordmarkY);
     ctx.fillStyle = '#e8eaf0';
-    ctx.font = '600 18px "Inter Variable", system-ui, sans-serif';
-    ctx.fillText('lucian∞kdp', 48, 88);
+    ctx.fill(WORDMARK_PATH);
+    ctx.restore();
     ctx.fillStyle = '#8b919f';
     ctx.font = '14px "Inter Variable", system-ui, sans-serif';
     ['About', 'Projects', 'Services', 'Contact'].forEach((label, i) => ctx.fillText(label, 560 + i * 92, 88));
@@ -512,23 +532,22 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   camDot.position.set(0, LID_H - 0.06, 0.031);
   lid.add(camDot);
 
-  // The same infinity mark as the header, printed on the outside of the lid.
+  // The brand symbol, printed on the outside of the lid.
+  const LOGO_H = 0.34;
   const logoCanvas = document.createElement('canvas');
   logoCanvas.width = 512;
-  logoCanvas.height = 256;
-  const logoContext = logoCanvas.getContext('2d')!;
-  logoContext.scale(5.12, 5.12);
-  logoContext.strokeStyle = '#fff';
-  logoContext.lineWidth = 11;
-  logoContext.lineCap = 'round';
-  logoContext.stroke(new Path2D('M25 10C10 10 10 40 25 40C35 40 40 30 50 25C60 20 65 10 75 10C90 10 90 40 75 40C65 40 60 30 50 25C40 20 35 10 25 10Z'));
+  logoCanvas.height = Math.round(512 * brand.symbol.height / brand.symbol.width);
+  fillSymbol(logoCanvas.getContext('2d')!, logoCanvas.height, '#fff');
   const logoTexture = track(new THREE.CanvasTexture(logoCanvas));
   logoTexture.colorSpace = THREE.SRGBColorSpace;
   logoTexture.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
   const logoMaterial = track(new THREE.MeshBasicMaterial({
     map: logoTexture, color: 0x22b573, transparent: true, toneMapped: false, depthWrite: false
   }));
-  const logo = new THREE.Mesh(track(new THREE.PlaneGeometry(0.62, 0.31)), logoMaterial);
+  const logo = new THREE.Mesh(
+    track(new THREE.PlaneGeometry(LOGO_H * brand.symbol.width / brand.symbol.height, LOGO_H)),
+    logoMaterial
+  );
   logo.position.set(0, LID_H / 2, -LID_T - 0.018);
   logo.rotation.y = Math.PI;
   lid.add(logo);

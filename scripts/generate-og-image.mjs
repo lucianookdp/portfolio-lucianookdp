@@ -18,48 +18,38 @@ const COLOR_TEXT = '#e8eaf0';
 const COLOR_SECONDARY = '#8b919f';
 const COLOR_ACCENT = '#22b573';
 const COLOR_ACCENT_GLOW = '#3ddc8f';
-const COLOR_ACCENT_DEEP = '#136b45';
-const INFINITY_PATH =
-  'M 25 10 C 10 10 10 40 25 40 C 35 40 40 30 50 25 C 60 20 65 10 75 10 C 90 10 90 40 75 40 C 65 40 60 30 50 25 C 40 20 35 10 25 10 Z';
 
 const loadFont = (relativePath) => readFile(path.join(ROOT, 'node_modules', relativePath));
 
-const [interRegular, interBold, displayBold, laptopPng] = await Promise.all([
+const [interRegular, interBold, displayBold, laptopPng, brandJson] = await Promise.all([
   loadFont('@fontsource/inter/files/inter-latin-400-normal.woff'),
   loadFont('@fontsource/inter/files/inter-latin-700-normal.woff'),
   loadFont('@fontsource/bricolage-grotesque/files/bricolage-grotesque-latin-700-normal.woff'),
-  readFile(path.join(ROOT, 'scripts/assets/og-laptop.png'))
+  readFile(path.join(ROOT, 'scripts/assets/og-laptop.png')),
+  readFile(path.join(ROOT, 'src/data/brand.json'), 'utf-8')
 ]);
+const brand = JSON.parse(brandJson);
 const laptopSrc = `data:image/png;base64,${laptopPng.toString('base64')}`;
 
-function infinityMark(id, width, height) {
+// The official horizontal lockup (symbol + name) from src/data/brand.json.
+function brandLockup(height) {
+  const { symbol, wordmark, lockup } = brand;
   return {
     type: 'svg',
     props: {
-      width,
+      width: (height * lockup.width) / lockup.height,
       height,
-      viewBox: '4 4 92 42',
+      viewBox: `0 0 ${lockup.width} ${lockup.height}`,
       children: [
         {
-          type: 'defs',
+          type: 'g',
           props: {
-            children: {
-              type: 'linearGradient',
-              props: {
-                id,
-                x1: '0%',
-                y1: '0%',
-                x2: '100%',
-                y2: '0%',
-                children: [
-                  { type: 'stop', props: { offset: '0%', stopColor: COLOR_ACCENT_GLOW } },
-                  { type: 'stop', props: { offset: '100%', stopColor: COLOR_ACCENT_DEEP } }
-                ]
-              }
-            }
+            fill: COLOR_ACCENT,
+            transform: `scale(${lockup.symbolScale})`,
+            children: symbol.paths.map((d) => ({ type: 'path', props: { d } }))
           }
         },
-        { type: 'path', props: { d: INFINITY_PATH, fill: 'none', stroke: `url(#${id})`, strokeWidth: 11, strokeLinecap: 'round' } }
+        { type: 'path', props: { d: wordmark.path, fill: '#ffffff', transform: `translate(${lockup.wordmarkX} ${lockup.wordmarkY})` } }
       ]
     }
   };
@@ -130,12 +120,8 @@ async function render(dict, outputPath) {
               {
                 type: 'div',
                 props: {
-                  style: { display: 'flex', alignItems: 'center', fontWeight: 700, fontSize: '26px', color: COLOR_TEXT },
-                  children: [
-                    { type: 'div', props: { children: 'lucian' } },
-                    infinityMark('wordmark', 32, 14.5),
-                    { type: 'div', props: { children: 'kdp.dev' } }
-                  ]
+                  style: { display: 'flex' },
+                  children: [brandLockup(44)]
                 }
               }
             ]

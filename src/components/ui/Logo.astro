@@ -1,0 +1,38 @@
+---
+import brand from '../../data/brand.json';
+
+// Official lucianookdp marks. The geometry in src/data/brand.json is copied
+// verbatim from the brand kit masters (svg/symbol.svg, svg/logo-horizontal.svg):
+// never redraw the symbol or retype the name. The symbol takes the theme
+// accent (#16834C light / #22B573 dark, as the brand guidelines ask) and the
+// name follows the surrounding text colour.
+interface Props {
+  variant?: 'lockup' | 'symbol' | 'wordmark';
+  class?: string;
+  style?: string;
+}
+
+const { variant = 'lockup', class: className = '', style } = Astro.props;
+const { symbol, wordmark, lockup } = brand;
+
+const viewBox = {
+  lockup: `0 0 ${lockup.width} ${lockup.height}`,
+  symbol: `0 0 ${symbol.width} ${symbol.height}`,
+  wordmark: `${wordmark.x} ${wordmark.y} ${wordmark.width} ${wordmark.height}`
+}[variant];
+---
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox={viewBox} class={className} style={style} aria-hidden="true" focusable="false">
+  {variant !== 'wordmark' && (
+    <g fill="var(--color-accent)" transform={variant === 'lockup' ? `scale(${lockup.symbolScale})` : undefined}>
+      {symbol.paths.map((d) => <path d={d} />)}
+    </g>
+  )}
+  {variant !== 'symbol' && (
+    <path
+      d={wordmark.path}
+      fill="currentColor"
+      transform={variant === 'lockup' ? `translate(${lockup.wordmarkX} ${lockup.wordmarkY})` : undefined}
+    />
+  )}
+</svg>
