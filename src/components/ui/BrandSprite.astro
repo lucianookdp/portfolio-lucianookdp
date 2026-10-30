@@ -1,0 +1,17 @@
+---
+import brand from '../../data/brand.json';
+
+// Defines the brand marks once per page; Logo.astro draws them with <use>,
+// so the long wordmark path ships a single time however many logos a page has.
+// Paths carry no fill: each <use> sets it, so the marks follow the theme.
+const { symbol, wordmark } = brand;
+---
+
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <g id="brand-symbol">
+      {symbol.paths.map((d) => <path d={d} />)}
+    </g>
+    <path id="brand-wordmark" d={wordmark.path} />
+  </defs>
+</svg>

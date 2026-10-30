@@ -1,51 +1,31 @@
 # lucianookdp.dev
 
-My personal site. Astro as the base, React only where state is needed, Tailwind
-for the CSS and Three.js for the 3D laptop at the top. Content in Portuguese
-and English.
+My personal portfolio: who I am, the projects I've built, the services I offer
+and how to reach me. The whole site is available in Portuguese and English, with
+light and dark themes.
 
-Site: https://lucianookdp.dev
+**Live:** https://lucianookdp.dev
 
-## Running
+## Highlights
 
-```bash
-npm install
-npm run dev
-```
+- An interactive 3D laptop in the hero, whose screen shows a live mini version
+  of the site and a code editor typing itself out
+- Projects, services and an about section, with smooth scrolling and motion
+  that respects reduced-motion settings
+- My GitHub activity and tech stack, refreshed automatically every day
+- A command palette (⌘K) to jump anywhere on the page
+- A share image for each language, generated at build time
 
-`npm run build` writes the site to `dist/`. Before that it also:
+## Built with
 
-- fetches the GitHub data (needs `GITHUB_TOKEN` in the environment; without it,
-  falls back to the cache in `src/data/github-stats.json`);
-- generates the sharing images (`og.png` and `og-en.png`) with the brand lockup.
-
-The icons in `public/` (`favicon.ico`, `favicon-48.png`, `apple-touch-icon.png`,
-`icon-512.png`) are the official exports from the lucianookdp brand kit, and
-`src/data/brand.json` holds its symbol and name paths verbatim. Replace them
-from the kit instead of redrawing.
-
-## Structure
-
-```
-src/
-  components/hero/        the 3D laptop (LaptopScene.ts) and the hero
-  components/sections/    about, projects, services, stack and contact
-  components/islands/     React components (theme, language, ⌘K, e-mail)
-  data/                   projects, stack, brand marks and the GitHub cache
-  i18n/                   copy in pt and en
-  lib/                    smooth scroll, animations and utilities
-scripts/                  OG image and stats generation
-```
-
-The copy lives in `src/i18n/*.json` and the projects in
-`src/data/projects.json`. To show a video or GIF for a project, drop the file
-in `public/media/projects/<id>.mp4` (or `.webm`/`.gif`).
-
-## Deploy
-
-GitHub Pages, through the workflow in `.github/workflows/deploy.yml`, on every
-push to `main`. A second workflow refreshes the GitHub cache daily.
+- **Astro** for a fast, static site, with **React** only where interaction is needed
+- **TypeScript** and **Tailwind CSS**
+- **Three.js** for the 3D laptop and **WebGL shaders** for the animated backgrounds
+- **Motion** and **Lenis** for animation and smooth scrolling
+- **Satori** and **resvg** for the share images
+- **GitHub Actions** and **GitHub Pages** for daily data refreshes and deploys,
+  with a performance budget checked on every build
 
 ## License
 
-All rights reserved. The code is public for reference.
+All rights reserved. The code is public for reference only.
