@@ -1,5 +1,6 @@
 ---
 import type { Dictionary, Locale } from '../../i18n/utils';
+import Logo from '../ui/Logo.astro';
 
 interface Props {
   dict: Dictionary;
@@ -22,21 +23,11 @@ const navItems = [
 <footer class="relative overflow-hidden border-t border-[var(--color-border)]">
   <div class="container-site relative py-12 sm:py-16">
     <div class="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_2fr] md:gap-12">
-      <div class="flex flex-col gap-4" data-reveal>
-        <a href={locale === 'pt' ? '/' : '/en'} class="inline-flex items-center font-sans text-lg font-semibold tracking-tight" aria-label="lucianookdp">
-          <span aria-hidden="true">lucian</span>
-          <svg aria-hidden="true" viewBox="4 4 92 42" class="mx-[-0.015em] h-[0.62em] w-auto translate-y-[0.02em] text-[var(--color-accent)]">
-            <path
-              d="M 25 10 C 10 10 10 40 25 40 C 35 40 40 30 50 25 C 60 20 65 10 75 10 C 90 10 90 40 75 40 C 65 40 60 30 50 25 C 40 20 35 10 25 10 Z"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="11"
-              stroke-linecap="round"
-            />
-          </svg>
-          <span aria-hidden="true">kdp</span>
+      <div class="flex flex-col gap-5" data-reveal>
+        <a href={locale === 'pt' ? '/' : '/en'} class="inline-flex w-fit items-center text-[var(--color-text)] transition-opacity duration-200 hover:opacity-80" aria-label="lucianookdp">
+          <Logo class="h-11 w-auto" />
         </a>
-
+        <p class="max-w-xs font-sans text-sm leading-relaxed text-[var(--color-text-secondary)]">{dict.hero.tagline}</p>
       </div>
 
       <div class="grid grid-cols-2 gap-8" data-reveal data-reveal-delay="80">
@@ -70,11 +61,7 @@ const navItems = [
     </div>
   </div>
 
-  <p
-    class="pointer-events-none select-none whitespace-nowrap px-6 text-center font-display font-bold leading-[0.8] tracking-tighter text-[var(--color-text)] opacity-[0.045]"
-    style="font-size: clamp(3rem, 14.5vw, 15rem); margin-bottom: -0.16em;"
-    aria-hidden="true"
-  >
-    lucianokdp
-  </p>
+  <div class="pointer-events-none select-none px-6 text-[var(--color-text)] opacity-[0.06]" aria-hidden="true">
+    <Logo variant="wordmark" class="mx-auto block h-auto w-full max-w-[72rem]" style="margin-bottom: -2.2%;" />
+  </div>
 </footer>
