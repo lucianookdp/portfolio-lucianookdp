@@ -1,11 +1,13 @@
 ---
 import brand from '../../data/brand.json';
 
-// Official lucianookdp marks. The geometry in src/data/brand.json is copied
-// verbatim from the brand kit masters (svg/symbol.svg, svg/logo-horizontal.svg):
-// never redraw the symbol or retype the name. The symbol takes the theme
-// accent (#16834C light / #22B573 dark, as the brand guidelines ask) and the
-// name follows the surrounding text colour.
+// Official lucianookdp marks. The geometry in src/data/brand.json comes from
+// the brand kit masters (svg/symbol.svg, svg/logo-horizontal.svg); the name's
+// coordinates are rounded to 2 decimals to keep the HTML small, which is
+// invisible at any size. Never redraw the symbol or retype the name. The paths themselves live in
+// BrandSprite.astro (once per page). The symbol takes the theme accent
+// (#16834C light / #22B573 dark, as the brand guidelines ask) and the name
+// follows the surrounding text colour.
 interface Props {
   variant?: 'lockup' | 'symbol' | 'wordmark';
   class?: string;
@@ -24,13 +26,15 @@ const viewBox = {
 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox={viewBox} class={className} style={style} aria-hidden="true" focusable="false">
   {variant !== 'wordmark' && (
-    <g fill="var(--color-accent)" transform={variant === 'lockup' ? `scale(${lockup.symbolScale})` : undefined}>
-      {symbol.paths.map((d) => <path d={d} />)}
-    </g>
+    <use
+      href="#brand-symbol"
+      fill="var(--color-accent)"
+      transform={variant === 'lockup' ? `scale(${lockup.symbolScale})` : undefined}
+    />
   )}
   {variant !== 'symbol' && (
-    <path
-      d={wordmark.path}
+    <use
+      href="#brand-wordmark"
       fill="currentColor"
       transform={variant === 'lockup' ? `translate(${lockup.wordmarkX} ${lockup.wordmarkY})` : undefined}
     />
