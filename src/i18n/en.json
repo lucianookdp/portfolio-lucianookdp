@@ -40,7 +40,6 @@
     "chooserHelpLink": "Ask for advice",
     "labels": {
       "service": "Service",
-      "what": "What it is",
       "when": "When it makes sense",
       "includes": "What it can include",
       "practice": "How it works in practice",
@@ -54,7 +53,6 @@
         "kicker": "One page, one goal",
         "need": "I want to promote a service or a launch, or receive quote requests.",
         "what": "A single page focused on one offer or one specific goal. All of its content guides visitors to understand the proposal and get in touch.",
-        "callout": "",
         "when": [
           "Presenting a specific service",
           "Promoting a launch, event or campaign",
@@ -119,7 +117,6 @@
         "kicker": "Several pages, well organized",
         "need": "I want to present my company, with pages for services, information and contact.",
         "what": "A website with pages or areas that present the company, its services, useful information and ways to get in touch. It is the company's presence on the internet, organized so that each visitor finds what they are looking for.",
-        "callout": "How it differs from a landing page: a landing page puts everything on one page with a single goal. A business website brings together several topics and uses navigation to take each visitor to the information they need.",
         "when": [
           "The company offers more than one service or serves different audiences",
           "Clients keep asking for the same information, such as address, opening hours and how you work",
@@ -180,7 +177,6 @@
         "kicker": "A tool for your routine",
         "need": "I need a tool to record, track and look up information.",
         "what": "A tool used in the browser to carry out tasks and organize business information. Instead of scattered spreadsheets and messages, the data sits in one place, available to the people who need it.",
-        "callout": "",
         "when": [
           "The team keeps track of information across several spreadsheets or notes",
           "Requests arrive through different channels and get lost",
@@ -248,7 +244,6 @@
         "kicker": "Fewer manual steps",
         "need": "I want to connect tools I already use and cut down repetitive tasks.",
         "what": "Connections between the tools you already use, so that information moves on its own to where it needs to go. The idea is to reduce repetitive tasks, such as copying data from one place to another or notifying someone by hand.",
-        "callout": "",
         "when": [
           "You copy the same information between systems, spreadsheets or emails",
           "Incoming orders have to be passed on to another person or tool",
