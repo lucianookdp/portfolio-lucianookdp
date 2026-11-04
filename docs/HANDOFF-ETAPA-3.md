@@ -208,3 +208,9 @@ Nenhum problema estrutural foi encontrado na cena 3D, na sincronização da rola
 - **Listas:** "O que pode incluir" usa bolinhas, como "Quando faz sentido". O "check" desenhado em CSS saiu.
 - **Celular (até 639 px):** cartões mais compactos (espaços e textos menores). As listas e o "Como funciona na prática" ficam dentro de um `<details>` ("Ver o que inclui e como funciona"), que começa fechado no celular e fica sempre aberto em telas maiores. Sem JavaScript, tudo aparece aberto.
 - **CSS:** 89,8 de 90 KiB. Não há mais margem; o próximo acréscimo de estilo precisa remover algo antes.
+
+### Contraste dos mockups
+
+- **Destaque:** cada mockup (`.sv`) fica sobre um fundo verde próprio (gradiente escuro com brilho na cor de destaque). A janela (`.sv-frame`) redefine as variáveis de cor para uma paleta clara fixa, como um site real de cliente. Por isso ela se destaca do cartão de serviço tanto no tema escuro quanto no claro.
+- **Celular:** o fundo verde tem menos margem, a barra lateral do sistema web (que ficava cortada) não aparece, e a janela mostra só o botão de fechar.
+- **CSS:** para caber no orçamento, saíram regras sem uso da linha do tempo (`.tl-ring`, `ring-fill`, `.stroke-text`). Total: 89,8 de 90 KiB.
