@@ -315,23 +315,23 @@
     "index": "02",
     "heading": "Works on every device",
     "subheading": "The content adapts to each visitor's screen.",
-    "body": "Your website works well on any screen: no cut-off content, no zooming, no hassle.",
+    "body": "A responsive layout that adapts to any screen without cutting off content or requiring zoom.",
     "points": [
       {
-        "title": "Easy to read",
-        "description": "Text and buttons at the right size, on any screen."
+        "title": "Comfortable reading",
+        "description": "Typography and spacing tuned for reading on any screen."
       },
       {
-        "title": "Easy to browse",
-        "description": "The menu and sections take people straight to what they need."
+        "title": "Clear navigation",
+        "description": "Menu and sections organized to take visitors straight to the information."
       },
       {
-        "title": "Quick to load",
-        "description": "Lightweight pages that do not keep clients waiting."
+        "title": "Optimized",
+        "description": "Lightweight pages and optimized images for fast loading."
       },
       {
-        "title": "Easy to reach you",
-        "description": "The way to get in touch is always in sight."
+        "title": "Accessible contact",
+        "description": "Contact channels always visible, one tap or click away."
       }
     ],
     "labels": {

@@ -315,23 +315,23 @@
     "index": "02",
     "heading": "Funciona em todos os dispositivos",
     "subheading": "O conteúdo se adapta à tela de quem acessa.",
-    "body": "Seu site funciona bem em qualquer tela: sem conteúdo cortado, sem zoom e sem complicação.",
+    "body": "Layout responsivo, que se ajusta a qualquer tela sem cortar conteúdo nem exigir zoom.",
     "points": [
       {
-        "title": "Fácil de ler",
-        "description": "Textos e botões no tamanho certo, em qualquer tela."
+        "title": "Leitura confortável",
+        "description": "Tipografia e espaçamento ajustados para leitura em qualquer tela."
       },
       {
-        "title": "Fácil de navegar",
-        "description": "O menu e as seções levam a pessoa direto ao que ela procura."
+        "title": "Navegação clara",
+        "description": "Menu e seções organizados para levar o visitante direto à informação."
       },
       {
-        "title": "Rápido para abrir",
-        "description": "Páginas leves, que carregam sem deixar o cliente esperando."
+        "title": "Otimizado",
+        "description": "Páginas leves e imagens otimizadas para carregamento rápido."
       },
       {
-        "title": "Fácil de falar com você",
-        "description": "O caminho para entrar em contato fica sempre à vista."
+        "title": "Contato acessível",
+        "description": "Canais de contato sempre visíveis, a um toque ou clique de distância."
       }
     ],
     "labels": {
