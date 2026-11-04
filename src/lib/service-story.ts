@@ -17,6 +17,21 @@ export function initServiceStory() {
   let raf = 0;
   let visible = false;
   const clamp = (n: number) => Math.max(0, Math.min(1, n));
+  // Each card marks its three parts (summary, lists, next step) with
+  // data-story-step; the mockup step follows whichever part the reader has
+  // reached. Without markers, the article is split into equal thirds.
+  function articleProgress(article: HTMLElement, rect: DOMRect, anchor: number) {
+    const marks = Array.from(article.querySelectorAll<HTMLElement>('[data-story-step]'))
+      .map(el => el.getBoundingClientRect())
+      .filter(r => r.height > 0)
+      .map(r => r.top);
+    if (marks.length < 2) return clamp((anchor - rect.top) / Math.max(1, rect.height - 80));
+    const ends = [...marks.slice(1), rect.bottom];
+    let step = 0;
+    marks.forEach((top, i) => { if (top <= anchor) step = i; });
+    const within = clamp((anchor - marks[step]) / Math.max(1, ends[step] - marks[step]));
+    return clamp((step + within) / marks.length);
+  }
 
   function paint(figure: HTMLElement, progress: number) {
     const step = Math.min(2, Math.floor(progress * 3));
@@ -42,7 +57,7 @@ export function initServiceStory() {
         c.setAttribute('aria-hidden', String(i !== index));
       });
       const rect = rects[index];
-      paint(figures[index], clamp((anchor - rect.top) / Math.max(1, rect.height - 80)));
+      paint(figures[index], articleProgress(articles[index], rect, anchor));
     } else {
       figures.forEach(f => {
         const rect = f.getBoundingClientRect();
