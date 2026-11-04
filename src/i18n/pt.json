@@ -315,23 +315,23 @@
     "index": "02",
     "heading": "Funciona em todos os dispositivos",
     "subheading": "O conteúdo se adapta à tela de quem acessa.",
-    "body": "Uma pessoa pode abrir o seu site pelo celular, outra pelo computador do trabalho. Por isso, o layout é planejado para cada tamanho de tela: a organização muda, mas o conteúdo continua fácil de ler e de usar.",
+    "body": "Muita gente vai conhecer o seu negócio pelo celular. Por isso, cada página é pensada para funcionar bem em qualquer tela, do celular ao computador.",
     "points": [
       {
-        "title": "Textos legíveis",
-        "description": "Tamanho de letra e espaçamento ajustados para cada tela, sem precisar dar zoom."
+        "title": "O cliente encontra o que procura",
+        "description": "As informações mais importantes aparecem primeiro, sem precisar procurar ou dar zoom."
       },
       {
-        "title": "Navegação adaptada",
-        "description": "No computador, o menu fica à vista. No celular, ele se recolhe em um botão e abre em tela cheia."
+        "title": "Contato a um toque",
+        "description": "No celular, o botão para falar com você fica sempre fácil de achar e de tocar."
       },
       {
-        "title": "Botões fáceis de usar",
-        "description": "Botões com tamanho confortável e espaço entre eles, para evitar toques errados."
+        "title": "Páginas leves",
+        "description": "Imagens e recursos otimizados para abrir rápido, inclusive na internet do celular."
       },
       {
-        "title": "Conteúdo reorganizado",
-        "description": "Colunas lado a lado viram uma sequência no celular, na ordem que faz mais sentido para a leitura."
+        "title": "Testado antes de publicar",
+        "description": "Cada página é conferida no celular, no tablet e no computador antes de ir ao ar."
       }
     ],
     "labels": {

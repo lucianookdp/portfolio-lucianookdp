@@ -315,23 +315,23 @@
     "index": "02",
     "heading": "Works on every device",
     "subheading": "The content adapts to each visitor's screen.",
-    "body": "One person may open your website on a phone, another on a work computer. That's why the layout is planned for each screen size: the arrangement changes, but the content stays easy to read and use.",
+    "body": "Many people will first find your business on their phone. That is why every page is designed to work well on any screen, from phone to desktop.",
     "points": [
       {
-        "title": "Readable text",
-        "description": "Font size and spacing adjusted for each screen, with no need to zoom in."
+        "title": "Clients find what they need",
+        "description": "The most important information comes first, with no searching or zooming."
       },
       {
-        "title": "Adapted navigation",
-        "description": "On a computer the menu stays in view. On a phone it folds into a button and opens full screen."
+        "title": "Contact in one tap",
+        "description": "On phones, the button to reach you is always easy to find and to tap."
       },
       {
-        "title": "Easy-to-use buttons",
-        "description": "Comfortably sized buttons with space between them, to avoid accidental taps."
+        "title": "Lightweight pages",
+        "description": "Images and assets optimized to load quickly, including on mobile data."
       },
       {
-        "title": "Reorganized content",
-        "description": "Side-by-side columns become a sequence on phones, in the order that makes the most sense to read."
+        "title": "Tested before launch",
+        "description": "Every page is checked on phone, tablet and desktop before it goes live."
       }
     ],
     "labels": {
