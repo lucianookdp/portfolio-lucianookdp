@@ -105,11 +105,11 @@ export default function CommandPaletteDialog({ dict, navItems, currentLocale, pt
         <Command.Group heading={dict.groupLinks} className={groupClass}>
           <Command.Item onSelect={() => openExternal('https://github.com/lucianookdp')} className={itemClass}>
             <span>{dict.openGithub}</span>
-            <span aria-hidden="true">↗</span>
+            <svg className="inline-block h-3 w-3 align-[-1px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
           </Command.Item>
           <Command.Item onSelect={sendEmail} className={itemClass}>
             <span>{dict.sendEmail}</span>
-            <span aria-hidden="true">↗</span>
+            <svg className="inline-block h-3 w-3 align-[-1px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
           </Command.Item>
         </Command.Group>
       </Command.List>
