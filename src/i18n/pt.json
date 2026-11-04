@@ -315,23 +315,23 @@
     "index": "02",
     "heading": "Funciona em todos os dispositivos",
     "subheading": "O conteúdo se adapta à tela de quem acessa.",
-    "body": "Cada página é pensada para funcionar bem em qualquer tela, para que o cliente leia, navegue e entre em contato sem dificuldade.",
+    "body": "Seu site funciona bem em qualquer tela: sem conteúdo cortado, sem zoom e sem complicação.",
     "points": [
       {
-        "title": "O cliente encontra o que procura",
-        "description": "As informações mais importantes aparecem primeiro, sem precisar procurar ou dar zoom."
+        "title": "Fácil de ler",
+        "description": "Textos e botões no tamanho certo, em qualquer tela."
       },
       {
-        "title": "Contato a um toque",
-        "description": "O botão para falar com você está sempre fácil de achar. Um toque e o cliente já entra em contato."
+        "title": "Fácil de navegar",
+        "description": "O menu e as seções levam a pessoa direto ao que ela procura."
       },
       {
-        "title": "Páginas leves",
-        "description": "O site é feito para abrir rápido, mesmo com a internet mais fraca."
+        "title": "Rápido para abrir",
+        "description": "Páginas leves, que carregam sem deixar o cliente esperando."
       },
       {
-        "title": "Testado antes de publicar",
-        "description": "Cada página é conferida em diferentes telas antes de ir ao ar."
+        "title": "Fácil de falar com você",
+        "description": "O caminho para entrar em contato fica sempre à vista."
       }
     ],
     "labels": {
