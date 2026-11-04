@@ -21,7 +21,7 @@
       "Websites and web apps",
       "for your business."
     ],
-    "intro": "I build landing pages, business websites, web apps and automations that present your services, make it easier for clients to reach you and keep day-to-day processes organised.",
+    "intro": "I build landing pages, business websites, web apps and automations that present your services, make it easier for clients to reach you and keep day-to-day processes organized.",
     "tagline": "Landing pages, business websites, web apps and automations.",
     "ctaServices": "Explore the services",
     "ctaContact": "Talk about my project",
@@ -44,8 +44,7 @@
       "when": "When it makes sense",
       "includes": "What it can include",
       "practice": "How it works in practice",
-      "next": "Next step",
-      "illustrative": "Illustration"
+      "next": "Next step"
     },
     "offerings": [
       {
@@ -59,7 +58,7 @@
         "when": [
           "Presenting a specific service",
           "Promoting a launch, event or campaign",
-          "Receiving quote requests in an organised way",
+          "Receiving quote requests in an organized way",
           "Getting started online with little content"
         ],
         "includes": [
@@ -69,12 +68,11 @@
           "A layout adapted to desktop, tablet and phone",
           "Basic setup for search engines and link sharing"
         ],
-        "includesNote": "What each project includes is defined in the quote.",
-        "practice": "You share the information about your offer and we organise the content together into a sequence: introduction, benefits, details and contact. Then I build the page and fine-tune how it reads on every screen size.",
+        "practice": "You share the information about your offer and we organize the content together into a sequence: introduction, benefits, details and contact. Then I build the page and fine-tune how it reads on every screen size.",
         "nextStep": "Tell me which offer you want to present, and to whom.",
         "cta": "Talk about a landing page",
         "visual": {
-          "caption": "Illustrative structure of a landing page",
+          "caption": "Illustration of a landing page: introduction, benefits, information and contact.",
           "labels": [
             "Introduction",
             "Benefits",
@@ -102,6 +100,15 @@
               "title": "Invite contact",
               "text": "The page leads to a clear action."
             }
+          ],
+          "copy": [
+            "Your service explained on one page",
+            "Who it is for",
+            "What it includes",
+            "How it works",
+            "How does the service work?",
+            "Which payment methods do you accept?",
+            "Shall we talk?"
           ]
         }
       },
@@ -109,9 +116,9 @@
         "id": "service-website",
         "kind": "website",
         "title": "Business website",
-        "kicker": "Several pages, well organised",
+        "kicker": "Several pages, well organized",
         "need": "I want to present my company, with pages for services, information and contact.",
-        "what": "A website with pages or areas that present the company, its services, useful information and ways to get in touch. It is the company's presence on the internet, organised so that each visitor finds what they are looking for.",
+        "what": "A website with pages or areas that present the company, its services, useful information and ways to get in touch. It is the company's presence on the internet, organized so that each visitor finds what they are looking for.",
         "callout": "How it differs from a landing page: a landing page puts everything on one page with a single goal. A business website brings together several topics and uses navigation to take each visitor to the information they need.",
         "when": [
           "The company offers more than one service or serves different audiences",
@@ -126,12 +133,11 @@
           "Map, opening hours and contact channels",
           "Basic setup for search engines and link sharing"
         ],
-        "includesNote": "Pages and sections are defined in the quote.",
         "practice": "First we decide which pages the website needs and how they connect. That map shapes the menu and the order of the content. Then I build the pages, keeping the same visual style across all of them.",
         "nextStep": "Tell me what your company does and what information your clients look for most.",
         "cta": "Talk about a business website",
         "visual": {
-          "caption": "Illustrative example of navigation between pages",
+          "caption": "Illustration of a business website with About, Services and Contact pages.",
           "labels": [
             "Home",
             "About",
@@ -155,8 +161,15 @@
             },
             {
               "title": "Get in touch",
-              "text": "Navigation connects the pages of the website."
+              "text": "One page brings together the ways to reach you."
             }
+          ],
+          "copy": [
+            "Learn more",
+            "Name",
+            "Email",
+            "Message",
+            "Send message"
           ]
         }
       },
@@ -166,7 +179,7 @@
         "title": "Web app",
         "kicker": "A tool for your routine",
         "need": "I need a tool to record, track and look up information.",
-        "what": "A tool used in the browser to carry out tasks and organise business information. Instead of scattered spreadsheets and messages, the data sits in one place, available to the people who need it.",
+        "what": "A tool used in the browser to carry out tasks and organize business information. Instead of scattered spreadsheets and messages, the data sits in one place, available to the people who need it.",
         "callout": "",
         "when": [
           "The team keeps track of information across several spreadsheets or notes",
@@ -181,12 +194,11 @@
           "Reports and data export",
           "Different access levels for each team member"
         ],
-        "includesNote": "These are possibilities, not a ready-made package. The features of each web app are defined in the project scope, based on how the business works.",
         "practice": "We start with the current process: who takes part, what information moves around and where the difficulties are. From there we define the priority features for a first version. New features can be planned later, in agreed stages.",
         "nextStep": "Tell me how the process works today and what gets in the way the most.",
         "cta": "Talk about a web app",
         "visual": {
-          "caption": "Fictional data and illustrative interface. Features depend on the agreed scope.",
+          "caption": "Illustration of a web app: recording, listing and tracking a request.",
           "labels": [
             "Dashboard",
             "Records",
@@ -207,16 +219,25 @@
           "sequence": [
             {
               "title": "Register a request",
-              "text": "Fictional example: a request for a quote."
+              "text": "A new quote request is recorded."
             },
             {
               "title": "Organize in a list",
-              "text": "The same request becomes part of the workflow."
+              "text": "The request joins the others in the list."
             },
             {
               "title": "Follow the task",
               "text": "Its status shows the current stage of the request."
             }
+          ],
+          "copy": [
+            "Search",
+            "Client",
+            "Request type",
+            "Save",
+            "Request",
+            "Status",
+            "Sample client"
           ]
         }
       },
@@ -227,7 +248,7 @@
         "kicker": "Fewer manual steps",
         "need": "I want to connect tools I already use and cut down repetitive tasks.",
         "what": "Connections between the tools you already use, so that information moves on its own to where it needs to go. The idea is to reduce repetitive tasks, such as copying data from one place to another or notifying someone by hand.",
-        "callout": "Feasibility depends on the tools involved and the access available. Before quoting, I check whether the integration is possible and what the simplest approach is.",
+        "callout": "",
         "when": [
           "You copy the same information between systems, spreadsheets or emails",
           "Incoming orders have to be passed on to another person or tool",
@@ -240,12 +261,11 @@
           "Integration with services that offer an API",
           "Scheduled routines, such as generating a periodic report"
         ],
-        "includesNote": "What can be automated depends on each tool.",
         "practice": "We map the routine step by step and find where information is copied or passed on by hand. Then I check what each tool allows, build the automation and we test it with everyday situations before putting it to use.",
         "nextStep": "Tell me which tools you use and which task you'd like to automate.",
         "cta": "Talk about an automation",
         "visual": {
-          "caption": "Illustrative flow: an order placed on the form goes to the spreadsheet and triggers a notice.",
+          "caption": "Illustration of an automation: the form request goes to a spreadsheet and triggers an email notice.",
           "labels": [
             "Website form",
             "Orders spreadsheet",
@@ -261,28 +281,41 @@
           "sequence": [
             {
               "title": "Receive information",
-              "text": "A form starts this illustrative workflow."
+              "text": "A client fills in the website form."
             },
             {
               "title": "Organize the data",
               "text": "The request moves into an organized list."
             },
             {
-              "title": "Forward to another tool",
-              "text": "Connections depend on the tools and available access."
+              "title": "Notify the team",
+              "text": "The notice arrives by email, with no manual hand-off."
             }
+          ],
+          "copy": [
+            "Name",
+            "Request",
+            "Send",
+            "No.",
+            "Client",
+            "New request #001",
+            "Sample client",
+            "now"
           ]
         }
       }
     ],
-    "storyLabel": "From idea to experience",
-    "storyNote": "Illustrations of the services, not delivered projects."
+    "storyLabel": "Service illustrations",
+    "site": {
+      "brand": "Your company",
+      "domain": "yourcompany.com"
+    }
   },
   "devices": {
     "index": "02",
-    "heading": "Desktop, tablet and phone",
-    "subheading": "Every screen is planned for different sizes.",
-    "body": "One person may open your website on a phone, another on a work computer. That's why the layout is planned for each screen size: the arrangement changes, and the content stays easy to read and use.",
+    "heading": "Works on every device",
+    "subheading": "The content adapts to each visitor's screen.",
+    "body": "One person may open your website on a phone, another on a work computer. That's why the layout is planned for each screen size: the arrangement changes, but the content stays easy to read and use.",
     "points": [
       {
         "title": "Readable text",
@@ -294,10 +327,10 @@
       },
       {
         "title": "Easy-to-use buttons",
-        "description": "Buttons sized comfortably for touch, with space between them to avoid mistaps."
+        "description": "Comfortably sized buttons with space between them, to avoid accidental taps."
       },
       {
-        "title": "Reorganised content",
+        "title": "Reorganized content",
         "description": "Side-by-side columns become a sequence on phones, in the order that makes the most sense to read."
       }
     ],
@@ -355,7 +388,7 @@
   "about": {
     "index": "04",
     "heading": "Who builds it",
-    "lead": "Nice to meet you, I'm Luciano K. Dal Pai.",
+    "lead": "Nice to meet you, I'm Luciano K.",
     "body": "I'm a software engineer based in Brazil and I work independently, building websites and web apps for individuals and companies. You talk to me directly at every step, and I'm responsible for the planning, the development and the agreed deliverables.",
     "points": [
       "Direct contact, no middlemen",

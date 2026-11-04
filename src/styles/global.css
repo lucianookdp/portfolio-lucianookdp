@@ -1,4 +1,10 @@
 @import "tailwindcss";
+/* Archived components kept for the future work section (see docs/HANDOFF-ETAPA-2.md).
+   They are not rendered, so their utilities stay out of the page CSS. Remove these
+   lines when the section is added back. */
+@source not "../components/sections/Projects.astro";
+@source not "../components/sections/ProjectCard.astro";
+@source not "../components/ui/Marquee.astro";
 @import "@fontsource-variable/bricolage-grotesque";
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/jetbrains-mono";
@@ -391,6 +397,10 @@
   letter-spacing: -0.045em;
 }
 
+/* Balanced lines avoid a lone word ("web") on narrow screens. */
+.hero-title > span {
+  text-wrap: balance;
+}
 .hero-title .word {
   display: inline-block;
   white-space: nowrap;

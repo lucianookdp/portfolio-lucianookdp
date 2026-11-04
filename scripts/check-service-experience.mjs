@@ -85,40 +85,6 @@ test('story schedules no frames outside viewport or hidden, and removes all list
   for(const target of [f.window,f.document,...f.media]) for(const group of target.listeners.values()) assert.equal(group.size,0);
 });
 
-function deviceFixture({reduced=false,wide=true,hidden=false,memory,connection,fail=false,noWebGL=false}={}) {
-  const host=element(),canvas=element();host.dataset.screen='{"brand":"Demo","title":"Demo","button":"Contact"}';host.querySelector=()=>canvas;
-  const document={...events(),visibilityState:hidden?'hidden':'visible',querySelector:()=>host};
-  const timers=new Map(); let next=0,imports=0,mounts=0,disposals=0,observer;
-  const media=[{...events(),matches:reduced},{...events(),matches:wide}];
-  const clearTimeout=id=>timers.delete(id);
-  const api=run('src/lib/device-scene.ts',{document,navigator:{deviceMemory:memory,connection},clearTimeout,
-    window:{setTimeout:fn=>{timers.set(++next,fn);return next;}},
-    matchMedia:q=>q.includes('reduced')?media[0]:media[1],
-    IntersectionObserver:class{constructor(fn){observer=fn;}observe(){}disconnect(){}},
-    require(){imports++; if(fail)throw Error('download failure');return{createLaptopScene(){mounts++;return noWebGL?null:{dispose(){disposals++;}};}};}
-  });
-  const cleanup=api.initDeviceScene();
-  return {host,document,timers,media,cleanup,
-    show(v=true){observer([{isIntersecting:v}]);},
-    async flush(){const work=[...timers.values()];timers.clear();work.forEach(fn=>fn());await Promise.resolve();await Promise.resolve();},
-    get counts(){return {imports,mounts,disposals};}
-  };
-}
-for(const [name,policy] of Object.entries({reduced:{reduced:true},mobile:{wide:false},hidden:{hidden:true},memory:{memory:2},saveData:{connection:{saveData:true}},slow:{connection:{effectiveType:'3g'}}})) {
-  test(`devices: ${name} keeps HTML and never imports WebGL`,async()=>{
-    const f=deviceFixture(policy);f.show();await f.flush();assert.equal(f.counts.imports,0);assert.equal(f.host.classes.has('is-live'),false);f.cleanup();
-  });
-}
-for(const policy of [{fail:true},{noWebGL:true}]) test('devices: loading/context failure leaves HTML visible',async()=>{
-  const f=deviceFixture(policy);f.show();await f.flush();assert.equal(f.host.classes.has('is-live'),false);f.cleanup();
-});
-test('devices: navigation cancels pending mount; leaving disposes before re-entry',async()=>{
-  const f=deviceFixture();f.show();f.show(false);await f.flush();assert.equal(f.counts.imports,0);
-  f.show();await f.flush();assert.equal(f.counts.mounts,1);f.show();await f.flush();assert.equal(f.counts.mounts,1);
-  f.show(false);assert.equal(f.counts.disposals,1);f.show();await f.flush();assert.equal(f.counts.mounts,2);
-  f.cleanup();assert.equal(f.counts.disposals,2);assert.equal(f.host.classes.has('is-live'),false);
-});
-
 test('hash navigation cancels inertia, applies one header offset and cleans up',()=>{
   const frames=new Map(),calls=[];let next=0;
   const window={...events(),scrollY:1000,matchMedia:()=>({matches:false})};

@@ -1,117 +1,201 @@
 ---
+// Illustrative website/app mockups, one per service. HTML/CSS only, so they
+// read the same without JavaScript or WebGL. lib/service-story.ts drives them
+// through data-cue (which part is highlighted per step), data-sequence (the
+// step captions) and the figure's data-step / --story-progress.
 interface Props {
   kind: string;
-  badge: string;
-  visual: { caption: string; labels: string[]; details: string[]; states: string[]; action: string; sequence: {title: string; text: string}[] };
+  site: { brand: string; domain: string };
+  visual: { caption: string; labels: string[]; details: string[]; states: string[]; action: string; copy: string[]; sequence: { title: string; text: string }[] };
 }
-const { kind, visual, badge } = Astro.props;
-const { labels, details, states, action, sequence } = visual;
+const { kind, visual, site } = Astro.props;
+const { labels, details, states, action, copy, sequence } = visual;
+const PATHS: Record<string, string> = { landing: '/oferta', website: '/servicos', webapp: '/solicitacoes', automation: '/contato' };
+const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
 ---
 <figure class={`sv sv-${kind}`} data-service-visual={kind}>
   <div class="sv-frame" aria-hidden="true">
-    <div class="sv-chrome"><span class="sv-dots">● ● ●</span><span class="sv-address">{kind === 'landing' ? '/ ↘' : kind === 'website' ? '/ → / → /' : kind === 'webapp' ? '↳ / workspace' : '○ → ○ → ○'}</span><span class="sv-badge">{badge}</span></div>
-    <div class="sv-body">
-      {kind === 'landing' && <div class="sv-landing-page">
-        <div class="sv-block sv-offer" data-part="hero" data-cue="0"><span class="sv-tag">01 / {labels[0]}</span><strong>{sequence[0].title}</strong><span class="sv-bar" style="--w:75%"></span><span class="sv-pill">{action}</span></div>
-        <div class="sv-block" data-part="benefits" data-cue="1"><span class="sv-tag">02 / {labels[1]}</span><div class="sv-tiles">{[0,1,2].map(()=> <span class="sv-tile"><i>✓</i><span class="sv-bar"></span></span>)}</div></div>
-        <div class="sv-block" data-part="info" data-cue="1"><span class="sv-tag">03 / {labels[2]}</span><span class="sv-bar" style="--w:90%"></span></div>
-        <div class="sv-block sv-cta" data-part="cta" data-cue="2"><span class="sv-tag">04 / {labels[3]}</span><span class="sv-pill">{action} ↗</span></div>
-      </div>}
-      {kind === 'website' && <>
-        <div class="sv-nav" data-part="nav"><span class="sv-brand">lk.</span>{labels.slice(1).map((label,i)=><span data-cue={i}>{label}</span>)}</div>
-        <div class="sv-pages" data-part="sitemap">{sequence.map((item,i)=><div class="sv-page" data-cue={i}>
-          <span class="sv-tag">/ {labels[i+1]}</span><strong>{item.title}</strong><p>{item.text}</p>
-          {i===0 ? <div class="sv-company"><span class="sv-tile">↗</span><span><span class="sv-bar" style="--w:90%"></span><span class="sv-bar"></span><span class="sv-bar" style="--w:80%"></span></span></div> : i===1 ? <div class="sv-tiles">{details.map(d=><span class="sv-tile"><i>↗</i>{d}</span>)}</div> : <div class="sv-contact"><span class="sv-bar" style="--w:95%"></span><span class="sv-bar" style="--w:70%"></span><span class="sv-pill">{labels[3]} ↗</span></div>}
-        </div>)}</div>
-        <div class="sv-map">{labels.map((label,i)=><span>{i>0?'↳ ':''}{label}</span>)}</div>
-      </>}
-      {kind === 'webapp' && <>
-        <div class="sv-nav"><span class="sv-brand">↳</span>{[labels[1],labels[2],labels[0]].map((label,i)=><span data-cue={i}>{label}</span>)}</div>
-        <div class="sv-task"><span class="sv-tag">DEMO / 001</span><strong>{details[0]}</strong></div>
-        <div class="sv-workflow">
-          <div class="sv-task-panel" data-part="form" data-cue="0"><span class="sv-tag">01 / {sequence[0].title}</span><div class="sv-field">{details[0]}<span>✓</span></div><div class="sv-field">DEMO-001<span>✓</span></div><span class="sv-pill">+ {action}</span></div>
-          <div class="sv-task-panel" data-part="table" data-cue="1"><span class="sv-tag">02 / {labels[2]}</span><div class="sv-tr"><span>DEMO-001</span><span class="sv-status">{states[0]}</span></div><div class="sv-tr"><span>{details[0]}</span><span>↗</span></div></div>
-          <div class="sv-task-panel" data-part="summary" data-cue="2"><span class="sv-tag">03 / {labels[0]}</span><div class="sv-tr"><strong>DEMO-001</strong><span class="sv-status">{states[1]}</span></div><div class="sv-track">{states.map((state,i)=><span class={i<2?'sv-done':''}><i></i>{state}</span>)}</div></div>
-        </div>
-      </>}
-      {kind === 'automation' && <div class="sv-flow" data-part="flow">{labels.map((label,i)=><>
-        {i>0 && <div class="sv-link" data-part={`link-${i}`}><span class="sv-packet"></span><span>{action} ↓</span></div>}
-        <div class="sv-node" data-part={`node-${i+1}`} data-cue={i}><span class="sv-node-icon">{['↧','≡','↗'][i]}</span><div><strong>{label}</strong><p>{details[i]}</p></div><span class="sv-id">001</span></div>
-      </>)}</div>}
+    <div class="sv-chrome">
+      <span class="sv-url"><svg viewBox="0 0 16 16"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" /><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" /></svg>{host}{PATHS[kind]}</span>
+      <span class="sv-ctrl"><i>–</i><i>□</i><i>✕</i></span>
     </div>
-    <div class="sv-sequence">{sequence.map((item,i)=><div data-sequence><span class="sv-tag">0{i+1} / 03</span><strong>{item.title}</strong><p>{item.text}</p></div>)}</div>
+
+    {kind !== 'webapp' && kind !== 'automation' && (
+      <div class="sv-site-head">
+        <span class="sv-logo"><i></i>{site.brand}</span>
+        {kind === 'landing'
+          ? <span class="sv-btn sv-btn-sm">{action}</span>
+          : <nav>{labels.slice(1).map((label, i) => <span data-cue={i}>{label}</span>)}</nav>}
+      </div>
+    )}
+
+    <div class="sv-body">
+      {kind === 'landing' && <div class="sv-lp">
+        <section class="sv-hero" data-part="hero" data-cue="0">
+          <div>
+            <span class="sv-kicker">{labels[0]}</span>
+            <strong class="sv-h">{copy[0]}</strong>
+            <span class="sv-line" style="--w:92%"></span><span class="sv-line" style="--w:70%"></span>
+            <span class="sv-btn">{action}</span>
+          </div>
+          <span class="sv-img"></span>
+        </section>
+        <section class="sv-sec" data-part="benefits" data-cue="1">
+          <span class="sv-kicker">{labels[1]}</span>
+          <div class="sv-cards">{copy.slice(1, 4).map((title) => <span class="sv-card"><i></i><b>{title}</b><span class="sv-line" style="--w:85%"></span><span class="sv-line" style="--w:60%"></span></span>)}</div>
+        </section>
+        <section class="sv-sec" data-part="info" data-cue="1">
+          <span class="sv-kicker">{labels[2]}</span>
+          {copy.slice(4, 6).map((q) => <span class="sv-faq">{q}<i>+</i></span>)}
+        </section>
+        <section class="sv-band" data-part="cta" data-cue="2"><b>{copy[6]}</b><span class="sv-btn">{action}</span></section>
+      </div>}
+
+      {kind === 'website' && <div class="sv-pages" data-part="sitemap">
+        {sequence.map((_, i) => (
+          <section class="sv-page" data-cue={i}>
+            <span class="sv-crumb">{labels[0]} / {labels[i + 1]}</span>
+            <strong class="sv-h">{labels[i + 1]}</strong>
+            {i === 0 && <div class="sv-about"><span class="sv-img"></span><div><span class="sv-line" style="--w:95%"></span><span class="sv-line" style="--w:88%"></span><span class="sv-line" style="--w:72%"></span><span class="sv-line" style="--w:80%"></span></div></div>}
+            {i === 1 && <div class="sv-cards sv-cards-2">{details.map((d) => <span class="sv-card"><span class="sv-img sv-img-sm"></span><b>{d}</b><span class="sv-line" style="--w:80%"></span><em>{copy[0]} →</em></span>)}</div>}
+            {i === 2 && <div class="sv-form"><span><label>{copy[1]}</label><i></i></span><span><label>{copy[2]}</label><i></i></span><span class="sv-wide"><label>{copy[3]}</label><i class="sv-area"></i></span><span class="sv-btn">{copy[4]}</span></div>}
+          </section>
+        ))}
+      </div>}
+
+      {kind === 'webapp' && <div class="sv-app">
+        <div class="sv-app-top"><span class="sv-logo"><i></i>{site.brand}</span><span class="sv-search">{copy[0]}…</span><span class="sv-avatar"></span></div>
+        <div class="sv-app-main">
+          <div class="sv-side">{labels.map((label, i) => <span class={i === 2 ? 'is-on' : ''}><i></i>{label}</span>)}</div>
+          <div class="sv-work">
+            <section class="sv-panel" data-part="form" data-cue="0">
+              <strong class="sv-h">{action}</strong>
+              <div class="sv-form"><span><label>{copy[1]}</label><i>{copy[6]}</i></span><span><label>{copy[2]}</label><i>{details[0]}</i></span></div>
+              <span class="sv-btn">{copy[3]}</span>
+            </section>
+            <section class="sv-panel" data-part="table" data-cue="1">
+              <strong class="sv-h">{labels[2]}</strong>
+              <div class="sv-table">
+                <span class="sv-th"><b>ID</b><b>{copy[4]}</b><b>{copy[5]}</b></span>
+                <span class="is-new"><b>DEMO-001</b><span>{details[0]}</span><em>{states[0]}</em></span>
+                {details.slice(1).map((d, i) => <span><b>DEMO-00{i + 2}</b><span>{d}</span><em>{states[i + 1]}</em></span>)}
+              </div>
+            </section>
+            <section class="sv-panel" data-part="summary" data-cue="2">
+              <strong class="sv-h">DEMO-001 · {details[0]}</strong>
+              <span class="sv-crumb">{copy[1]}: {copy[6]}</span>
+              <div class="sv-steps">{states.map((state, i) => <span class={i < 2 ? 'is-done' : ''}><i></i>{state}</span>)}</div>
+            </section>
+          </div>
+        </div>
+      </div>}
+
+      {kind === 'automation' && <div class="sv-flow" data-part="flow">
+        <section class="sv-win" data-part="node-1" data-cue="0">
+          <span class="sv-win-bar"><i></i>{labels[0]}<span class="sv-ctrl"><i>–</i><i>□</i><i>✕</i></span></span>
+          <div class="sv-form"><span><label>{copy[0]}</label><i>{copy[6]}</i></span><span><label>{copy[1]}</label><i>{details[0]}</i></span><span class="sv-btn sv-btn-sm">{copy[2]}</span></div>
+        </section>
+        <span class="sv-link" data-part="link-1"><span class="sv-packet"></span>{action} ↓</span>
+        <section class="sv-win" data-part="node-2" data-cue="1">
+          <span class="sv-win-bar"><i></i>{labels[1]}<span class="sv-ctrl"><i>–</i><i>□</i><i>✕</i></span></span>
+          <div class="sv-sheet"><b>{copy[3]}</b><b>{copy[4]}</b><b>{copy[1]}</b><span></span><span></span><span></span><span class="is-new">001</span><span class="is-new">{copy[6]}</span><span class="is-new">{details[1]}</span></div>
+        </section>
+        <span class="sv-link" data-part="link-2"><span class="sv-packet"></span>{action} ↓</span>
+        <section class="sv-win" data-part="node-3" data-cue="2">
+          <span class="sv-win-bar"><i></i>{labels[2]}<span class="sv-ctrl"><i>–</i><i>□</i><i>✕</i></span></span>
+          <span class="sv-mail"><span class="sv-avatar"></span><span><b>{copy[5]}</b><span>{details[2]}</span></span><em>{copy[7]}</em></span>
+        </section>
+      </div>}
+    </div>
+
+    {kind !== 'webapp' && kind !== 'automation' && <div class="sv-foot"><span class="sv-logo"><i></i>{site.brand}</span><span class="sv-line" style="--w:30%"></span></div>}
+    <div class="sv-sequence">{sequence.map((item, i) => <div data-sequence><span class="sv-tag">0{i + 1} / 03</span><strong>{item.title}</strong><p>{item.text}</p></div>)}</div>
     <div class="sv-progress"><span></span></div>
   </div>
-  <figcaption class="sv-caption">{visual.caption}</figcaption>
+  <figcaption class="sr-only">{visual.caption}</figcaption>
 </figure>
 <style is:global>
-.sv { margin:0; pointer-events:none; }
-.sv-frame { overflow:hidden; border:1px solid var(--color-border-strong); border-radius:1.25rem; background:var(--color-bg-elevated); box-shadow:var(--shadow-card); }
-.sv-chrome { display:flex; align-items:center; gap:.75rem; padding:1rem; border-bottom:1px solid var(--color-border); }
-.sv-dots { color:var(--color-border-strong); font-size:.6rem; letter-spacing:.12em; }
-.sv-address { flex:1; color:var(--color-text-secondary); font: .65rem var(--font-mono); }
-.sv-badge,.sv-tag { color:var(--color-text-secondary); font:.625rem var(--font-mono); letter-spacing:.08em; text-transform:uppercase; }
-.sv-badge { border:1px solid var(--color-border-strong); border-radius:99px; padding:.25rem .5rem; }
-.sv-body { padding:1.25rem; font-size:.8125rem; background:radial-gradient(ellipse at 100% 0%,var(--color-accent-soft),transparent 65%); }
-.sv-body strong { display:block; font-family:var(--font-display); font-size:1.125rem; font-weight:600; line-height:1.25; }
-.sv-body p,.sv-sequence p { color:var(--color-text-secondary); line-height:1.5; }
-.sv-caption { margin-top:1rem; color:var(--color-text-secondary); font-size:.8125rem; line-height:1.5; }
-.sv-block,.sv-task-panel,.sv-page { display:grid; gap:.75rem; padding:1rem; border:1px solid var(--color-border); border-radius:.75rem; background:var(--color-bg); }
-.sv-landing-page,.sv-workflow { display:grid; gap:.625rem; }
-.sv-bar { display:block; width:var(--w,60%); height:.35rem; border-radius:9px; background:color-mix(in srgb,var(--color-text) 18%,transparent); }
-.sv-pill { display:inline-flex; width:fit-content; padding:.6rem .9rem; border-radius:.5rem; background:var(--color-accent); color:var(--color-on-accent); font-size:.7rem; font-weight:600; }
-.sv-tiles { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.5rem; }
-.sv-tile { display:grid; gap:.75rem; padding:.75rem; border:1px solid var(--color-border); border-radius:.5rem; background:var(--color-bg-elevated); }
-.sv-tile i { font-style:normal; color:var(--color-accent-text); }
-.sv-cta { justify-items:center; background:var(--color-accent-soft); }
-.sv-nav { display:flex; align-items:center; gap:1rem; font-size:.7rem; padding-bottom:1rem; }
-.sv-nav [data-cue] { padding-block:.4rem; border-bottom:2px solid transparent; }
-.sv-brand { margin-right:auto; font:600 1.25rem var(--font-display); color:var(--color-accent-text); }
-.sv-pages { display:grid; gap:.75rem; }
-.sv-page { min-height:17rem; align-content:start; gap:1.25rem; }
-.sv-company { display:grid; grid-template-columns:1fr 1fr; gap:1rem; align-items:center; }
-.sv-company>.sv-tile { min-height:6rem; font-size:2rem; color:var(--color-accent-text); }
-.sv-company .sv-bar { margin-block:.75rem; }
-.sv-contact { display:grid; gap:1rem; }
-.sv-map { display:flex; flex-wrap:wrap; justify-content:space-between; gap:.5rem; padding:1rem .25rem 0; color:var(--color-text-secondary); font:.65rem var(--font-mono); }
-.sv-task { display:grid; gap:.5rem; padding:.5rem 0 1.25rem; }
-.sv-field,.sv-tr { display:flex; justify-content:space-between; gap:.5rem; padding:.75rem; border:1px solid var(--color-border); border-radius:.4rem; }
-.sv-status { font-size:.65rem; color:var(--color-accent-text); }
-.sv-track { display:flex; justify-content:space-between; gap:.5rem; padding-block:1.5rem; font-size:.6rem; }
-.sv-track span { display:grid; gap:.6rem; justify-items:center; }
-.sv-track i { width:.65rem; height:.65rem; border:1px solid var(--color-border-strong); border-radius:50%; }
-.sv-done i { background:var(--color-accent); }
-.sv-node { display:flex; align-items:center; gap:.75rem; padding:1.25rem .9rem; border:1px solid var(--color-border-strong); border-radius:.75rem; background:var(--color-bg); }
-.sv-node strong { font-size:.9rem; }
-.sv-node p { margin-top:.3rem; font-size:.75rem; }
-.sv-node-icon { display:grid; place-items:center; flex:none; width:2rem; height:2.5rem; color:var(--color-accent-text); font-size:1.5rem; }
-.sv-id { margin-left:auto; color:var(--color-accent-text); font:.65rem var(--font-mono); }
-.sv-link { position:relative; height:3rem; margin-left:1.9rem; border-left:2px solid var(--color-border-strong); padding:.9rem 1rem; color:var(--color-text-secondary); font:.625rem var(--font-mono); }
-.sv-packet { position:absolute; left:-4px; top:0; height:.6rem; width:6px; border-radius:3px; background:var(--color-accent); }
-.sv-sequence { display:grid; gap:.75rem; padding:1rem 1.25rem; border-top:1px solid var(--color-border); }
-.sv-sequence strong { display:block; margin:.4rem 0; font-size:.875rem; }
-.sv-sequence p { font-size:.75rem; }
-.sv-progress { height:2px; background:var(--color-border); }
-.sv-progress>span { display:block; height:100%; transform:scaleX(var(--story-progress,1)); transform-origin:left; background:var(--color-accent); }
-@media(prefers-reduced-motion:no-preference) {
- .sv-animated .sv-sequence { min-height:8.5rem; }
- .sv-animated .sv-sequence>div { display:none; }
- .sv-animated .sv-sequence>.is-current { display:block; }
- .sv-animated .sv-pages,.sv-animated .sv-workflow { display:grid; }
- .sv-animated .sv-page,.sv-animated .sv-task-panel { grid-area:1/1; opacity:0; visibility:hidden; transform:translateY(8px); transition:opacity 200ms,transform 300ms; }
- .sv-animated .sv-task-panel { min-height:17rem; align-content:start; }
- .sv-animated .is-cued { opacity:1; visibility:visible; transform:none; border-color:var(--color-accent-text); }
- .sv-animated .sv-block,.sv-animated .sv-node { transition:border-color 200ms,transform 300ms; }
- .sv-animated .sv-cta.is-cued .sv-pill { transform:scale(1.06); }
- .sv-animated .sv-nav .is-cued { color:var(--color-accent-text); }
- .sv-animated .sv-packet { transform:translateY(calc(clamp(0,var(--story-progress,0)*3 - 1,1)*38px)); }
- .sv-animated .sv-link:nth-child(4) .sv-packet { transform:translateY(calc(clamp(0,var(--story-progress,0)*3 - 2,1)*38px)); }
+.sv{margin:0;pointer-events:none}
+.sv-frame{overflow:hidden;border:1px solid var(--color-border-strong);border-radius:1rem;background:var(--color-bg);box-shadow:var(--shadow-card);font-size:.75rem;color:var(--color-text)}
+.sv-chrome{display:flex;align-items:center;gap:.75rem;padding:.35rem 0 .35rem .6rem;background:var(--color-bg-subtle);border-bottom:1px solid var(--color-border)}
+/* Windows-style caption buttons: minimize, maximize, close on the right. */
+.sv-ctrl{display:flex;flex:none;margin-left:auto;color:var(--color-text-secondary);font:400 .7rem/1 var(--font-sans)}.sv-ctrl i{display:grid;place-items:center;width:1.9rem;height:1.4rem;font-style:normal}
+.sv-url{display:flex;align-items:center;gap:.35rem;flex:1;min-width:0;overflow:hidden;padding:.3rem .65rem;border-radius:.3rem;background:var(--color-bg);color:var(--color-text-secondary);font:.65rem var(--font-mono);white-space:nowrap;text-overflow:ellipsis}
+.sv-url svg{flex:none;width:.7rem;height:.7rem;fill:none;stroke:currentColor;stroke-width:1.5}
+.sv-tag,.sv-crumb,.sv-kicker{color:var(--color-text-secondary);font:.6rem var(--font-mono);letter-spacing:.08em;text-transform:uppercase}
+.sv-kicker{display:block;margin-bottom:.4rem;color:var(--color-accent-text)}
+.sv-site-head,.sv-app-top,.sv-foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem 1rem;border-bottom:1px solid var(--color-border)}
+.sv-foot{border:0;border-top:1px solid var(--color-border);background:var(--color-bg-subtle)}
+.sv-logo{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;white-space:nowrap}.sv-logo i{width:.9rem;height:.9rem;border-radius:.25rem;background:var(--color-accent)}
+.sv-site-head nav{display:flex;gap:.9rem;color:var(--color-text-secondary)}
+.sv-site-head nav span{padding-block:.15rem;border-bottom:2px solid transparent}
+.sv-body{padding:1rem}
+.sv-h{display:block;margin-bottom:.6rem;font-family:var(--font-display);font-size:1.05rem;font-weight:700;line-height:1.15;letter-spacing:-.01em}
+.sv-line{display:block;width:var(--w,60%);height:.3rem;margin-top:.35rem;border-radius:9px;background:color-mix(in srgb,var(--color-text) 16%,transparent)}
+.sv-btn{display:inline-flex;width:fit-content;margin-top:.75rem;padding:.45rem .8rem;border-radius:.4rem;background:var(--color-accent);color:var(--color-on-accent);font-size:.65rem;font-weight:600;white-space:nowrap}
+.sv-btn-sm{margin:0;padding:.3rem .6rem}
+.sv-img{display:block;min-height:5rem;border-radius:.5rem;background:linear-gradient(135deg,color-mix(in srgb,var(--color-accent) 55%,transparent),color-mix(in srgb,var(--color-accent-2) 18%,transparent))}
+.sv-img-sm{min-height:2.75rem}
+.sv-lp{display:grid;gap:.6rem}
+.sv-hero{display:grid;grid-template-columns:1.2fr 1fr;gap:1rem;align-items:center;padding:.25rem 0 .5rem}
+.sv-sec,.sv-band{padding:.75rem;border:1px solid var(--color-border);border-radius:.6rem;background:var(--color-bg-elevated)}
+.sv-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}.sv-cards-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.sv-card{display:grid;gap:.15rem;align-content:start;padding:.6rem;border:1px solid var(--color-border);border-radius:.5rem;background:var(--color-bg)}
+.sv-card>i{width:1rem;height:1rem;margin-bottom:.3rem;border-radius:.3rem;background:var(--color-accent-soft);border:1px solid color-mix(in srgb,var(--color-accent) 40%,transparent)}
+.sv-card b{font-size:.68rem;line-height:1.25}.sv-card em{margin-top:.4rem;color:var(--color-accent-text);font-size:.62rem;font-style:normal;font-weight:600}
+.sv-faq{display:flex;justify-content:space-between;gap:.5rem;padding:.4rem 0;border-top:1px solid var(--color-border)}.sv-faq i{font-style:normal;color:var(--color-text-secondary)}
+.sv-band{display:flex;align-items:center;justify-content:space-between;gap:.75rem;background:var(--color-accent-soft);border-color:color-mix(in srgb,var(--color-accent) 35%,var(--color-border))}.sv-band .sv-btn{margin:0}
+.sv-pages{display:grid}
+.sv-page{display:grid;align-content:start;gap:.25rem;min-height:15.5rem}
+.sv-about{display:grid;grid-template-columns:1fr 1.2fr;gap:.9rem;align-items:center}
+.sv-form{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}.sv-form .sv-wide{grid-column:1/-1}
+.sv-form label{display:block;margin-bottom:.2rem;color:var(--color-text-secondary);font-size:.6rem}
+.sv-form i{display:block;min-height:1.6rem;padding:.35rem .5rem;border:1px solid var(--color-border-strong);border-radius:.35rem;background:var(--color-bg);font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sv-form .sv-area{min-height:3rem}.sv-form .sv-btn{margin:0;align-self:end}
+.sv-app{margin:-1rem}
+.sv-search{flex:1;max-width:11rem;padding:.3rem .6rem;border:1px solid var(--color-border);border-radius:.4rem;color:var(--color-text-secondary)}
+.sv-avatar{flex:none;width:1.4rem;height:1.4rem;border-radius:50%;background:color-mix(in srgb,var(--color-accent) 35%,var(--color-bg-subtle))}
+.sv-app-main{display:grid;grid-template-columns:7rem minmax(0,1fr)}
+.sv-side{display:grid;align-content:start;gap:.15rem;padding:.75rem .5rem;border-right:1px solid var(--color-border);background:var(--color-bg-subtle)}
+.sv-side span{display:flex;align-items:center;gap:.4rem;padding:.35rem .45rem;border-radius:.35rem;color:var(--color-text-secondary);white-space:nowrap}.sv-side i{width:.5rem;height:.5rem;border-radius:.15rem;background:currentColor;opacity:.6}
+.sv-side .is-on{background:var(--color-accent-soft);color:var(--color-accent-text);font-weight:600}
+.sv-work{display:grid;padding:1rem;min-height:15.5rem}
+.sv-panel{display:grid;align-content:start;gap:.5rem}
+.sv-table>span{display:grid;grid-template-columns:5rem 1fr auto;gap:.5rem;padding:.45rem .25rem;border-top:1px solid var(--color-border);align-items:center}
+.sv-table b{font:600 .62rem var(--font-mono)}.sv-table em{font-size:.6rem;font-style:normal;color:var(--color-text-secondary)}
+.sv-table .sv-th{border:0;color:var(--color-text-secondary)}.sv-table .sv-th b{font-weight:400;font-family:var(--font-sans)}
+.sv-table .is-new{background:var(--color-accent-soft)}.sv-table .is-new em{color:var(--color-accent-text);font-weight:600}
+.sv-steps{display:flex;justify-content:space-between;gap:.5rem;padding:1rem .25rem;font-size:.62rem}
+.sv-steps span{display:grid;justify-items:center;gap:.45rem;flex:1;color:var(--color-text-secondary)}.sv-steps i{width:.7rem;height:.7rem;border-radius:50%;border:1.5px solid var(--color-border-strong)}
+.sv-steps .is-done{color:var(--color-text)}.sv-steps .is-done i{background:var(--color-accent);border-color:var(--color-accent)}
+.sv-flow{display:grid}
+.sv-win{border:1px solid var(--color-border-strong);border-radius:.6rem;background:var(--color-bg-elevated);overflow:hidden}
+.sv-win-bar{display:flex;align-items:center;gap:.4rem;padding:.15rem 0 .15rem .6rem;border-bottom:1px solid var(--color-border);background:var(--color-bg-subtle);font-weight:600}.sv-win-bar>i{width:.5rem;height:.5rem;border-radius:50%;background:var(--color-accent)}
+.sv-win .sv-form{grid-template-columns:1fr 1fr auto;align-items:end;padding:.6rem}
+.sv-sheet{display:grid;grid-template-columns:2.5rem 1fr 1fr;font-size:.62rem}
+.sv-sheet>*{padding:.3rem .45rem;border-right:1px solid var(--color-border);border-bottom:1px solid var(--color-border);min-height:1.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sv-sheet b{background:var(--color-bg-subtle);font-weight:600}.sv-sheet .is-new{background:var(--color-accent-soft);color:var(--color-accent-text);font-weight:600}
+.sv-mail{display:flex;align-items:center;gap:.6rem;padding:.6rem}.sv-mail>span:nth-child(2){display:grid;flex:1;min-width:0}.sv-mail b{font-size:.68rem}.sv-mail em{font-style:normal;color:var(--color-text-secondary)}
+.sv-link{position:relative;height:2.2rem;margin-left:1.4rem;padding:.65rem .9rem;border-left:2px dashed var(--color-border-strong);color:var(--color-text-secondary);font:.6rem var(--font-mono)}
+.sv-packet{position:absolute;left:-5px;top:0;width:8px;height:8px;border-radius:50%;background:var(--color-accent)}
+.sv-sequence{display:grid;gap:.75rem;padding:.9rem 1.1rem;border-top:1px solid var(--color-border);background:var(--color-bg-elevated)}
+.sv-sequence strong{display:block;margin:.3rem 0;font-size:.875rem}.sv-sequence p{color:var(--color-text-secondary);font-size:.75rem;line-height:1.5}
+.sv-progress{height:2px;background:var(--color-border)}.sv-progress>span{display:block;height:100%;transform:scaleX(var(--story-progress,1));transform-origin:left;background:var(--color-accent)}
+.sv [data-cue]{transition:box-shadow 200ms,border-color 200ms,opacity 250ms,transform 300ms,color 200ms}
+@media(prefers-reduced-motion:no-preference){
+.sv-animated .sv-sequence{min-height:7.5rem}.sv-animated .sv-sequence>div{display:none}.sv-animated .sv-sequence>.is-current{display:block}
+.sv-animated .sv-page,.sv-animated .sv-panel{grid-area:1/1;opacity:0;visibility:hidden;transform:translateY(8px)}
+.sv-animated .sv-page.is-cued,.sv-animated .sv-panel.is-cued{opacity:1;visibility:visible;transform:none}
+.sv-animated .sv-lp>.is-cued,.sv-animated .sv-win.is-cued{border-radius:.6rem;box-shadow:0 0 0 2px var(--color-accent-text)}
+.sv-animated .sv-site-head .is-cued{color:var(--color-text);border-color:var(--color-accent)}
+.sv-animated .sv-packet{transform:translateY(calc(clamp(0,var(--story-progress,0)*3 - 1,1)*28px))}
+.sv-animated .sv-link+.sv-win+.sv-link .sv-packet{transform:translateY(calc(clamp(0,var(--story-progress,0)*3 - 2,1)*28px))}
 }
-@media(max-width:639px) {
- .sv-body { padding:1rem; }
- .sv-block { padding:.75rem; gap:.5rem; }
- .sv-body strong { font-size:1rem; }
- .sv-nav { gap:.75rem; }
- .sv-animated .sv-task-panel,.sv-page { min-height:15rem; }
+@media(max-width:639px){
+.sv-body{padding:.75rem}.sv-app{margin:-.75rem}
+.sv-site-head nav{gap:.6rem}.sv-hero{grid-template-columns:1fr}.sv-hero .sv-img{display:none}
+.sv-cards{grid-template-columns:1fr 1fr}.sv-cards>:nth-child(3){display:none}
+.sv-app-main{grid-template-columns:1fr}.sv-side{grid-auto-flow:column;overflow:hidden;border-right:0;border-bottom:1px solid var(--color-border)}
+.sv-search{display:none}.sv-win .sv-form{grid-template-columns:1fr 1fr}.sv-win .sv-form .sv-btn{display:none}
 }
 </style>

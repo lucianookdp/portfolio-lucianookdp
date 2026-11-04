@@ -5,7 +5,7 @@ import brand from '../../data/brand.json';
 /**
  * Commercial 3D scene: a laptop, built procedurally, with a live screen. The screen
  * is painted once per theme/font change, with layouts specific to each device.
- * Scroll reframes the open laptop and introduces the tablet and phone. No
+ * The lid opens on load and closes as the visitor scrolls past the hero. No
  * external models, decorative code editor, or continuously uploaded textures.
  */
 
@@ -127,7 +127,6 @@ export interface LaptopSceneHandle {
 export interface LaptopSceneOptions {
   name: string;
   role: string;
-  devices?: boolean;
   screen?: ScreenCopy;
 }
 
@@ -135,7 +134,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isSmall = window.matchMedia('(max-width: 768px)').matches;
   const hasPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const hero = options.devices ? container : container.closest<HTMLElement>('#hero') ?? container;
+  const hero = container.closest<HTMLElement>('#hero') ?? container;
   let disposed = false;
 
   let renderer: THREE.WebGLRenderer;
@@ -338,28 +337,6 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   screen.position.set(0, LID_H / 2 + 0.02, 0.03);
   lid.add(screen);
 
-  // Tablets and phones share materials and render in this same scene/loop.
-  const companions: { group: THREE.Group; painter: ScreenPainter; texture: THREE.CanvasTexture; x: number }[] = [];
-  if (options.devices) {
-    for (const [format, width, height, x] of [['tablet', 1.5, 2, 1.3], ['phone', .82, 1.73, 2.6]] as const) {
-      const group = new THREE.Group();
-      const shell = new THREE.Mesh(track(new THREE.ExtrudeGeometry(roundedRect(width, height, .12), { depth: .07, bevelEnabled: false, curveSegments: 6 })), bodyMaterial);
-      group.add(shell);
-      const display = new ScreenPainter(options.name, options.screen, format);
-      display.paint(0);
-      const texture = track(new THREE.CanvasTexture(display.canvas));
-      texture.colorSpace = THREE.SRGBColorSpace;
-      const plane = new THREE.Mesh(track(new THREE.PlaneGeometry(width-.1,height-.14)), track(new THREE.MeshBasicMaterial({ map:texture, toneMapped:false })));
-      plane.position.z = .075;
-      group.add(plane);
-      group.position.set(x, .8, .9);
-      group.rotation.y = -.12;
-      root.add(group);
-      companions.push({ group, painter:display, texture, x });
-    }
-    laptop.position.x = -1.45;
-  }
-
   // Camera dot above the screen
   const camDotGeometry = track(new THREE.CircleGeometry(0.02, 16));
   const camDot = new THREE.Mesh(camDotGeometry, track(new THREE.MeshStandardMaterial({ color: 0x2b303c })));
@@ -425,11 +402,6 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
       target.y = width < 640 ? 0.85 : 0.55;
       target.scale = width < 640 ? 0.5 : 0.66;
     }
-    if (options.devices) {
-      target.x = -.15;
-      target.y = -.55;
-      target.scale = Math.min(1.15, width / height * .75);
-    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, width < 769 ? 1.5 : 2));
     root.position.set(target.x, target.y, 0);
     root.scale.setScalar(target.scale);
@@ -451,9 +423,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   function readScroll() {
     if (!scrollNeedsUpdate) return;
     const rect = hero.getBoundingClientRect();
-    scrollProgress = options.devices
-      ? Math.min(1, Math.max(0, (window.innerHeight * .8 - rect.top) / (rect.height + window.innerHeight * .3)))
-      : Math.min(1, Math.max(0, -rect.top / Math.max(1, rect.height)));
+    scrollProgress = Math.min(1, Math.max(0, -rect.top / Math.max(1, rect.height)));
     scrollNeedsUpdate = false;
   }
   function onScroll() {
@@ -474,21 +444,20 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
     smoothScroll += (scrollProgress - smoothScroll) * k;
     const sp = smoothScroll;
 
-    // Scroll reframes the open display toward the next explanation.
-    const intro = easeOutExpo(Math.min(1, elapsed / 1.2));
-    lid.rotation.x = options.devices ? OPEN : CLOSED + (OPEN-CLOSED)*intro + sp*.12;
-    screenGlow.intensity = .7;
-    root.rotation.y = (options.devices ? -.08 : -.38 + sp*.28) + smoothPointer.x*.04;
-    root.rotation.x = options.devices ? .12 : .22 - sp*.12;
-    root.position.y = target.y + (options.devices ? 0 : (target.narrow ? -sp*.5 : -sp*.25));
-    root.position.x = target.x + (options.devices ? 0 : sp*.2);
-    root.scale.setScalar(target.scale*(1-sp*(options.devices ? .04 : .12)));
-    companions.forEach(({group,x},i) => {
-      const p = easeInOut(Math.min(1, Math.max(0, sp*2.5-i*.35)));
-      group.position.x = x - (1-p)*.35;
-      group.position.y = .8 - (1-p)*.4;
-      group.rotation.y = -.12 + (1-p)*.25;
-    });
+    // Lid: opens over the first ~1.6s, then closes with scroll. On phones the
+    // laptop leaves the screen quickly, so the lid closes within the first
+    // stretch of scrolling and the laptop rides along to stay in view.
+    const intro = easeOutExpo(Math.min(1, elapsed / 1.6));
+    const closeSpeed = target.narrow ? 4 : 2.2;
+    const openAmount = intro * (1 - easeInOut(Math.min(1, sp * closeSpeed)));
+    lid.rotation.x = CLOSED + (OPEN - CLOSED) * openAmount;
+    screenMaterial.color.setScalar(0.3 + openAmount * 0.7);
+    screenGlow.intensity = openAmount * 1.1;
+
+    root.rotation.y = -0.38 + smoothPointer.x * 0.12;
+    root.rotation.x = 0.28 - smoothPointer.y * 0.05 + sp * 0.18;
+    root.position.y = target.y + Math.sin(elapsed * 0.7) * 0.018 + (target.narrow ? -sp : sp * 0.6);
+    root.position.x = target.x + smoothPointer.x * 0.04;
 
     renderer.render(scene, camera);
   }
@@ -570,7 +539,6 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   function onThemeChange() {
     const glow = readColor('--color-accent-glow', '#3ddc8f');
     painter.refreshColors();
-    companions.forEach(({painter,texture}) => { painter.refreshColors(); painter.paint(0); texture.needsUpdate = true; });
     greenLight.color.copy(glow);
     screenGlow.color.copy(glow);
     painter.paint(2.5);

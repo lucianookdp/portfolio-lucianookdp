@@ -44,8 +44,7 @@
       "when": "Quando faz sentido",
       "includes": "O que pode incluir",
       "practice": "Como funciona na prática",
-      "next": "Próximo passo",
-      "illustrative": "Ilustração"
+      "next": "Próximo passo"
     },
     "offerings": [
       {
@@ -69,12 +68,11 @@
           "Layout adaptado para computador, tablet e celular",
           "Configuração básica para buscadores e compartilhamento"
         ],
-        "includesNote": "Os itens de cada projeto são definidos no orçamento.",
         "practice": "Você me passa as informações sobre a oferta e, juntos, organizamos o conteúdo em uma sequência: apresentação, benefícios, detalhes e contato. Depois desenvolvo a página e ajusto a leitura em cada tamanho de tela.",
         "nextStep": "Me conte qual oferta você quer apresentar e para quem.",
         "cta": "Conversar sobre uma landing page",
         "visual": {
-          "caption": "Estrutura ilustrativa de uma landing page",
+          "caption": "Ilustração de uma landing page: apresentação, benefícios, informações e contato.",
           "labels": [
             "Apresentação",
             "Benefícios",
@@ -102,6 +100,15 @@
               "title": "Convidar ao contato",
               "text": "A página conduz a uma ação clara."
             }
+          ],
+          "copy": [
+            "Seu serviço explicado em uma página",
+            "Para quem é",
+            "O que inclui",
+            "Como funciona",
+            "Como é o atendimento?",
+            "Quais são as formas de pagamento?",
+            "Vamos conversar?"
           ]
         }
       },
@@ -126,12 +133,11 @@
           "Mapa, horários e canais de contato",
           "Configuração básica para buscadores e compartilhamento"
         ],
-        "includesNote": "As páginas e seções são definidas no orçamento.",
         "practice": "Primeiro definimos quais páginas o site precisa e como elas se conectam. Esse mapa orienta o menu e a ordem dos conteúdos. Depois desenvolvo as páginas mantendo o mesmo padrão visual em todas.",
         "nextStep": "Me conte o que sua empresa faz e quais informações seus clientes mais procuram.",
         "cta": "Conversar sobre um site institucional",
         "visual": {
-          "caption": "Exemplo ilustrativo de navegação entre páginas",
+          "caption": "Ilustração de um site institucional com páginas Sobre, Serviços e Contato.",
           "labels": [
             "Início",
             "Sobre",
@@ -155,8 +161,15 @@
             },
             {
               "title": "Entrar em contato",
-              "text": "O menu conecta as páginas do site."
+              "text": "Uma página reúne as formas de falar com você."
             }
+          ],
+          "copy": [
+            "Saiba mais",
+            "Nome",
+            "Email",
+            "Mensagem",
+            "Enviar mensagem"
           ]
         }
       },
@@ -181,12 +194,11 @@
           "Relatórios e exportação de dados",
           "Níveis de acesso diferentes para cada pessoa da equipe"
         ],
-        "includesNote": "Essas são possibilidades, não um pacote pronto. As funções de cada sistema são definidas no escopo do projeto, de acordo com a rotina do negócio.",
         "practice": "Começamos pelo processo atual: quem participa, que informações circulam e onde estão as dificuldades. A partir disso, definimos as funções prioritárias para uma primeira versão. Novas funções podem ser planejadas depois, em etapas combinadas.",
         "nextStep": "Me conte como esse processo funciona hoje e o que mais atrapalha.",
         "cta": "Conversar sobre um sistema web",
         "visual": {
-          "caption": "Dados fictícios e interface ilustrativa. As funções dependem do escopo contratado.",
+          "caption": "Ilustração de um sistema web: cadastro, lista e acompanhamento de uma solicitação.",
           "labels": [
             "Painel",
             "Cadastros",
@@ -207,16 +219,25 @@
           "sequence": [
             {
               "title": "Registrar uma solicitação",
-              "text": "Exemplo fictício: pedido de orçamento."
+              "text": "Um novo pedido de orçamento é cadastrado."
             },
             {
               "title": "Organizar na lista",
-              "text": "O mesmo pedido passa a fazer parte da rotina."
+              "text": "O pedido entra na lista junto com os demais."
             },
             {
               "title": "Acompanhar a tarefa",
               "text": "O status mostra em que etapa o pedido está."
             }
+          ],
+          "copy": [
+            "Buscar",
+            "Cliente",
+            "Tipo de pedido",
+            "Salvar",
+            "Pedido",
+            "Status",
+            "Cliente exemplo"
           ]
         }
       },
@@ -227,7 +248,7 @@
         "kicker": "Menos etapas manuais",
         "need": "Quero conectar ferramentas que já uso e reduzir tarefas repetitivas.",
         "what": "Conexões entre as ferramentas que você já usa, para que uma informação siga sozinha para onde precisa ir. A ideia é reduzir tarefas repetitivas, como copiar dados de um lugar para outro ou avisar alguém manualmente.",
-        "callout": "A viabilidade depende das ferramentas envolvidas e dos acessos disponíveis. Antes do orçamento, verifico se a integração é possível e qual é o caminho mais simples.",
+        "callout": "",
         "when": [
           "Você copia as mesmas informações entre sistemas, planilhas ou emails",
           "Pedidos recebidos precisam ser repassados para outra pessoa ou ferramenta",
@@ -240,12 +261,11 @@
           "Integração com serviços que oferecem uma API",
           "Rotinas agendadas, como gerar um relatório periódico"
         ],
-        "includesNote": "O que é possível automatizar depende de cada ferramenta.",
         "practice": "Mapeamos a rotina passo a passo e identificamos onde a informação é copiada ou repassada à mão. Depois verifico o que cada ferramenta permite, monto a automação e testamos com situações da rotina antes de colocar em uso.",
         "nextStep": "Me conte quais ferramentas você usa e qual tarefa gostaria de automatizar.",
         "cta": "Conversar sobre uma automação",
         "visual": {
-          "caption": "Fluxo ilustrativo: um pedido feito no formulário segue para a planilha e gera um aviso.",
+          "caption": "Ilustração de uma automação: o pedido do formulário vai para a planilha e gera um aviso por email.",
           "labels": [
             "Formulário do site",
             "Planilha de pedidos",
@@ -261,28 +281,41 @@
           "sequence": [
             {
               "title": "Receber a informação",
-              "text": "Um formulário inicia o fluxo ilustrativo."
+              "text": "Um cliente preenche o formulário do site."
             },
             {
               "title": "Organizar os dados",
               "text": "O pedido segue para uma lista organizada."
             },
             {
-              "title": "Encaminhar para outra ferramenta",
-              "text": "A conexão depende das ferramentas e dos acessos."
+              "title": "Avisar a equipe",
+              "text": "O aviso chega por email, sem repasse manual."
             }
+          ],
+          "copy": [
+            "Nome",
+            "Pedido",
+            "Enviar",
+            "Nº",
+            "Cliente",
+            "Novo pedido #001",
+            "Cliente exemplo",
+            "agora"
           ]
         }
       }
     ],
-    "storyLabel": "Da ideia à experiência",
-    "storyNote": "Demonstrações ilustrativas dos serviços, não projetos entregues."
+    "storyLabel": "Ilustrações dos serviços",
+    "site": {
+      "brand": "Sua empresa",
+      "domain": "suaempresa.com.br"
+    }
   },
   "devices": {
     "index": "02",
-    "heading": "Computador, tablet e celular",
-    "subheading": "Cada tela é planejada para diferentes tamanhos.",
-    "body": "Uma pessoa pode abrir o seu site pelo celular, outra pelo computador do trabalho. Por isso, o layout é planejado para cada tamanho de tela: a organização muda, e o conteúdo continua fácil de ler e de usar.",
+    "heading": "Funciona em todos os dispositivos",
+    "subheading": "O conteúdo se adapta à tela de quem acessa.",
+    "body": "Uma pessoa pode abrir o seu site pelo celular, outra pelo computador do trabalho. Por isso, o layout é planejado para cada tamanho de tela: a organização muda, mas o conteúdo continua fácil de ler e de usar.",
     "points": [
       {
         "title": "Textos legíveis",
@@ -294,7 +327,7 @@
       },
       {
         "title": "Botões fáceis de usar",
-        "description": "Botões com tamanho confortável para o toque e espaço entre eles, para evitar toques errados."
+        "description": "Botões com tamanho confortável e espaço entre eles, para evitar toques errados."
       },
       {
         "title": "Conteúdo reorganizado",
@@ -355,7 +388,7 @@
   "about": {
     "index": "04",
     "heading": "Quem desenvolve",
-    "lead": "Prazer, eu sou Luciano K. Dal Pai.",
+    "lead": "Prazer, Luciano K.",
     "body": "Sou engenheiro de software no Brasil e trabalho de forma independente, desenvolvendo sites e sistemas web para pessoas e empresas. Você conversa diretamente comigo em todas as etapas, e eu sou responsável pelo planejamento, pelo desenvolvimento e pelas entregas combinadas.",
     "points": [
       "Contato direto, sem intermediários",

@@ -11,7 +11,7 @@ const { dict } = Astro.props;
 const { labels, mock } = dict.devices;
 
 // Each device lays the same content out its own way (not a scaled copy of
-// the desktop). data-device marks where the stage 2 3D models will sit.
+// the desktop), in plain HTML/CSS.
 const DEVICES = [
   { id: 'desktop', label: labels.desktop },
   { id: 'tablet', label: labels.tablet },
@@ -47,8 +47,6 @@ const POINT_ICONS = [
   </div>
 
   <figure class="devices-figure" data-reveal>
-    <div class="devices-composition" data-device-scene data-screen={JSON.stringify(mock)}>
-    <canvas class="devices-canvas" aria-hidden="true"></canvas>
     <div class="devices-stage" data-devices aria-hidden="true">
       {DEVICES.map((device) => (
         <div class={`device device-${device.id}`} data-device={device.id}>
@@ -83,17 +81,10 @@ const POINT_ICONS = [
         </div>
       ))}
     </div>
-    </div>
-    <figcaption class="mt-4 font-sans text-sm text-[var(--color-text-secondary)]">{dict.devices.caption}</figcaption>
+    <figcaption class="sr-only">{dict.devices.caption}</figcaption>
   </figure>
 </section>
 
-<script>
-  import { initDeviceScene } from '../../lib/device-scene';
-  let cleanup: (() => void) | undefined;
-  document.addEventListener('astro:page-load', () => { cleanup?.(); cleanup = initDeviceScene(); });
-  document.addEventListener('astro:before-swap', () => { cleanup?.(); cleanup = undefined; });
-</script>
 <!-- Global styles: every class here is device-, dm- and devices-prefixed, and skipping Astro's
      per-selector scope attribute keeps the page CSS within budget. -->
 <style is:global>
@@ -194,13 +185,4 @@ const POINT_ICONS = [
     .devices-figure.is-revealed .device-phone .device-shell { animation: device-rise 900ms var(--ease-out-expo) 240ms both; }
   }
   @keyframes device-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
-.devices-composition { position:relative; }
-  .devices-canvas { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; opacity:0; }
-  .devices-composition.is-live .devices-canvas { opacity:1; }
-  .devices-composition.is-live .device-shell { visibility:hidden; }
-  .devices-composition.is-live .device-label { position:absolute; bottom:2rem; transform:translateX(-50%); }
-  .is-live .device-desktop .device-label { left:35%; }
-  .is-live .device-tablet .device-label { left:60%; }
-  .is-live .device-phone .device-label { left:74%; }
-  @media(min-width:900px) { .devices-stage { min-height:25rem; } }
 </style>

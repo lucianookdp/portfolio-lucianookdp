@@ -9,7 +9,7 @@ Este documento registra o estado após a etapa 2 e orienta a revisão. Não repr
 ## Base correta de trabalho
 
 - Repositório de referência: https://github.com/lucianookdp/portfolio-lucianookdp.
-- A etapa 2 partiu da versão local em `C:\dev\portfolio-lucianookdp`, mas foi implementada em uma cópia. **O diretório original não recebeu as alterações da etapa 2.**
+- A etapa 2 partiu da versão local em `C:\dev\portfolio-lucianookdp`, mas foi implementada em uma cópia. Na etapa 3, essa cópia foi trazida para o repositório no commit `b1db2c8` (branch `feat/foco-em-servicos`). Desde então, o repositório é a base de trabalho.
 - A versão atualizada desta entrega está em:
 
   `C:\Users\Luciano\Documents\Codex\2026-11-04\files-pasted-by-the-user-implemente\outputs\portfolio-lucianookdp`
@@ -44,7 +44,7 @@ A futura seção independente de exemplos permanece apenas preparada e documenta
 
 - `src/components/hero/LaptopScene.ts`: reaproveita o notebook procedural e suas proteções. A tela agora apresenta a oferta comercial em PT/EN e acompanha o tema. A rolagem altera suavemente posição, rotação e enquadramento.
 - O mesmo módulo oferece uma composição com notebook, tablet e celular. Cada tela tem organização própria de menu, colunas, cards e botões; não é apenas uma imagem reduzida.
-- `src/components/sections/Hero.astro`: inicialização adiada, alternativa estática, resposta à mudança de preferência de movimento e descarte da cena fora de vista.
+- `src/components/hero/Hero.astro`: inicialização adiada, alternativa estática, resposta à mudança de preferência de movimento e descarte da cena fora de vista.
 - `src/lib/device-scene.ts` e `src/components/sections/Devices.astro`: a cena dos três dispositivos carrega quando necessária, em telas a partir de 900 px e quando as políticas de capacidade permitem. A composição HTML/CSS permanece disponível para telas menores e falhas.
 - `public/media/laptop-static.svg`: novo pôster comercial do notebook, substituindo a tela antiga de código. Preservar a alternativa sem WebGL.
 
@@ -129,3 +129,60 @@ Acesse `http://127.0.0.1:4325/`. Os servidores temporários da etapa 2 foram enc
 Faça inspeção desktop/mobile, nos dois sentidos da rolagem, com temas e movimento reduzido. Execute novamente os testes afetados por correções. Registre claramente verificações não executadas e problemas pendentes.
 
 Ao concluir, atualize apenas a documentação necessária e entregue um resumo curto das correções, verificações/resultados, pendências reais e eventuais problemas que devem retornar à etapa de animações. Priorize alterações pequenas e úteis, sem novas dependências, relatórios extensos ou refatorações desnecessárias. **Não faça push nem publique em produção.**
+
+## Resultado da etapa 3
+
+Revisão feita sobre o commit `b1db2c8` (etapa 2 trazida para o repositório). Sem commit das correções abaixo até a aprovação, sem push e sem publicação.
+
+### Correções
+
+- **Textos (pt/en):** as frases da sequência ilustrativa passaram a combinar com o que cada tela mostra. No site institucional, o passo "Entrar em contato" falava do menu; no sistema web, "Organizar na lista" ficou mais concreto; na automação, o terceiro passo virou "Avisar a equipe", que é o que a ilustração mostra. A ressalva de viabilidade continua no destaque e na nota do serviço. Também removi repetições ("toque/toques", "planejado/planejada" na seção de telas), troquei o rótulo genérico "Da ideia à experiência" por "Ilustrações dos serviços" e corrigi "a organização muda, e" para "mas". No inglês, unifiquei a grafia americana ("organized"), substituí "mistaps" e alinhei as mesmas correções.
+- **Acessibilidade:** a área compartilhada das ilustrações (`service-story.ts`) recebeu `role="group"`. Antes, o `aria-label` estava em uma `div` sem papel e era ignorado.
+- **Áreas de toque:** os links do rodapé passaram de 17 px para cerca de 29 px de altura, mantendo o espaçamento visual.
+- **Título da abertura:** `text-wrap: balance` nas linhas do `h1` evita "web" sozinho na linha em telas estreitas.
+
+### Verificações
+
+- `npm run check`: 0 erros, 0 avisos e 0 dicas. `node scripts/check-mobile-motion.mjs`: passou. `node --test scripts/check-resilience.mjs scripts/check-service-experience.mjs`: 48 de 48 testes passaram. `npm run build` + `check-performance-budget.mjs`: todos os limites respeitados (CSS em 87,5 de 90 KiB; JS inicial em 332,6 de 360 KiB).
+- Navegador (build de produção, `astro preview`), em 1440, 1280, 768 e 375 px, temas escuro e claro, pt e en:
+  - sem rolagem horizontal;
+  - um único `h1` e hierarquia de títulos coerente;
+  - nenhum controle sem nome acessível, nenhuma imagem sem `alt` e nenhuma âncora sem destino.
+- Navegação e contato:
+  - menu mobile: o foco fica preso dentro dele, o Esc fecha e o foco volta ao botão; ao escolher uma seção, a página para com a seção a 96 px do topo e o foco vai para ela;
+  - paleta ⌘K: a busca e o Enter levam à seção certa; os atalhos `g + v/p/a/c` funcionam;
+  - tema: a troca altera `theme-color` e a escolha fica salva; o idioma também fica salvo;
+  - metadados por idioma conferidos: título, descrição, `og:image`, canônica e `hreflang`;
+  - `mailto` e links externos (`rel="noopener noreferrer me"`) corretos;
+  - "Copiar email": o painel de testes bloqueia a área de transferência, e apareceu a mensagem alternativa correta; o caminho de sucesso é coberto pelo teste automático. Nenhum email foi enviado.
+- Projetos, tecnologias e atividade do GitHub continuam fora da página. A seção de exemplos existe só como comentário de preparação.
+
+### Limitações desta verificação
+
+- O painel de navegador usado não emula `prefers-reduced-motion` nem desliga o WebGL. Movimento reduzido e falta de 3D foram conferidos pelos testes automáticos e pela leitura do código, não visualmente nesta etapa. O pôster estático aparece no celular, onde o 3D da abertura não é carregado.
+- Com o painel oculto, o navegador pausa `requestAnimationFrame`. A rolagem da narrativa foi conferida nos dois sentidos com capturas intermediárias e pelos testes; algumas capturas pegaram transições no meio.
+- Não houve teste em aparelho físico, Safari/iOS ou toque real.
+- Seguem pendentes, como antes: o email sem JavaScript continua aparecendo como "Carregando email…", e "Costumo responder em até 24h" ainda não foi reconfirmado.
+
+### Retorno à etapa de animações
+
+Nenhum problema estrutural foi encontrado na cena 3D, na sincronização da rolagem ou no ciclo de renderização durante esta revisão.
+
+### Ajustes pedidos depois da revisão
+
+- **Cena 3D dos aparelhos removida.** A seção de aparelhos (`#devices`) agora usa só a composição em HTML/CSS, em todos os tamanhos de tela. Foram removidos:
+  - `src/lib/device-scene.ts`;
+  - o `<canvas>`, o script e o CSS de `.devices-composition` em `Devices.astro`;
+  - o modo `devices` (tablet e celular em 3D) de `LaptopScene.ts`;
+  - os 9 testes desse módulo em `scripts/check-service-experience.mjs`, que passou de 48 para 39 testes, todos passando.
+
+  O `ScreenPainter` ainda aceita os formatos `tablet` e `phone`, mas só o formato de desktop é usado.
+- **Título da seção:** agora é "Funciona em todos os dispositivos" / "Works on every device".
+- **Notebook da abertura:** é a única cena 3D do site e voltou à animação anterior à etapa 2. A tampa abre ao carregar e fecha conforme a rolagem; no celular, fecha mais rápido. A tela escurece junto com a tampa. A tela comercial e o pôster estático da etapa 2 foram mantidos. O código foi restaurado de `d2f33da:src/components/hero/LaptopScene.ts`.
+- **Conferido no navegador:** a tampa fecha ao rolar para baixo e reabre ao voltar ao topo (1440 px). A seção de aparelhos não tem mais canvas nem rolagem horizontal (1440 e 375 px).
+
+### Ilustrações dos serviços e avisos
+
+- **Novas ilustrações:** as quatro (`ServiceVisual.astro`) foram redesenhadas como telas de site e de sistema, com barra do navegador no estilo Windows (endereço à esquerda; minimizar, maximizar e fechar à direita), cabeçalho com logo e menu, títulos, botões, imagens, formulários, tabela e rodapé. Os ganchos da narrativa (`data-cue`, `data-sequence`, `data-step`, `--story-progress`) foram mantidos. Os textos dessas telas estão em `services.site` e `visual.copy`, nos dois dicionários.
+- **Avisos removidos, a pedido:** o selo "Ilustração", a nota "Demonstrações ilustrativas…", o aviso de viabilidade da automação e as notas abaixo de "O que pode incluir". As legendas das figuras passaram a ser só para leitores de tela (`sr-only`), com uma descrição simples. As frases "Exemplo fictício…" e "fluxo ilustrativo" também saíram.
+- **Orçamento de CSS:** com o CSS novo, o total passou do limite. Para não aumentar o orçamento, `global.css` tira da varredura do Tailwind os componentes arquivados que não aparecem na página (`Projects.astro`, `ProjectCard.astro` e `Marquee.astro`), com `@source not`. Remova essas linhas quando a seção de trabalhos voltar. O CSS total ficou em 88,8 de 90 KiB.

@@ -10,6 +10,7 @@ export function initServiceStory() {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const stage = document.createElement('div');
   stage.className = 'service-stage';
+  stage.setAttribute('role', 'group');
   stage.setAttribute('aria-label', root.dataset.label ?? '');
   root.append(stage);
   let connected = false;
