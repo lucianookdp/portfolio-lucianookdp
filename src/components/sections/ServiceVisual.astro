@@ -20,6 +20,7 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
       <span class="sv-ctrl"><i>–</i><i>□</i><i>✕</i></span>
     </div>
 
+    <div class="sv-view">
     {kind !== 'webapp' && kind !== 'automation' && (
       <div class="sv-site-head">
         <span class="sv-logo"><i></i>{site.brand}</span>
@@ -43,10 +44,6 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
         <section class="sv-sec" data-part="benefits" data-cue="1">
           <span class="sv-kicker">{labels[1]}</span>
           <div class="sv-cards">{copy.slice(1, 4).map((title) => <span class="sv-card"><i></i><b>{title}</b><span class="sv-line" style="--w:85%"></span><span class="sv-line" style="--w:60%"></span></span>)}</div>
-        </section>
-        <section class="sv-sec" data-part="info" data-cue="1">
-          <span class="sv-kicker">{labels[2]}</span>
-          {copy.slice(4, 6).map((q) => <span class="sv-faq">{q}<i>+</i></span>)}
         </section>
         <section class="sv-band" data-part="cta" data-cue="2"><b>{copy[6]}</b><span class="sv-btn">{action}</span></section>
       </div>}
@@ -109,14 +106,15 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
     </div>
 
     {kind !== 'webapp' && kind !== 'automation' && <div class="sv-foot"><span class="sv-logo"><i></i>{site.brand}</span><span class="sv-line" style="--w:30%"></span></div>}
+    </div>
     <div class="sv-sequence">{sequence.map((item, i) => <div data-sequence><span class="sv-tag">0{i + 1} / 03</span><strong>{item.title}</strong><p>{item.text}</p></div>)}</div>
     <div class="sv-progress"><span></span></div>
   </div>
   <figcaption class="sr-only">{visual.caption}</figcaption>
 </figure>
 <style is:global>
-/* The mockup sits on its own green stage and keeps a fixed light palette, like a
-   real client site, so it never blends into the dark or light service card. */
+/* The mockup follows the site theme on a recessed dotted stage; every window
+   shares one screen height so the four services line up. */
 .sv{margin:0;padding:1.5rem;border-radius:1.25rem;pointer-events:none;border:1px solid var(--color-border);background:radial-gradient(90% 70% at 85% 0%,color-mix(in srgb,var(--color-accent) 18%,transparent),transparent 70%),radial-gradient(circle,color-mix(in srgb,var(--color-text) 10%,transparent) 1px,transparent 1.3px) 0 0/14px 14px,var(--color-bg)}
 .sv-frame{overflow:hidden;border-radius:.75rem;background:var(--color-bg-elevated);border:1px solid var(--color-border-strong);box-shadow:0 0 0 4px color-mix(in srgb,var(--color-accent) 12%,transparent),0 24px 48px -20px rgb(0 0 0/.5);font-size:.75rem;color:var(--color-text)}
 .sv-chrome{display:flex;align-items:center;gap:.75rem;padding:.35rem 0 .35rem .6rem;background:var(--color-bg-subtle);border-bottom:1px solid var(--color-border)}
@@ -131,7 +129,7 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
 .sv-logo{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;white-space:nowrap}.sv-logo i{width:.9rem;height:.9rem;border-radius:.25rem;background:var(--color-accent)}
 .sv-site-head nav{display:flex;gap:.9rem;color:var(--color-text-secondary)}
 .sv-site-head nav span{padding-block:.15rem;border-bottom:2px solid transparent}
-.sv-body{padding:1rem}
+.sv-view{display:flex;flex-direction:column;height:var(--sv-h,29rem);overflow:hidden}.sv-body{flex:1;min-height:0;padding:1rem;overflow:hidden}
 .sv-h{display:block;margin-bottom:.6rem;font-family:var(--font-display);font-size:1.05rem;font-weight:700;line-height:1.15;letter-spacing:-.01em}
 .sv-line{display:block;width:var(--w,60%);height:.3rem;margin-top:.35rem;border-radius:9px;background:color-mix(in srgb,var(--color-text) 16%,transparent)}
 .sv-btn{display:inline-flex;width:fit-content;margin-top:.75rem;padding:.45rem .8rem;border-radius:.4rem;background:var(--color-accent);color:var(--color-on-accent);font-size:.65rem;font-weight:600;white-space:nowrap}
@@ -145,7 +143,6 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
 .sv-card{display:grid;gap:.15rem;align-content:start;padding:.6rem;border:1px solid var(--color-border);border-radius:.5rem;background:var(--color-bg)}
 .sv-card>i{width:1rem;height:1rem;margin-bottom:.3rem;border-radius:.3rem;background:var(--color-accent-soft);border:1px solid color-mix(in srgb,var(--color-accent) 40%,transparent)}
 .sv-card b{font-size:.68rem;line-height:1.25}.sv-card em{display:flex;align-items:center;gap:.25rem;margin-top:.4rem;color:var(--color-accent-text);font-size:.62rem;font-style:normal;font-weight:600}
-.sv-faq{display:flex;justify-content:space-between;gap:.5rem;padding:.4rem 0;border-top:1px solid var(--color-border)}.sv-faq i{font-style:normal;color:var(--color-text-secondary)}
 .sv-band{display:flex;align-items:center;justify-content:space-between;gap:.75rem;background:var(--color-accent-soft);border-color:color-mix(in srgb,var(--color-accent) 35%,var(--color-border))}.sv-band .sv-btn{margin:0}
 .sv-pages{display:grid}
 .sv-page{display:grid;align-content:start;gap:.25rem;min-height:15.5rem}
@@ -154,7 +151,7 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
 .sv-form label{display:block;margin-bottom:.2rem;color:var(--color-text-secondary);font-size:.6rem}
 .sv-form i{display:block;min-height:1.6rem;padding:.35rem .5rem;border:1px solid var(--color-border-strong);border-radius:.35rem;background:var(--color-bg);font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sv-form .sv-area{min-height:3rem}.sv-form .sv-btn{margin:0;align-self:end}
-.sv-app{margin:-1rem}
+.sv-app{display:flex;flex-direction:column;height:calc(100% + 2rem);margin:-1rem}.sv-app-main{flex:1}
 .sv-search{flex:1;max-width:11rem;padding:.3rem .6rem;border:1px solid var(--color-border);border-radius:.4rem;color:var(--color-text-secondary)}
 .sv-avatar{flex:none;width:1.4rem;height:1.4rem;border-radius:50%;background:color-mix(in srgb,var(--color-accent) 35%,var(--color-bg-subtle))}
 .sv-app-main{display:grid;grid-template-columns:7rem minmax(0,1fr)}
@@ -170,7 +167,7 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
 .sv-steps{display:flex;justify-content:space-between;gap:.5rem;padding:1rem .25rem;font-size:.62rem}
 .sv-steps span{display:grid;justify-items:center;gap:.45rem;flex:1;color:var(--color-text-secondary)}.sv-steps i{width:.7rem;height:.7rem;border-radius:50%;border:1.5px solid var(--color-border-strong)}
 .sv-steps .is-done{color:var(--color-text)}.sv-steps .is-done i{background:var(--color-accent);border-color:var(--color-accent)}
-.sv-flow{display:grid}
+.sv-flow{display:grid;height:100%;align-content:center}
 .sv-win{border:1px solid var(--color-border-strong);border-radius:.6rem;background:var(--color-bg-elevated);overflow:hidden}
 .sv-win-bar{display:flex;align-items:center;gap:.4rem;padding:.15rem 0 .15rem .6rem;border-bottom:1px solid var(--color-border);background:var(--color-bg-subtle);font-weight:600}.sv-win-bar>i{width:.5rem;height:.5rem;border-radius:50%;background:var(--color-accent)}
 .sv-win .sv-form{grid-template-columns:1fr 1fr auto;align-items:end;padding:.6rem}
@@ -192,7 +189,7 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
 }
 @media(max-width:639px){
 .sv{padding:.75rem;border-radius:1.25rem}.sv-frame{font-size:.72rem}.sv-side,.sv-ctrl i:nth-child(-n+2){display:none}
-.sv-body{padding:.75rem}.sv-app{margin:-.75rem}
+.sv-body{padding:.75rem}.sv-app{margin:-.75rem;height:calc(100% + 1.5rem)}
 .sv-site-head nav{gap:.6rem}.sv-hero{grid-template-columns:1fr}.sv-hero .sv-img{display:none}
 .sv-cards{grid-template-columns:1fr 1fr}.sv-cards>:nth-child(3){display:none}
 .sv-app-main{grid-template-columns:1fr}
