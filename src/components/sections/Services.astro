@@ -21,7 +21,7 @@ const KIND_ICONS: Record<string, string> = {
 const number = (index: number) => String(index + 1).padStart(2, '0');
 ---
 
-<section id="services" class="container-site scroll-mt-24 py-16 sm:py-24 lg:py-32">
+<section id="services" class="container-site services-wide scroll-mt-24 py-16 sm:py-24 lg:py-32">
   <SectionHeading index={dict.services.index} heading={dict.services.heading} subheading={dict.services.subheading} />
 
   <div class="mt-8 max-w-3xl sm:mt-10">
@@ -68,7 +68,7 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
     {offerings.map((offering, index) => (
       <article id={offering.id} class="service-block scroll-mt-24" data-service={offering.kind} aria-labelledby={`${offering.id}-title`}>
         <div class="service-copy">
-          <p class="service-eyebrow" data-reveal>
+          <p class="service-eyebrow" data-reveal data-story-step>
             <span class="service-number">{labels.service} {number(index)}</span>
             <span>{offering.kicker}</span>
           </p>
@@ -76,27 +76,30 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
 
           <p class="service-lead" data-reveal>{offering.what}</p>
 
-          <div class="service-lists" data-reveal>
-            <div>
-              <p class="service-label">{labels.when}</p>
-              <ul class="service-bullets">
-                {offering.when.map((item) => <li>{item}</li>)}
-              </ul>
+          <details class="service-more" open data-service-more>
+            <summary class="service-more-toggle">{labels.more}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></summary>
+            <div class="service-lists" data-reveal data-story-step>
+              <div>
+                <p class="service-label">{labels.when}</p>
+                <ul class="service-bullets">
+                  {offering.when.map((item) => <li>{item}</li>)}
+                </ul>
+              </div>
+              <div>
+                <p class="service-label">{labels.includes}</p>
+                <ul class="service-bullets">
+                  {offering.includes.map((item) => <li>{item}</li>)}
+                </ul>
+              </div>
             </div>
-            <div>
-              <p class="service-label">{labels.includes}</p>
-              <ul class="service-bullets service-bullets-check">
-                {offering.includes.map((item) => <li>{item}</li>)}
-              </ul>
+
+            <div class="service-practice" data-reveal>
+              <p class="service-label">{labels.practice}</p>
+              <p>{offering.practice}</p>
             </div>
-          </div>
+          </details>
 
-          <div class="service-practice" data-reveal>
-            <p class="service-label">{labels.practice}</p>
-            <p>{offering.practice}</p>
-          </div>
-
-          <div class="service-next" data-reveal>
+          <div class="service-next" data-reveal data-story-step>
             <div>
               <p class="service-label">{labels.next}</p>
               <p class="service-next-text">{offering.nextStep}</p>
@@ -120,7 +123,12 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
 <script>
   import { initServiceStory } from '../../lib/service-story';
   let cleanup: (() => void) | undefined;
-  document.addEventListener('astro:page-load', () => { cleanup?.(); cleanup = initServiceStory(); });
+  // Phones start with each card's details folded so the four services stay
+  // short; wider screens always show them. Without JS everything stays open.
+  const phone = window.matchMedia('(max-width: 639px)');
+  const foldDetails = () => document.querySelectorAll<HTMLDetailsElement>('[data-service-more]').forEach((d) => { d.open = !phone.matches; });
+  phone.addEventListener('change', foldDetails);
+  document.addEventListener('astro:page-load', () => { foldDetails(); cleanup?.(); cleanup = initServiceStory(); });
   document.addEventListener('astro:before-swap', () => { cleanup?.(); cleanup = undefined; });
 </script>
 
@@ -185,7 +193,27 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
   .service-bullets { display: grid; gap: 0.625rem; color: var(--color-text-secondary); font-size: 0.9375rem; line-height: 1.55; }
   .service-bullets li { position: relative; padding-left: 1.25rem; }
   .service-bullets li::before { content: ''; position: absolute; left: 0.125rem; top: 0.6em; width: 0.375rem; height: 0.375rem; border-radius: 999px; background: var(--color-accent-text); }
-  .service-bullets-check li::before { top: 0.35em; width: 0.75rem; height: 0.75rem; left: 0; border-radius: 0; background: none; border: solid var(--color-accent-text); border-width: 0 2px 2px 0; transform: translateX(0.2rem) rotate(45deg) scale(0.55, 0.8); }
+  .service-more-toggle { display: none; }
+  @media (max-width: 639px) {
+    /* Compact cards on phones: tighter spacing, smaller type, folded details. */
+    .service-block { gap: 1.25rem; padding: 1.25rem 1rem; border-radius: 1.25rem; }
+    .service-title { font-size: 1.625rem; }
+    .service-lead { margin-top: 0.75rem; font-size: 0.9375rem; line-height: 1.6; }
+    .service-label { margin-bottom: 0.375rem; font-size: 0.875rem; }
+    .service-bullets { gap: 0.375rem; font-size: 0.875rem; }
+    .service-practice { font-size: 0.875rem; }
+    .service-lists, .service-practice { margin-top: 1.25rem; padding-top: 1.25rem; }
+    .service-lists { gap: 1.25rem; }
+    .service-more { margin-top: 1rem; }
+    .service-more-toggle { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; min-height: 44px; padding: 0.625rem 0.875rem; border: 1px solid var(--color-border-strong); border-radius: 0.75rem; color: var(--color-text); font-size: 0.875rem; font-weight: 600; cursor: pointer; list-style: none; }
+    .service-more-toggle::-webkit-details-marker { display: none; }
+    .service-more-toggle svg { width: 1rem; height: 1rem; flex: none; transition: transform 250ms var(--ease-out-expo); }
+    .service-more[open] .service-more-toggle svg { transform: rotate(180deg); }
+    .service-next { margin-top: 1rem; padding: 1rem; }
+    .service-next .service-label { margin-bottom: 0.25rem; }
+  }
+  /* Large screens: the services section uses more of the width. */
+  @media (min-width: 1280px) { #services.services-wide { max-width: 96rem; } }
   .service-practice { color: var(--color-text-secondary); font-size: 0.9375rem; line-height: 1.65; }
   .service-practice > p:last-child { max-width: 62ch; }
   .service-next { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; margin-top: 1.75rem; padding: 1.25rem; border: 1px solid color-mix(in srgb, var(--color-accent) 30%, var(--color-border)); border-radius: 1rem; background: color-mix(in srgb, var(--color-accent) 7%, var(--color-bg)); }

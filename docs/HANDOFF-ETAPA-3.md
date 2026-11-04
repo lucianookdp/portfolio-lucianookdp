@@ -200,3 +200,11 @@ Nenhum problema estrutural foi encontrado na cena 3D, na sincronização da rola
 - **Imagem estática nova:** `laptop-poster.webp` e `laptop-poster-en.webp` são capturas do próprio `LaptopScene` (Chrome headless com movimento reduzido, fundo transparente, recortadas com `sharp`) e substituem `laptop-static.svg` e o antigo `laptop.webp`. Para regerar depois de mudar a tela, renderize uma página temporária em `dist/` que importe o chunk `LaptopScene` e use `chrome --headless=new --force-prefers-reduced-motion --default-background-color=00000000 --screenshot`.
 - **Serviços em cartões:** cada serviço virou um cartão com borda e fundo próprios. Linhas finas separam resumo, listas, "Como funciona na prática" e "Próximo passo", e o próximo passo tem fundo verde suave. O rótulo "O que é" saiu, porque o texto logo abaixo do título já responde.
 - **Removidos:** o destaque "Diferença para a landing page" (e a chave `callout`). No ponto "Contato acessível", o ícone de balão foi trocado por um envelope.
+
+### Serviços: largura, sincronização e versão compacta
+
+- **Mais largura:** a partir de 1280 px, a seção de serviços usa até 96rem (`#services.services-wide`), em vez dos 80rem das outras seções.
+- **Sincronização com o mockup:** cada cartão marca três partes com `data-story-step` (topo, listas e próximo passo). Em `service-story.ts`, a etapa do mockup acompanha a parte que chegou à linha de leitura (42% da altura da tela), não mais terços iguais da altura do cartão. Sem marcadores, vale a regra antiga. Um teste novo cobre a ida e a volta.
+- **Listas:** "O que pode incluir" usa bolinhas, como "Quando faz sentido". O "check" desenhado em CSS saiu.
+- **Celular (até 639 px):** cartões mais compactos (espaços e textos menores). As listas e o "Como funciona na prática" ficam dentro de um `<details>` ("Ver o que inclui e como funciona"), que começa fechado no celular e fica sempre aberto em telas maiores. Sem JavaScript, tudo aparece aberto.
+- **CSS:** 89,8 de 90 KiB. Não há mais margem; o próximo acréscimo de estilo precisa remover algo antes.

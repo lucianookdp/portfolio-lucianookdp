@@ -62,6 +62,17 @@ test('story follows scroll down and back, including direct jumps to the fourth s
   f.scroll(0); assert.equal(f.columns[0].attrs.get('aria-hidden'),'false');
   f.cleanup();
 });
+test('story steps follow the card parts marked with data-story-step',()=>{
+  const f=fixture();
+  // Summary at the top, lists 300px down, next step 800px down (anchor is 42% of 900 = 378).
+  const marks=[0,300,800].map(offset=>({getBoundingClientRect:()=>{const top=f.articles[0].getBoundingClientRect().top+offset;return {top,height:100};}}));
+  f.articles[0].querySelectorAll=()=>marks;
+  f.scroll(-100); assert.equal(f.figures[0].dataset.step,'0');
+  f.scroll(0); assert.equal(f.figures[0].dataset.step,'1');
+  f.scroll(500); assert.equal(f.figures[0].dataset.step,'2');
+  f.scroll(0); assert.equal(f.figures[0].dataset.step,'1');
+  f.cleanup();
+});
 test('resize restores each illustration to its own article without duplicating DOM',()=>{
   const f=fixture();
   f.change(0,false);
