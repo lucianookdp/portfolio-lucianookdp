@@ -186,3 +186,10 @@ Nenhum problema estrutural foi encontrado na cena 3D, na sincronização da rola
 - **Novas ilustrações:** as quatro (`ServiceVisual.astro`) foram redesenhadas como telas de site e de sistema, com barra do navegador no estilo Windows (endereço à esquerda; minimizar, maximizar e fechar à direita), cabeçalho com logo e menu, títulos, botões, imagens, formulários, tabela e rodapé. Os ganchos da narrativa (`data-cue`, `data-sequence`, `data-step`, `--story-progress`) foram mantidos. Os textos dessas telas estão em `services.site` e `visual.copy`, nos dois dicionários.
 - **Avisos removidos, a pedido:** o selo "Ilustração", a nota "Demonstrações ilustrativas…", o aviso de viabilidade da automação e as notas abaixo de "O que pode incluir". As legendas das figuras passaram a ser só para leitores de tela (`sr-only`), com uma descrição simples. As frases "Exemplo fictício…" e "fluxo ilustrativo" também saíram.
 - **Orçamento de CSS:** com o CSS novo, o total passou do limite. Para não aumentar o orçamento, `global.css` tira da varredura do Tailwind os componentes arquivados que não aparecem na página (`Projects.astro`, `ProjectCard.astro` e `Marquee.astro`), com `@source not`. Remova essas linhas quando a seção de trabalhos voltar. O CSS total ficou em 88,8 de 90 KiB.
+
+### Ajustes após a publicação
+
+- **Sem emojis:** a seta da tela do notebook 3D agora é desenhada no canvas; como caractere `↗`, ela podia aparecer como emoji colorido em alguns aparelhos. Os `↗` dos links externos (rodapé, menu mobile, "Sobre", paleta) e as setas das ilustrações viraram ícones SVG.
+- **Ilustrações:** saíram o ponto verde que acompanhava a rolagem na automação e o contorno verde que se movia entre os blocos. As etapas continuam trocando.
+- **Blocos de serviço:** o rótulo "Serviço 01" virou uma etiqueta que não quebra no meio, e o subtítulo fica ao lado ou abaixo dela. Os títulos internos ("O que é", "Quando faz sentido"…) passaram da fonte mono maiúscula para texto normal em negrito.
+- **Aparelhos no celular:** tablet e celular ficam com a mesma altura abaixo do computador, com colunas na proporção das telas. Conferido em 360 e 320 px.

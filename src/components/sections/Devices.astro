@@ -99,10 +99,12 @@ const POINT_ICONS = [
   .devices-figure { margin: 3rem 0 0; }
   .devices-stage {
     display: grid;
-    grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+    /* Phones: desktop on top, tablet and phone below at the same height
+       (columns follow their 3:4 and 9:19 screen ratios). */
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
     align-items: end;
-    gap: 1.5rem 1rem;
-    padding: 1.5rem 1rem;
+    gap: 1.25rem 0.875rem;
+    padding: 1.25rem 1rem;
     border: 1px solid var(--color-border);
     border-radius: 1.5rem;
     background: radial-gradient(circle at 20% 0%, var(--color-accent-soft), transparent 55%), var(--color-bg-elevated);
@@ -123,8 +125,7 @@ const POINT_ICONS = [
   .device-phone .device-shell { border-radius: 1.5rem; padding: 0.375rem; }
   .device-phone .device-screen { aspect-ratio: 9 / 19; border-radius: 1.125rem; }
   .device-tablet { width: 100%; }
-  .device-phone { width: 62%; justify-self: center; }
-  @media (min-width: 900px) { .device-phone { width: 100%; } }
+  .device-phone { width: 100%; }
 
   /* Mock content: sizes in cqw (the shell is the container), so each screen
      scales with its own width. */

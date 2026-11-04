@@ -57,7 +57,7 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
             <span class="sv-crumb">{labels[0]} / {labels[i + 1]}</span>
             <strong class="sv-h">{labels[i + 1]}</strong>
             {i === 0 && <div class="sv-about"><span class="sv-img"></span><div><span class="sv-line" style="--w:95%"></span><span class="sv-line" style="--w:88%"></span><span class="sv-line" style="--w:72%"></span><span class="sv-line" style="--w:80%"></span></div></div>}
-            {i === 1 && <div class="sv-cards sv-cards-2">{details.map((d) => <span class="sv-card"><span class="sv-img sv-img-sm"></span><b>{d}</b><span class="sv-line" style="--w:80%"></span><em>{copy[0]} →</em></span>)}</div>}
+            {i === 1 && <div class="sv-cards sv-cards-2">{details.map((d) => <span class="sv-card"><span class="sv-img sv-img-sm"></span><b>{d}</b><span class="sv-line" style="--w:80%"></span><em>{copy[0]} <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" /></svg></em></span>)}</div>}
             {i === 2 && <div class="sv-form"><span><label>{copy[1]}</label><i></i></span><span><label>{copy[2]}</label><i></i></span><span class="sv-wide"><label>{copy[3]}</label><i class="sv-area"></i></span><span class="sv-btn">{copy[4]}</span></div>}
           </section>
         ))}
@@ -95,12 +95,12 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
           <span class="sv-win-bar"><i></i>{labels[0]}<span class="sv-ctrl"><i>–</i><i>□</i><i>✕</i></span></span>
           <div class="sv-form"><span><label>{copy[0]}</label><i>{copy[6]}</i></span><span><label>{copy[1]}</label><i>{details[0]}</i></span><span class="sv-btn sv-btn-sm">{copy[2]}</span></div>
         </section>
-        <span class="sv-link" data-part="link-1"><span class="sv-packet"></span>{action} ↓</span>
+        <span class="sv-link" data-part="link-1">{action} <svg viewBox="0 0 16 16"><path d="M8 3v10M4 9l4 4 4-4" /></svg></span>
         <section class="sv-win" data-part="node-2" data-cue="1">
           <span class="sv-win-bar"><i></i>{labels[1]}<span class="sv-ctrl"><i>–</i><i>□</i><i>✕</i></span></span>
           <div class="sv-sheet"><b>{copy[3]}</b><b>{copy[4]}</b><b>{copy[1]}</b><span></span><span></span><span></span><span class="is-new">001</span><span class="is-new">{copy[6]}</span><span class="is-new">{details[1]}</span></div>
         </section>
-        <span class="sv-link" data-part="link-2"><span class="sv-packet"></span>{action} ↓</span>
+        <span class="sv-link" data-part="link-2">{action} <svg viewBox="0 0 16 16"><path d="M8 3v10M4 9l4 4 4-4" /></svg></span>
         <section class="sv-win" data-part="node-3" data-cue="2">
           <span class="sv-win-bar"><i></i>{labels[2]}<span class="sv-ctrl"><i>–</i><i>□</i><i>✕</i></span></span>
           <span class="sv-mail"><span class="sv-avatar"></span><span><b>{copy[5]}</b><span>{details[2]}</span></span><em>{copy[7]}</em></span>
@@ -142,7 +142,7 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
 .sv-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}.sv-cards-2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .sv-card{display:grid;gap:.15rem;align-content:start;padding:.6rem;border:1px solid var(--color-border);border-radius:.5rem;background:var(--color-bg)}
 .sv-card>i{width:1rem;height:1rem;margin-bottom:.3rem;border-radius:.3rem;background:var(--color-accent-soft);border:1px solid color-mix(in srgb,var(--color-accent) 40%,transparent)}
-.sv-card b{font-size:.68rem;line-height:1.25}.sv-card em{margin-top:.4rem;color:var(--color-accent-text);font-size:.62rem;font-style:normal;font-weight:600}
+.sv-card b{font-size:.68rem;line-height:1.25}.sv-card em{display:flex;align-items:center;gap:.25rem;margin-top:.4rem;color:var(--color-accent-text);font-size:.62rem;font-style:normal;font-weight:600}
 .sv-faq{display:flex;justify-content:space-between;gap:.5rem;padding:.4rem 0;border-top:1px solid var(--color-border)}.sv-faq i{font-style:normal;color:var(--color-text-secondary)}
 .sv-band{display:flex;align-items:center;justify-content:space-between;gap:.75rem;background:var(--color-accent-soft);border-color:color-mix(in srgb,var(--color-accent) 35%,var(--color-border))}.sv-band .sv-btn{margin:0}
 .sv-pages{display:grid}
@@ -176,8 +176,8 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
 .sv-sheet>*{padding:.3rem .45rem;border-right:1px solid var(--color-border);border-bottom:1px solid var(--color-border);min-height:1.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sv-sheet b{background:var(--color-bg-subtle);font-weight:600}.sv-sheet .is-new{background:var(--color-accent-soft);color:var(--color-accent-text);font-weight:600}
 .sv-mail{display:flex;align-items:center;gap:.6rem;padding:.6rem}.sv-mail>span:nth-child(2){display:grid;flex:1;min-width:0}.sv-mail b{font-size:.68rem}.sv-mail em{font-style:normal;color:var(--color-text-secondary)}
-.sv-link{position:relative;height:2.2rem;margin-left:1.4rem;padding:.65rem .9rem;border-left:2px dashed var(--color-border-strong);color:var(--color-text-secondary);font:.6rem var(--font-mono)}
-.sv-packet{position:absolute;left:-5px;top:0;width:8px;height:8px;border-radius:50%;background:var(--color-accent)}
+.sv-link{display:flex;align-items:center;gap:.3rem;height:2.2rem;margin-left:1.4rem;padding:0 .9rem;border-left:2px dashed var(--color-border-strong);color:var(--color-text-secondary);font:.6rem var(--font-mono)}
+.sv-link svg,.sv-card em svg{width:.7rem;height:.7rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .sv-sequence{display:grid;gap:.75rem;padding:.9rem 1.1rem;border-top:1px solid var(--color-border);background:var(--color-bg-elevated)}
 .sv-sequence strong{display:block;margin:.3rem 0;font-size:.875rem}.sv-sequence p{color:var(--color-text-secondary);font-size:.75rem;line-height:1.5}
 .sv-progress{height:2px;background:var(--color-border)}.sv-progress>span{display:block;height:100%;transform:scaleX(var(--story-progress,1));transform-origin:left;background:var(--color-accent)}
@@ -186,10 +186,7 @@ const host = kind === 'webapp' ? `app.${site.domain}` : site.domain;
 .sv-animated .sv-sequence{min-height:7.5rem}.sv-animated .sv-sequence>div{display:none}.sv-animated .sv-sequence>.is-current{display:block}
 .sv-animated .sv-page,.sv-animated .sv-panel{grid-area:1/1;opacity:0;visibility:hidden;transform:translateY(8px)}
 .sv-animated .sv-page.is-cued,.sv-animated .sv-panel.is-cued{opacity:1;visibility:visible;transform:none}
-.sv-animated .sv-lp>.is-cued,.sv-animated .sv-win.is-cued{border-radius:.6rem;box-shadow:0 0 0 2px var(--color-accent-text)}
 .sv-animated .sv-site-head .is-cued{color:var(--color-text);border-color:var(--color-accent)}
-.sv-animated .sv-packet{transform:translateY(calc(clamp(0,var(--story-progress,0)*3 - 1,1)*28px))}
-.sv-animated .sv-link+.sv-win+.sv-link .sv-packet{transform:translateY(calc(clamp(0,var(--story-progress,0)*3 - 2,1)*28px))}
 }
 @media(max-width:639px){
 .sv-body{padding:.75rem}.sv-app{margin:-.75rem}
