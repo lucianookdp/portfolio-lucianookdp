@@ -16,11 +16,10 @@ const { dict, locale, ptPath, enPath } = Astro.props;
 
 const sectionPrefix = ['/', '/en', '/en/'].includes(Astro.url.pathname) ? '' : (locale === 'pt' ? '/' : '/en');
 const navItems = [
-  { href: '#about', id: 'about', label: dict.nav.about },
-  { href: '#projects', id: 'projects', label: dict.nav.projects },
   { href: '#services', id: 'services', label: dict.nav.services },
-  { href: '#contact', id: 'contact', label: dict.nav.contact },
-  { href: '#stack', id: 'stack', label: dict.nav.stack }
+  { href: '#process', id: 'process', label: dict.nav.process },
+  { href: '#about', id: 'about', label: dict.nav.about },
+  { href: '#contact', id: 'contact', label: dict.nav.contact }
 ].map(item => ({ ...item, href: `${sectionPrefix}${item.href}` }));
 
 const homePath = locale === 'pt' ? '/' : '/en';
@@ -297,8 +296,8 @@ const homePath = locale === 'pt' ? '/' : '/en';
       menuLinks.forEach((link) => link.removeEventListener('click', onMenuLinkClick));
     });
 
-    /* Keyboard chords: g then a/p/v/g/s/c */
-    const sectionShortcuts: Record<string, string> = { a: 'about', p: 'projects', v: 'services', s: 'stack', c: 'contact' };
+    /* Keyboard chords: g then v/p/a/c */
+    const sectionShortcuts: Record<string, string> = { v: 'services', p: 'process', a: 'about', c: 'contact' };
     let awaitingChord = false;
     let chordTimeoutId = 0;
     function onShortcutKeydown(event: KeyboardEvent) {

@@ -9,11 +9,10 @@ interface Props {
 
 const { dict, displayName } = Astro.props;
 
-// "Luciano K." on the first line, "Dal Pai" on the second — the two-word
-// surname must never split.
-const nameWords = displayName.split(' ');
-const surname = nameWords.slice(-2).join(' ');
-const givenNames = nameWords.slice(0, -2).join(' ');
+// The offer is the headline: the first line rises letter by letter, the
+// second carries the brand gradient. The name stays as the eyebrow above it.
+const [headlineTop, headlineBottom] = dict.hero.headline;
+const headline = dict.hero.headline.join(' ');
 ---
 
 <section id="hero" class="relative flex min-h-[100svh] items-end overflow-hidden lg:items-center">
@@ -29,9 +28,9 @@ const givenNames = nameWords.slice(0, -2).join(' ');
     <div class="lg:max-w-[64%]">
       <p class="hero-entrance eyebrow mb-4 text-[var(--color-accent-text)]">{dict.hero.role}</p>
 
-      <h1 class="hero-title text-[var(--color-text)]" style="font-size: clamp(2.7rem, 11vw, 9rem);" aria-label={displayName}>
-        <span class="block" data-split-chars>{givenNames}</span>
-        <span class="hero-line block text-gradient" aria-hidden="true">{surname}</span>
+      <h1 class="hero-title text-[var(--color-text)]" style="font-size: clamp(2.25rem, 5.4vw, 4.75rem);" aria-label={headline}>
+        <span class="block" data-split-chars>{headlineTop}</span>
+        <span class="hero-line block text-gradient" aria-hidden="true">{headlineBottom}</span>
       </h1>
 
       <p class="hero-entrance mt-6 max-w-xl font-sans text-base leading-relaxed text-[var(--color-text-secondary)] sm:mt-8 sm:text-xl">
@@ -39,8 +38,8 @@ const givenNames = nameWords.slice(0, -2).join(' ');
       </p>
 
       <div class="hero-entrance mt-8 flex flex-wrap items-center gap-3 sm:mt-10">
-        <a href="#projects" class="btn btn-primary" data-magnetic="0.3">
-          {dict.hero.ctaProjects}
+        <a href="#services" class="btn btn-primary" data-magnetic="0.3">
+          {dict.hero.ctaServices}
           <svg class="btn-arrow h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M5 12h14" /><path d="m13 6 6 6-6 6" />
           </svg>

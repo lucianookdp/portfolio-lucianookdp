@@ -12,11 +12,10 @@ const year = new Date().getFullYear();
 
 const sectionPrefix = ['/', '/en', '/en/'].includes(Astro.url.pathname) ? '' : (locale === 'pt' ? '/' : '/en');
 const navItems = [
-  { href: '#about', label: dict.nav.about },
-  { href: '#projects', label: dict.nav.projects },
   { href: '#services', label: dict.nav.services },
-  { href: '#contact', label: dict.nav.contact },
-  { href: '#stack', label: dict.nav.stack }
+  { href: '#process', label: dict.nav.process },
+  { href: '#about', label: dict.nav.about },
+  { href: '#contact', label: dict.nav.contact }
 ].map(item => ({ ...item, href: `${sectionPrefix}${item.href}` }));
 ---
 

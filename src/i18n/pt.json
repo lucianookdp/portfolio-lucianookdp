@@ -1,14 +1,13 @@
 {
   "meta": {
-    "title": "Luciano K. Dal Pai · Desenvolvimento de software",
-    "description": "Landing pages, sites e sistemas desenvolvidos por Luciano K. Dal Pai. Conheça os projetos, veja os serviços e entre em contato."
+    "title": "Sites e sistemas web para o seu negócio · Luciano K. Dal Pai",
+    "description": "Landing pages, sites institucionais, sistemas web e automações sob medida. Entenda cada serviço, veja como funciona o projeto e peça um orçamento."
   },
   "nav": {
     "primary": "Navegação principal",
-    "about": "Sobre mim",
-    "projects": "Projetos",
     "services": "Serviços",
-    "stack": "Tecnologias",
+    "process": "Como funciona",
+    "about": "Sobre",
     "contact": "Contato",
     "skipToContent": "Pular para o conteúdo",
     "openMenu": "Abrir menu",
@@ -16,25 +15,276 @@
     "menuHint": "Escolha uma seção"
   },
   "hero": {
-    "availability": "Disponível para novos trabalhos",
-    "role": "Engenheiro de software · Full-stack",
-    "tagline": "Engenheiro de software com foco em desenvolvimento web.",
-    "intro": "Entusiasta de tecnologia e desenvolvimento web.",
-    "ctaProjects": "Conhecer projetos",
-    "ctaContact": "Entrar em contato",
+    "availability": "Disponível para novos projetos",
+    "role": "Luciano K. Dal Pai · Desenvolvimento web",
+    "headline": ["Sites e sistemas web", "para o seu negócio."],
+    "intro": "Desenvolvo landing pages, sites institucionais, sistemas web e automações para apresentar seus serviços, facilitar o contato com clientes e organizar processos do dia a dia.",
+    "tagline": "Landing pages, sites institucionais, sistemas web e automações.",
+    "ctaServices": "Conhecer os serviços",
+    "ctaContact": "Conversar sobre meu projeto",
     "location": "Brasil · GMT-3",
     "localTime": "Horário local",
-    "sceneLabel": "Notebook em 3D exibindo este portfólio"
+    "sceneLabel": "Notebook em 3D exibindo uma prévia deste site"
+  },
+  "services": {
+    "index": "01",
+    "heading": "Serviços",
+    "subheading": "Quatro tipos de projeto, cada um para uma necessidade diferente.",
+    "intro": "Antes de falar em tecnologia, vale entender o que você precisa resolver. Veja o que é cada serviço, quando ele faz sentido e o que pode fazer parte do projeto.",
+    "chooserHeading": "Qual opção combina com a sua necessidade?",
+    "chooserMore": "Ver detalhes",
+    "chooserHelp": "Ainda em dúvida? Me conte a situação e eu indico o caminho mais adequado.",
+    "chooserHelpLink": "Pedir uma orientação",
+    "labels": {
+      "service": "Serviço",
+      "what": "O que é",
+      "when": "Quando faz sentido",
+      "includes": "O que pode incluir",
+      "practice": "Como funciona na prática",
+      "next": "Próximo passo",
+      "illustrative": "Ilustração"
+    },
+    "offerings": [
+      {
+        "id": "service-landing",
+        "kind": "landing",
+        "title": "Landing page",
+        "kicker": "Uma página, um objetivo",
+        "need": "Quero divulgar um serviço, um lançamento ou receber pedidos de orçamento.",
+        "what": "Uma página única, focada em uma oferta ou em um objetivo específico. Todo o conteúdo conduz o visitante a entender a proposta e a entrar em contato.",
+        "callout": "",
+        "when": [
+          "Apresentar um serviço específico",
+          "Divulgar um lançamento, evento ou campanha",
+          "Receber pedidos de orçamento de forma organizada",
+          "Começar na internet com pouco conteúdo"
+        ],
+        "includes": [
+          "Apresentação clara da oferta",
+          "Seções de benefícios, detalhes e perguntas frequentes",
+          "Botões de contato ao longo da página",
+          "Layout adaptado para computador, tablet e celular",
+          "Configuração básica para buscadores e compartilhamento"
+        ],
+        "includesNote": "Os itens de cada projeto são definidos no orçamento.",
+        "practice": "Você me passa as informações sobre a oferta e, juntos, organizamos o conteúdo em uma sequência: apresentação, benefícios, detalhes e contato. Depois desenvolvo a página e ajusto a leitura em cada tamanho de tela.",
+        "nextStep": "Me conte qual oferta você quer apresentar e para quem.",
+        "cta": "Conversar sobre uma landing page",
+        "visual": {
+          "caption": "Estrutura ilustrativa de uma landing page",
+          "labels": ["Apresentação", "Benefícios", "Informações", "Contato"],
+          "details": ["Título e resumo da oferta", "Vantagens em tópicos", "Detalhes e perguntas frequentes", "Chamada final para contato"],
+          "states": [],
+          "action": "Pedir orçamento"
+        }
+      },
+      {
+        "id": "service-website",
+        "kind": "website",
+        "title": "Site institucional",
+        "kicker": "Várias páginas, tudo organizado",
+        "need": "Quero apresentar minha empresa, com páginas para serviços, informações e contato.",
+        "what": "Um site com páginas ou áreas para apresentar a empresa, os serviços, informações úteis e formas de contato. É a presença da empresa na internet, organizada para que cada pessoa encontre o que procura.",
+        "callout": "Diferença para a landing page: a landing page concentra tudo em uma página com um único objetivo. O site institucional reúne vários assuntos e usa a navegação para levar cada visitante até a informação que ele procura.",
+        "when": [
+          "A empresa oferece mais de um serviço ou atende públicos diferentes",
+          "Clientes pedem sempre as mesmas informações, como endereço, horários e formas de atendimento",
+          "Você quer um endereço oficial para indicar nas redes sociais, em cartões e em conversas",
+          "O conteúdo deve crescer com o tempo"
+        ],
+        "includes": [
+          "Páginas como Início, Sobre, Serviços e Contato",
+          "Menu de navegação adaptado para o celular",
+          "Uma página para cada serviço",
+          "Mapa, horários e canais de contato",
+          "Configuração básica para buscadores e compartilhamento"
+        ],
+        "includesNote": "As páginas e seções são definidas no orçamento.",
+        "practice": "Primeiro definimos quais páginas o site precisa e como elas se conectam. Esse mapa orienta o menu e a ordem dos conteúdos. Depois desenvolvo as páginas mantendo o mesmo padrão visual em todas.",
+        "nextStep": "Me conte o que sua empresa faz e quais informações seus clientes mais procuram.",
+        "cta": "Conversar sobre um site institucional",
+        "visual": {
+          "caption": "Exemplo ilustrativo de navegação entre páginas",
+          "labels": ["Início", "Sobre", "Serviços", "Contato"],
+          "details": ["Serviço 1", "Serviço 2"],
+          "states": [],
+          "action": "Você está aqui"
+        }
+      },
+      {
+        "id": "service-webapp",
+        "kind": "webapp",
+        "title": "Sistema web",
+        "kicker": "Uma ferramenta para a rotina",
+        "need": "Preciso de uma ferramenta para cadastrar, acompanhar e consultar informações.",
+        "what": "Uma ferramenta acessada pelo navegador para realizar tarefas e organizar informações do negócio. Em vez de planilhas soltas e mensagens espalhadas, os dados ficam reunidos em um só lugar, com acesso para quem precisa.",
+        "callout": "",
+        "when": [
+          "A equipe controla informações em várias planilhas ou anotações",
+          "Solicitações chegam por canais diferentes e acabam se perdendo",
+          "Você precisa saber em que etapa está cada pedido ou atendimento",
+          "Uma tarefa interna se repete todos os dias e segue sempre as mesmas regras"
+        ],
+        "includes": [
+          "Cadastros de clientes, produtos ou serviços",
+          "Acompanhamento de solicitações por etapa",
+          "Painéis com um resumo das informações",
+          "Relatórios e exportação de dados",
+          "Níveis de acesso diferentes para cada pessoa da equipe"
+        ],
+        "includesNote": "Essas são possibilidades, não um pacote pronto. As funções de cada sistema são definidas no escopo do projeto, de acordo com a rotina do negócio.",
+        "practice": "Começamos pelo processo atual: quem participa, que informações circulam e onde estão as dificuldades. A partir disso, definimos as funções prioritárias para uma primeira versão. Novas funções podem ser planejadas depois, em etapas combinadas.",
+        "nextStep": "Me conte como esse processo funciona hoje e o que mais atrapalha.",
+        "cta": "Conversar sobre um sistema web",
+        "visual": {
+          "caption": "Interface ilustrativa. As funções dependem do escopo contratado.",
+          "labels": ["Painel", "Cadastros", "Solicitações", "Relatórios"],
+          "details": ["Pedido de orçamento", "Visita técnica", "Entrega de material"],
+          "states": ["Recebida", "Em andamento", "Concluída"],
+          "action": "Nova solicitação"
+        }
+      },
+      {
+        "id": "service-automation",
+        "kind": "automation",
+        "title": "Automações e integrações",
+        "kicker": "Menos etapas manuais",
+        "need": "Quero conectar ferramentas que já uso e reduzir tarefas repetitivas.",
+        "what": "Conexões entre as ferramentas que você já usa, para que uma informação siga sozinha para onde precisa ir. A ideia é reduzir tarefas repetitivas, como copiar dados de um lugar para outro ou avisar alguém manualmente.",
+        "callout": "A viabilidade depende das ferramentas envolvidas e dos acessos disponíveis. Antes do orçamento, verifico se a integração é possível e qual é o caminho mais simples.",
+        "when": [
+          "Você copia as mesmas informações entre sistemas, planilhas ou emails",
+          "Pedidos recebidos precisam ser repassados para outra pessoa ou ferramenta",
+          "Avisos e confirmações são enviados um por um",
+          "As ferramentas da empresa não se comunicam"
+        ],
+        "includes": [
+          "Envio de dados de formulários para planilhas ou outros sistemas",
+          "Avisos automáticos por email",
+          "Integração com serviços que oferecem uma API",
+          "Rotinas agendadas, como gerar um relatório periódico"
+        ],
+        "includesNote": "O que é possível automatizar depende de cada ferramenta.",
+        "practice": "Mapeamos a rotina passo a passo e identificamos onde a informação é copiada ou repassada à mão. Depois verifico o que cada ferramenta permite, monto a automação e testamos com situações da rotina antes de colocar em uso.",
+        "nextStep": "Me conte quais ferramentas você usa e qual tarefa gostaria de automatizar.",
+        "cta": "Conversar sobre uma automação",
+        "visual": {
+          "caption": "Fluxo ilustrativo: um pedido feito no formulário segue para a planilha e gera um aviso.",
+          "labels": ["Formulário do site", "Planilha de pedidos", "Email da equipe"],
+          "details": ["Novo pedido recebido", "Nova linha adicionada", "Aviso enviado"],
+          "states": [],
+          "action": "Automático"
+        }
+      }
+    ]
+  },
+  "devices": {
+    "index": "02",
+    "heading": "Computador, tablet e celular",
+    "subheading": "Cada tela é planejada para diferentes tamanhos.",
+    "body": "Uma pessoa pode abrir o seu site pelo celular, outra pelo computador do trabalho. Por isso, o layout é planejado para cada tamanho de tela: a organização muda, e o conteúdo continua fácil de ler e de usar.",
+    "points": [
+      {
+        "title": "Textos legíveis",
+        "description": "Tamanho de letra e espaçamento ajustados para cada tela, sem precisar dar zoom."
+      },
+      {
+        "title": "Navegação adaptada",
+        "description": "No computador, o menu fica à vista. No celular, ele se recolhe em um botão e abre em tela cheia."
+      },
+      {
+        "title": "Botões fáceis de usar",
+        "description": "Botões com tamanho confortável para o toque e espaço entre eles, para evitar toques errados."
+      },
+      {
+        "title": "Conteúdo reorganizado",
+        "description": "Colunas lado a lado viram uma sequência no celular, na ordem que faz mais sentido para a leitura."
+      }
+    ],
+    "labels": {
+      "desktop": "Computador",
+      "tablet": "Tablet",
+      "phone": "Celular"
+    },
+    "mock": {
+      "brand": "Sua empresa",
+      "title": "Título da página",
+      "button": "Entrar em contato"
+    },
+    "caption": "Ilustração: o mesmo conteúdo organizado em três tamanhos de tela."
+  },
+  "process": {
+    "index": "03",
+    "heading": "Como funciona",
+    "subheading": "Do primeiro contato à publicação, em seis etapas.",
+    "eyebrow": "Passo a passo",
+    "intro": "Cada etapa tem um objetivo. Você participa das decisões importantes e sabe o que vem a seguir.",
+    "pauseAutoplay": "Pausar",
+    "playAutoplay": "Continuar",
+    "steps": [
+      {
+        "title": "Entender a necessidade",
+        "description": "Conversamos sobre o seu negócio, o seu público e o problema que o projeto precisa resolver."
+      },
+      {
+        "title": "Definir o projeto",
+        "description": "Definimos funcionalidades, prioridades e escopo. Com isso, apresento os valores e o prazo."
+      },
+      {
+        "title": "Planejar as telas",
+        "description": "Planejo o visual e a navegação para computador, tablet e celular antes de começar o desenvolvimento."
+      },
+      {
+        "title": "Desenvolver e testar",
+        "description": "Desenvolvo as páginas e funcionalidades e testo o funcionamento em diferentes tamanhos de tela."
+      },
+      {
+        "title": "Revisar e publicar",
+        "description": "Você revisa o resultado, fazemos os ajustes previstos e preparo tudo para a publicação."
+      },
+      {
+        "title": "Acompanhar os próximos passos",
+        "description": "Você recebe orientações de uso. Manutenção e melhorias seguem conforme o que for combinado."
+      }
+    ],
+    "scrollHint": "Role para avançar",
+    "next": "Próximo",
+    "done": "Todas as etapas",
+    "selectHint": "Toque em uma etapa para ver os detalhes."
   },
   "about": {
-    "index": "01",
-    "heading": "Sobre mim",
-    "lead": "Desenvolvedor full-stack.",
-    "body": "Desenvolvo sites e sistemas para pessoas e empresas. Ajudo a resolver problemas do negócio e a criar um espaço na internet para apresentar seu trabalho.",
+    "index": "04",
+    "heading": "Quem desenvolve",
+    "lead": "Prazer, eu sou Luciano K. Dal Pai.",
+    "body": "Sou engenheiro de software no Brasil e trabalho de forma independente, desenvolvendo sites e sistemas web para pessoas e empresas. Você conversa diretamente comigo em todas as etapas, e eu sou responsável pelo planejamento, pelo desenvolvimento e pelas entregas combinadas.",
+    "points": [
+      "Contato direto, sem intermediários",
+      "Escopo, valores e prazo definidos antes de começar",
+      "Explicações em linguagem simples"
+    ],
     "linkedin": "Conheça minha trajetória no LinkedIn"
   },
+  "contact": {
+    "index": "05",
+    "heading": "Contato",
+    "title": "Me conte o que você precisa.",
+    "subheading": "Escreva sobre o seu negócio e o que você gostaria de resolver. Conversamos sobre a opção mais adequada e, se fizer sentido, preparo um orçamento.",
+    "helpHeading": "Para começar, ajuda contar:",
+    "help": [
+      "O que sua empresa faz e para quem",
+      "O que você precisa resolver ou divulgar",
+      "Se já tem site, domínio ou ferramentas em uso",
+      "Se existe uma data importante para o projeto"
+    ],
+    "loadingEmail": "Carregando email…",
+    "copyEmail": "Copiar email",
+    "emailCopied": "Email copiado!",
+    "sendEmail": "Enviar email",
+    "responseTime": "Costumo responder em até 24h",
+    "copyError": "Não foi possível copiar. Você pode selecionar o endereço acima ou usar o botão Enviar email."
+  },
   "projects": {
-    "index": "02",
+    "index": "",
     "heading": "Projetos",
     "subheading": "Alguns dos trabalhos que desenvolvi.",
     "problem": "Contexto",
@@ -47,101 +297,6 @@
     "demoMaintenance": "Em manutenção",
     "demoSoon": "Demonstração em breve"
   },
-  "github": {
-    "index": "05",
-    "heading": "Atividade no GitHub",
-    "subheading": "Um resumo da minha atividade pública no GitHub.",
-    "contributions": "contribuições nos últimos 12 meses",
-    "repos": "repositórios públicos",
-    "stars": "estrelas recebidas",
-    "topLanguages": "Linguagens mais usadas",
-    "heatmapCaption": "Contribuições no GitHub nas últimas 20 semanas",
-    "updatedAt": "Última atualização",
-    "viewProfile": "Meu perfil no GitHub",
-    "empty": "Atividade indisponível no momento."
-  },
-  "stack": {
-    "index": "05",
-    "heading": "Tecnologias e atividade",
-    "subheading": "As ferramentas com que trabalho e minha atividade no GitHub.",
-    "categories": {
-      "languages": "Linguagens",
-      "frontend": "Frontend",
-      "backend": "Backend",
-      "databases": "Bancos de dados",
-      "tools": "Ferramentas e testes"
-    }
-  },
-  "services": {
-    "index": "03",
-    "heading": "Serviços",
-    "body": "Veja como posso ajudar você ou sua empresa.",
-    "processEyebrow": "Da ideia à entrega",
-    "processIntro": "Um processo claro, do primeiro contato ao próximo projeto.",
-    "pauseAutoplay": "Pausar",
-    "playAutoplay": "Continuar",
-    "processHeading": "Como funciona",
-    "steps": [
-      {
-        "title": "Conversa inicial",
-        "description": "Conversamos sobre sua ideia, o que você precisa e o que faz sentido para o projeto."
-      },
-      {
-        "title": "Design",
-        "description": "Layout e identidade visual pensados pro seu projeto."
-      },
-      {
-        "title": "Desenvolvimento",
-        "description": "Desenvolvo as páginas e funcionalidades e coloco tudo para funcionar."
-      },
-      {
-        "title": "Ajustes finais",
-        "description": "Melhorias com base no seu feedback antes da entrega."
-      },
-      {
-        "title": "Entrega & suporte",
-        "description": "Você recebe o projeto pronto pra uso, com suporte técnico."
-      },
-      {
-        "title": "Parceria contínua",
-        "description": "Sigo à disposição para atualizações e novos projetos."
-      }
-    ],
-    "scrollHint": "Role para avançar",
-    "next": "Próximo",
-    "done": "Todas as etapas",
-    "offerings": [
-      {
-        "title": "Landing pages",
-        "description": "Uma única página para apresentar um produto ou serviço e facilitar o contato com você. Ideal para começar na internet ou divulgar uma novidade."
-      },
-      {
-        "title": "Sites institucionais",
-        "description": "Um site com várias páginas para apresentar sua empresa, seus serviços e outras informações importantes. Tudo organizado para que seus clientes encontrem o que procuram."
-      },
-      {
-        "title": "Sistemas web",
-        "description": "Um sistema feito para a sua empresa, com acesso para usuários, controle de informações e conexão com outras ferramentas. Cada função é planejada e desenvolvida de acordo com o que o seu negócio precisa."
-      },
-      {
-        "title": "Outras soluções",
-        "description": "Sua empresa precisa de algo diferente? Podemos conversar sobre o problema e encontrar uma solução com tecnologia, como automatizar tarefas, conectar ferramentas ou criar um programa para o seu trabalho."
-      }
-    ],
-    "selectHint": "Toque em uma etapa para ver os detalhes."
-  },
-  "contact": {
-    "index": "04",
-    "heading": "Contato",
-    "title": "Vamos construir algo juntos?",
-    "subheading": "Entre em contato por email. Por lá conversamos sobre o seu projeto e os valores.",
-    "loadingEmail": "Carregando email…",
-    "copyEmail": "Copiar email",
-    "emailCopied": "Email copiado!",
-    "sendEmail": "Enviar email",
-    "responseTime": "Costumo responder em até 24h",
-    "copyError": "Não foi possível copiar. Você pode selecionar o endereço acima ou usar o botão Enviar email."
-  },
   "footer": {
     "rights": "Todos os direitos reservados.",
     "localTime": "Horário local",
@@ -151,11 +306,11 @@
   "commandPalette": {
     "label": "Atalhos do site",
     "openButton": "Abrir atalhos",
-    "placeholder": "Buscar página ou ação…",
+    "placeholder": "Buscar seção ou ação…",
     "empty": "Não encontrei esse atalho.",
     "groupNavigation": "Seções",
     "groupActions": "Ações",
-    "groupLinks": "Perfis",
+    "groupLinks": "Contato e perfis",
     "toggleTheme": "Alternar tema",
     "toggleThemeLight": "Mudar para modo claro",
     "toggleThemeDark": "Mudar para modo escuro",

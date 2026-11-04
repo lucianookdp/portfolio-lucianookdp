@@ -22,11 +22,23 @@ const { dict } = Astro.props;
         <span>{dict.contact.heading}</span>
       </p>
 
-      <RevealText as="h2" class="max-w-4xl font-display text-3xl font-semibold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">
+      <RevealText as="h2" class="max-w-4xl font-display text-3xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
         {dict.contact.title}
       </RevealText>
 
-      <p class="max-w-xl font-sans text-base text-[var(--color-text-secondary)] sm:text-lg" data-reveal>{dict.contact.subheading}</p>
+      <p class="max-w-2xl font-sans text-base text-[var(--color-text-secondary)] sm:text-lg" data-reveal>{dict.contact.subheading}</p>
+
+      <div class="w-full max-w-3xl" data-reveal data-reveal-delay="60">
+        <p class="eyebrow">{dict.contact.helpHeading}</p>
+        <ul class="mt-3 grid gap-2 font-sans text-sm text-[var(--color-text)] sm:grid-cols-2 sm:gap-x-6 sm:text-base">
+          {dict.contact.help.map((item) => (
+            <li class="flex items-start gap-2.5">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent-text)]" aria-hidden="true"></span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div data-reveal data-reveal-delay="120" class="w-full">
         <ObfuscatedEmail

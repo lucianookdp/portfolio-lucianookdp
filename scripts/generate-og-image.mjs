@@ -4,7 +4,8 @@ import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// Share card (Open Graph / Twitter): name and tagline on the left, the hero
+// Share card (Open Graph / Twitter): the offer headline, the name and the
+// list of services on the left, the hero
 // laptop on the right. One file per locale so previews match the page's
 // language. Colours mirror the dark theme in src/styles/global.css.
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -88,9 +89,9 @@ async function render(dict, outputPath) {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '10px',
-                    fontSize: '20px',
+                    fontSize: '17px',
                     color: COLOR_ACCENT,
-                    letterSpacing: '3px'
+                    letterSpacing: '2.5px'
                   },
                   children: [
                     { type: 'div', props: { style: { width: '10px', height: '10px', borderRadius: '10px', backgroundColor: COLOR_ACCENT_GLOW }, children: '' } },
@@ -106,14 +107,14 @@ async function render(dict, outputPath) {
                     {
                       type: 'div',
                       props: {
-                        style: { display: 'flex', flexDirection: 'column', fontFamily: 'Bricolage Grotesque', fontWeight: 700, fontSize: '84px', lineHeight: 0.95, letterSpacing: '-4px' },
+                        style: { display: 'flex', flexDirection: 'column', fontFamily: 'Bricolage Grotesque', fontWeight: 700, fontSize: '62px', lineHeight: 1.02, letterSpacing: '-2.5px', maxWidth: '560px' },
                         children: [
-                          { type: 'div', props: { style: { color: COLOR_TEXT }, children: 'Luciano K.' } },
-                          { type: 'div', props: { style: { color: COLOR_ACCENT_GLOW }, children: 'Dal Pai' } }
+                          { type: 'div', props: { style: { color: COLOR_TEXT }, children: dict.hero.headline[0] } },
+                          { type: 'div', props: { style: { color: COLOR_ACCENT_GLOW }, children: dict.hero.headline[1] } }
                         ]
                       }
                     },
-                    { type: 'div', props: { style: { fontSize: '26px', color: COLOR_SECONDARY, lineHeight: 1.4, maxWidth: '540px' }, children: dict.hero.tagline } }
+                    { type: 'div', props: { style: { fontSize: '24px', color: COLOR_SECONDARY, lineHeight: 1.4, maxWidth: '520px' }, children: dict.hero.tagline } }
                   ]
                 }
               },

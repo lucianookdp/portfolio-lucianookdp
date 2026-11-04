@@ -156,7 +156,7 @@ class ScreenPainter {
     ctx.restore();
     ctx.fillStyle = '#8b919f';
     ctx.font = '14px "Inter Variable", system-ui, sans-serif';
-    ['About', 'Projects', 'Services', 'Contact'].forEach((label, i) => ctx.fillText(label, 560 + i * 92, 88));
+    ['Services', 'Process', 'About', 'Contact'].forEach((label, i) => ctx.fillText(label, 560 + i * 92, 88));
     ctx.fillStyle = this.accent;
     ctx.beginPath();
     ctx.arc(960, 84, 9, 0, Math.PI * 2);
@@ -172,21 +172,18 @@ class ScreenPainter {
     ctx.fill();
     ctx.fillStyle = '#8b919f';
     ctx.font = '12px "JetBrains Mono Variable", ui-monospace, monospace';
-    ctx.fillText('Available for projects', 80, 159);
+    ctx.fillText('Available for new projects', 80, 159);
 
-    // Name
+    // Headline, with the name underneath as in the page hero
     ctx.fillStyle = '#e8eaf0';
-    ctx.font = '700 72px "Bricolage Grotesque Variable", "Inter Variable", sans-serif';
-    const parts = this.name.split(' ');
-    const first = parts.slice(0, -2).join(' ');
-    const last = parts.slice(-2).join(' ');
-    ctx.fillText(first, 46, 262);
+    ctx.font = '700 64px "Bricolage Grotesque Variable", "Inter Variable", sans-serif';
+    ctx.fillText('Websites and', 46, 258, 520);
     ctx.fillStyle = this.glow;
-    ctx.fillText(last, 46, 338);
+    ctx.fillText('web apps', 46, 330, 520);
 
     ctx.fillStyle = '#8b919f';
     ctx.font = '16px "Inter Variable", system-ui, sans-serif';
-    ctx.fillText('Full-stack software engineer', 48, 386, 520);
+    ctx.fillText(`${this.name} · Web development`, 48, 386, 520);
 
     // Buttons (the cursor hovers the first one)
     const hover = phase > 2.2 && phase < 4.6;
@@ -195,7 +192,7 @@ class ScreenPainter {
     ctx.fill();
     ctx.fillStyle = hover ? '#04130b' : '#0b0d12';
     ctx.font = '600 15px "Inter Variable", system-ui, sans-serif';
-    ctx.fillText('View projects', 68, 447);
+    ctx.fillText('View services', 68, 447);
     roundRectPath(ctx, 232, 418, 150, 48, 24);
     ctx.strokeStyle = '#2b303c';
     ctx.lineWidth = 1.5;
@@ -203,8 +200,7 @@ class ScreenPainter {
     ctx.fillStyle = '#e8eaf0';
     ctx.fillText('Get in touch', 250, 447);
 
-    // Three generic project cards on the right (placeholder bars, so this
-    // never needs updating when the featured projects change).
+    // Three generic cards on the right (placeholder bars, no real content).
     [0, 1, 2].forEach((i) => {
       const y = 140 + i * 118;
       const lift = Math.sin(t * 1.4 + i) * 3;

@@ -100,14 +100,14 @@ function headerFixture(storageFails = false) {
   const header = env.element();
   const cmdk = env.element();
   const links = [env.element(), env.element()];
-  links[0].setAttribute('href', '#projects');
+  links[0].setAttribute('href', '#services');
   links[1].setAttribute('href', 'https://github.com/lucianookdp');
   const section = env.element();
   menu.querySelectorAll = () => links;
   menu.contains = target => target === menu || links.includes(target);
   env.document.getElementById = id => ({ 'site-header': header, 'open-command-palette': cmdk, 'menu-toggle': toggle, 'mobile-menu': menu }[id] ?? null);
   env.document.querySelectorAll = selector => selector === '[data-menu-link]' ? [links[0]] : [];
-  env.document.querySelector = selector => selector === 'main' ? main : selector === 'footer' ? footer : selector === '#projects' ? section : null;
+  env.document.querySelector = selector => selector === 'main' ? main : selector === 'footer' ? footer : selector === '#services' ? section : null;
   const module = execute(astroScript('src/components/layout/Header.astro'), {
     ...env, localStorage: { getItem() { if (storageFails) throw new Error('SecurityError'); return null; }, setItem() { if (storageFails) throw new Error('QuotaExceededError'); } },
     require: () => ({ animate() {}, lockScroll() {}, unlockScroll() {}, scrollToTarget() {} })
@@ -292,7 +292,7 @@ for (const compact of [true, false]) {
     env.document.querySelector = () => root;
     env.window.matchMedia = query => ({ matches: query.includes('max-width') ? compact : false });
     const scrolls = [];
-    const api = execute(astroScript('src/components/sections/Services.astro'), {
+    const api = execute(astroScript('src/components/sections/Process.astro'), {
       ...env, getComputedStyle: () => ({ top: '96px' }),
       require: () => ({ scrollToTarget: (...args) => scrolls.push(args) })
     }, 'globalThis.qa = { initProcess };');

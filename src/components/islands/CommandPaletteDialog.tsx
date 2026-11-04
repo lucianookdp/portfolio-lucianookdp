@@ -117,7 +117,7 @@ export default function CommandPaletteDialog({ dict, navItems, currentLocale, pt
         <kbd className="rounded border border-[var(--color-border-strong)] px-1">↑↓</kbd>
         <kbd className="rounded border border-[var(--color-border-strong)] px-1">↵</kbd>
         <span>·</span>
-        <span>g + a/p/v/s/c</span>
+        <span>g + v/p/a/c</span>
       </div>
     </Command.Dialog>
   );

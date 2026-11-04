@@ -34,9 +34,14 @@ const personSchema = {
       '@id': `${Astro.site}#person`,
       name: 'Luciano K. Dal Pai',
       url: String(Astro.site),
-      jobTitle: 'Full-Stack Software Engineer',
+      jobTitle: 'Software Engineer · Web Development',
       knowsLanguage: ['pt-BR', 'en'],
-      sameAs: ['https://github.com/lucianookdp', 'https://www.linkedin.com/in/lucianookdp/']
+      sameAs: ['https://github.com/lucianookdp', 'https://www.linkedin.com/in/lucianookdp/'],
+      // The four services offered on the home page, by name only.
+      makesOffer: dict.services.offerings.map((offering) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: offering.title, description: offering.what }
+      }))
     },
     {
       '@type': 'WebSite',
