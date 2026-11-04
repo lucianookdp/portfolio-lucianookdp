@@ -315,7 +315,7 @@
     "index": "02",
     "heading": "Funciona em todos os dispositivos",
     "subheading": "O conteúdo se adapta à tela de quem acessa.",
-    "body": "Muita gente vai conhecer o seu negócio pelo celular. Por isso, cada página é pensada para funcionar bem em qualquer tela, do celular ao computador.",
+    "body": "Cada página é pensada para funcionar bem em qualquer tela, para que o cliente leia, navegue e entre em contato sem dificuldade.",
     "points": [
       {
         "title": "O cliente encontra o que procura",
@@ -323,15 +323,15 @@
       },
       {
         "title": "Contato a um toque",
-        "description": "O botão para falar com você aparece fácil no celular. Um toque e o cliente já entra em contato."
+        "description": "O botão para falar com você está sempre fácil de achar. Um toque e o cliente já entra em contato."
       },
       {
         "title": "Páginas leves",
-        "description": "O site é feito para abrir rápido no celular, mesmo com a internet mais fraca."
+        "description": "O site é feito para abrir rápido, mesmo com a internet mais fraca."
       },
       {
         "title": "Testado antes de publicar",
-        "description": "Cada página é conferida no celular, no tablet e no computador antes de ir ao ar."
+        "description": "Cada página é conferida em diferentes telas antes de ir ao ar."
       }
     ],
     "labels": {

@@ -315,7 +315,7 @@
     "index": "02",
     "heading": "Works on every device",
     "subheading": "The content adapts to each visitor's screen.",
-    "body": "Many people will first find your business on their phone. That is why every page is designed to work well on any screen, from phone to desktop.",
+    "body": "Every page is designed to work well on any screen, so clients can read, browse and get in touch without any hassle.",
     "points": [
       {
         "title": "Clients find what they need",
@@ -323,15 +323,15 @@
       },
       {
         "title": "Contact in one tap",
-        "description": "On a phone, the button to reach you is easy to spot. One tap and the client gets in touch."
+        "description": "The button to reach you is always easy to find. One tap and the client gets in touch."
       },
       {
         "title": "Lightweight pages",
-        "description": "The site is built to open quickly on phones, even on a weaker connection."
+        "description": "The site is built to open quickly, even on a weaker connection."
       },
       {
         "title": "Tested before launch",
-        "description": "Every page is checked on phone, tablet and desktop before it goes live."
+        "description": "Every page is checked on different screens before it goes live."
       }
     ],
     "labels": {
