@@ -315,23 +315,23 @@
     "index": "02",
     "heading": "Works on every device",
     "subheading": "The content adapts to each visitor's screen.",
-    "body": "One person may open your website on a phone, another on a work computer. That's why the layout is planned for each screen size: the arrangement changes, but the content stays easy to read and use.",
+    "body": "A responsive layout that adapts to any screen without cutting off content or requiring zoom.",
     "points": [
       {
-        "title": "Readable text",
-        "description": "Font size and spacing adjusted for each screen, with no need to zoom in."
+        "title": "Comfortable reading",
+        "description": "Typography and spacing tuned for reading on any screen."
       },
       {
-        "title": "Adapted navigation",
-        "description": "On a computer the menu stays in view. On a phone it folds into a button and opens full screen."
+        "title": "Clear navigation",
+        "description": "Menu and sections organized to take visitors straight to the information."
       },
       {
-        "title": "Easy-to-use buttons",
-        "description": "Comfortably sized buttons with space between them, to avoid accidental taps."
+        "title": "Optimized",
+        "description": "Lightweight pages and optimized images for fast loading."
       },
       {
-        "title": "Reorganized content",
-        "description": "Side-by-side columns become a sequence on phones, in the order that makes the most sense to read."
+        "title": "Accessible contact",
+        "description": "Contact channels always visible, one tap or click away."
       }
     ],
     "labels": {

@@ -315,23 +315,23 @@
     "index": "02",
     "heading": "Funciona em todos os dispositivos",
     "subheading": "O conteúdo se adapta à tela de quem acessa.",
-    "body": "Uma pessoa pode abrir o seu site pelo celular, outra pelo computador do trabalho. Por isso, o layout é planejado para cada tamanho de tela: a organização muda, mas o conteúdo continua fácil de ler e de usar.",
+    "body": "Layout responsivo, que se ajusta a qualquer tela sem cortar conteúdo nem exigir zoom.",
     "points": [
       {
-        "title": "Textos legíveis",
-        "description": "Tamanho de letra e espaçamento ajustados para cada tela, sem precisar dar zoom."
+        "title": "Leitura confortável",
+        "description": "Tipografia e espaçamento ajustados para leitura em qualquer tela."
       },
       {
-        "title": "Navegação adaptada",
-        "description": "No computador, o menu fica à vista. No celular, ele se recolhe em um botão e abre em tela cheia."
+        "title": "Navegação clara",
+        "description": "Menu e seções organizados para levar o visitante direto à informação."
       },
       {
-        "title": "Botões fáceis de usar",
-        "description": "Botões com tamanho confortável e espaço entre eles, para evitar toques errados."
+        "title": "Otimizado",
+        "description": "Páginas leves e imagens otimizadas para carregamento rápido."
       },
       {
-        "title": "Conteúdo reorganizado",
-        "description": "Colunas lado a lado viram uma sequência no celular, na ordem que faz mais sentido para a leitura."
+        "title": "Contato acessível",
+        "description": "Canais de contato sempre visíveis, a um toque ou clique de distância."
       }
     ],
     "labels": {
