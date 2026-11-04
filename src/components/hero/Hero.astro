@@ -7,7 +7,9 @@ interface Props {
   displayName: string;
 }
 
-const { dict, displayName } = Astro.props;
+const { dict, locale, displayName } = Astro.props;
+// Still render of the 3D laptop (same scene, reduced motion), one per language.
+const poster = locale === 'en' ? '/media/laptop-poster-en.webp' : '/media/laptop-poster.webp';
 
 // The offer is the headline: the first line rises letter by letter, the
 // second carries the brand gradient. The name stays as the eyebrow above it.
@@ -21,7 +23,7 @@ const headline = dict.hero.headline.join(' ');
 
   <div id="hero-scene" class="absolute inset-0 pointer-events-none" data-name={displayName} data-role={dict.hero.role}>
     <canvas id="hero-canvas" class="hero-canvas block h-full w-full" role="img" aria-label={dict.hero.sceneLabel} aria-hidden="true"></canvas>
-    <img id="hero-fallback" class="hero-fallback is-ready" src="/media/laptop-static.svg" alt={dict.hero.sceneLabel} width="1200" height="900" decoding="async" fetchpriority="high" />
+    <img id="hero-fallback" class="hero-fallback is-ready" src={poster} alt={dict.hero.sceneLabel} width="1260" height="1026" decoding="async" fetchpriority="high" />
   </div>
 
   <div id="hero-content" class="container-site relative z-10 pb-12 pt-[46svh] sm:pb-16 sm:pt-[40svh] lg:pb-20 lg:pt-40">
@@ -97,11 +99,13 @@ const headline = dict.hero.headline.join(' ');
     };
   }
 
-  // Reduced-motion, low-memory and data-saving devices use a still image.
+  // Reduced motion, data saving, very low memory and 2G connections use the
+  // still image. Thresholds stay low on purpose: deviceMemory rounds down
+  // (a 3 GB phone reports 2) and Android often reports "3g" on usable 4G.
   // The same fallback is used if the browser cannot create a WebGL context.
   function prefersStill(): boolean {
     const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean; effectiveType?: string } };
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches || (nav.deviceMemory !== undefined && nav.deviceMemory <= 2) || nav.connection?.saveData === true || ['slow-2g', '2g', '3g'].includes(nav.connection?.effectiveType ?? '');
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches || (nav.deviceMemory !== undefined && nav.deviceMemory < 2) || nav.connection?.saveData === true || ['slow-2g', '2g'].includes(nav.connection?.effectiveType ?? '');
   }
 
   function showFallback(container: HTMLElement, canvas: HTMLCanvasElement) {

@@ -40,7 +40,6 @@
     "chooserHelpLink": "Pedir uma orientação",
     "labels": {
       "service": "Serviço",
-      "what": "O que é",
       "when": "Quando faz sentido",
       "includes": "O que pode incluir",
       "practice": "Como funciona na prática",
@@ -54,7 +53,6 @@
         "kicker": "Uma página, um objetivo",
         "need": "Quero divulgar um serviço, um lançamento ou receber pedidos de orçamento.",
         "what": "Uma página única, focada em uma oferta ou em um objetivo específico. Todo o conteúdo conduz o visitante a entender a proposta e a entrar em contato.",
-        "callout": "",
         "when": [
           "Apresentar um serviço específico",
           "Divulgar um lançamento, evento ou campanha",
@@ -119,7 +117,6 @@
         "kicker": "Várias páginas, tudo organizado",
         "need": "Quero apresentar minha empresa, com páginas para serviços, informações e contato.",
         "what": "Um site com páginas ou áreas para apresentar a empresa, os serviços, informações úteis e formas de contato. É a presença da empresa na internet, organizada para que cada pessoa encontre o que procura.",
-        "callout": "Diferença para a landing page: a landing page concentra tudo em uma página com um único objetivo. O site institucional reúne vários assuntos e usa a navegação para levar cada visitante até a informação que ele procura.",
         "when": [
           "A empresa oferece mais de um serviço ou atende públicos diferentes",
           "Clientes pedem sempre as mesmas informações, como endereço, horários e formas de atendimento",
@@ -180,7 +177,6 @@
         "kicker": "Uma ferramenta para a rotina",
         "need": "Preciso de uma ferramenta para cadastrar, acompanhar e consultar informações.",
         "what": "Uma ferramenta acessada pelo navegador para realizar tarefas e organizar informações do negócio. Em vez de planilhas soltas e mensagens espalhadas, os dados ficam reunidos em um só lugar, com acesso para quem precisa.",
-        "callout": "",
         "when": [
           "A equipe controla informações em várias planilhas ou anotações",
           "Solicitações chegam por canais diferentes e acabam se perdendo",
@@ -248,7 +244,6 @@
         "kicker": "Menos etapas manuais",
         "need": "Quero conectar ferramentas que já uso e reduzir tarefas repetitivas.",
         "what": "Conexões entre as ferramentas que você já usa, para que uma informação siga sozinha para onde precisa ir. A ideia é reduzir tarefas repetitivas, como copiar dados de um lugar para outro ou avisar alguém manualmente.",
-        "callout": "",
         "when": [
           "Você copia as mesmas informações entre sistemas, planilhas ou emails",
           "Pedidos recebidos precisam ser repassados para outra pessoa ou ferramenta",

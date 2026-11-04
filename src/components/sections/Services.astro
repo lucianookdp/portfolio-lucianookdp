@@ -74,17 +74,7 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
           </p>
           <h3 id={`${offering.id}-title`} class="service-title font-display font-semibold" data-reveal>{offering.title}</h3>
 
-          <div class="service-what" data-reveal>
-            <p class="service-label">{labels.what}</p>
-            <p class="service-lead">{offering.what}</p>
-          </div>
-
-          {offering.callout && (
-            <p class="service-callout" data-reveal>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 11v5" /><path d="M12 7.5h.01" /></svg>
-              <span>{offering.callout}</span>
-            </p>
-          )}
+          <p class="service-lead" data-reveal>{offering.what}</p>
 
           <div class="service-lists" data-reveal>
             <div>
@@ -178,25 +168,27 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
   @keyframes service-accent-enter { from { opacity: 0; transform: scaleX(0.15); } to { opacity: 0.55; transform: scaleX(1); } }
 
   /* Service blocks */
-  .service-list { display: grid; gap: 4.5rem; margin-top: 4.5rem; }
-  .service-block { display: grid; gap: 2rem; padding-top: 2.5rem; border-top: 1px solid var(--color-border); }
+  /* Each service is its own card, so the four offers read as separate blocks. */
+  .service-list { display: grid; gap: 1.5rem; margin-top: 3rem; }
+  .service-block { display: grid; gap: 2rem; padding: 1.5rem 1.25rem; border: 1px solid var(--color-border-strong); border-radius: 1.5rem; background: var(--color-bg-elevated); }
+  html:not(.dark) .service-block { box-shadow: var(--shadow-card); }
   .service-copy { min-width: 0; }
-  .service-title { margin-top: 0.75rem; font-size: clamp(1.875rem, 4.2vw, 3rem); line-height: 1.08; letter-spacing: -0.03em; }
+  .service-title { margin-top: 0.875rem; font-size: clamp(1.875rem, 3.8vw, 2.75rem); line-height: 1.08; letter-spacing: -0.03em; }
   /* Number pill and kicker wrap as whole pieces, so they never split mid-label. */
   .service-eyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; color: var(--color-text-secondary); font-size: 0.875rem; }
   .service-number { padding: 0.25rem 0.625rem; border-radius: 999px; background: var(--color-accent-soft); color: var(--color-accent-text); font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
   .service-label { margin-bottom: 0.5rem; color: var(--color-text); font-size: 0.9375rem; font-weight: 600; line-height: 1.4; }
-  .service-what { margin-top: 1.5rem; }
-  .service-lead { max-width: 60ch; font-size: 1.0625rem; line-height: 1.65; }
-  .service-callout { display: flex; gap: 0.75rem; max-width: 62ch; margin-top: 1.25rem; padding: 1rem 1.125rem; border: 1px solid color-mix(in srgb, var(--color-accent) 30%, var(--color-border)); border-radius: 1rem; background: var(--color-accent-soft); color: var(--color-text); font-size: 0.9375rem; line-height: 1.6; }
-  .service-callout svg { flex: none; width: 1.25rem; height: 1.25rem; margin-top: 0.125rem; color: var(--color-accent-text); }
-  .service-lists { display: grid; gap: 1.75rem; margin-top: 2rem; }
+  .service-lead { max-width: 60ch; margin-top: 1rem; color: var(--color-text-secondary); font-size: 1.0625rem; line-height: 1.65; }
+  /* Thin rules split the card into: summary, lists, practice, next step. */
+  .service-lists, .service-practice { margin-top: 1.75rem; padding-top: 1.75rem; border-top: 1px solid var(--color-border); }
+  .service-lists { display: grid; gap: 1.75rem; }
   .service-bullets { display: grid; gap: 0.625rem; color: var(--color-text-secondary); font-size: 0.9375rem; line-height: 1.55; }
   .service-bullets li { position: relative; padding-left: 1.25rem; }
   .service-bullets li::before { content: ''; position: absolute; left: 0.125rem; top: 0.6em; width: 0.375rem; height: 0.375rem; border-radius: 999px; background: var(--color-accent-text); }
   .service-bullets-check li::before { top: 0.35em; width: 0.75rem; height: 0.75rem; left: 0; border-radius: 0; background: none; border: solid var(--color-accent-text); border-width: 0 2px 2px 0; transform: translateX(0.2rem) rotate(45deg) scale(0.55, 0.8); }
-  .service-practice { max-width: 62ch; margin-top: 2rem; color: var(--color-text-secondary); font-size: 0.9375rem; line-height: 1.65; }
-  .service-next { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; margin-top: 2rem; padding: 1.25rem; border: 1px solid var(--color-border-strong); border-radius: 1.25rem; background: var(--color-bg-elevated); }
+  .service-practice { color: var(--color-text-secondary); font-size: 0.9375rem; line-height: 1.65; }
+  .service-practice > p:last-child { max-width: 62ch; }
+  .service-next { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; margin-top: 1.75rem; padding: 1.25rem; border: 1px solid color-mix(in srgb, var(--color-accent) 30%, var(--color-border)); border-radius: 1rem; background: color-mix(in srgb, var(--color-accent) 7%, var(--color-bg)); }
   .service-next-text { font-size: 0.9375rem; line-height: 1.55; }
   .service-cta { white-space: normal; text-align: left; line-height: 1.25; }
   .service-visual-col { min-width: 0; }
@@ -204,10 +196,11 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
   @media (min-width: 640px) {
     .service-lists { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
     .service-next { padding: 1.5rem; }
+    .service-block { padding: 2rem; }
   }
   @media (min-width: 1024px) {
-    .service-list { gap: 6.5rem; margin-top: 6rem; }
-    .service-block { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; gap: 4rem; padding-top: 3.5rem; }
+    .service-list { gap: 2rem; margin-top: 4rem; }
+    .service-block { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; gap: 3rem; padding: 2.5rem; }
 
     /* The visual stays in view while the longer copy scrolls past it. */
     .service-visual-col { position: sticky; top: 6.5rem; }
@@ -218,8 +211,8 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
   @media(prefers-reduced-motion:reduce) { .service-visual-col { position:static; } }
   @media (min-width:1024px) and (min-height:800px) {
     .service-story.is-connected { display: grid; grid-template-columns: 1.05fr 1fr; gap: 4rem; align-items: start; margin-top: 3rem; }
-    .is-connected .service-list { display: grid; gap: 4rem; margin-top: 0; }
-    .is-connected .service-block { display: block; padding-top: 2rem; }
+    .is-connected .service-list { display: grid; gap: 2rem; margin-top: 0; }
+    .is-connected .service-block { display: block; padding: 2.5rem; }
     .is-connected .service-stage { display: grid; position: sticky; top: 6.5rem; padding-top: 2rem; }
     .service-stage .service-visual-col { grid-area: 1 / 1; position: relative; top: auto; opacity: 0; visibility: hidden; transform: translateY(12px) scale(.98); transition: opacity 250ms, transform 350ms, visibility 250ms; pointer-events: none; }
     .service-stage .service-visual-col.is-current { opacity: 1; visibility: visible; transform: none; }

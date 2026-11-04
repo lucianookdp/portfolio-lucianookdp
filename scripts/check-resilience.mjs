@@ -161,7 +161,7 @@ function heroFixture({ reduced = false, memory, connection, failImport = false, 
 }
 for (const [name, policy] of [
   ['reduced motion', { reduced: true }], ['save data', { connection: { saveData: true } }],
-  ['2 GB device', { memory: 2 }], ['3G connection', { connection: { effectiveType: '3g' } }]
+  ['1 GB device', { memory: 1 }], ['2G connection', { connection: { effectiveType: '2g' } }]
 ]) test(`3D policy: ${name} uses the poster without importing Three.js`, async () => {
   const fixture = heroFixture(policy);
   await fixture.module.mountScene(fixture.container, fixture.canvas, 0);
@@ -170,6 +170,17 @@ for (const [name, policy] of [
   assert.equal(fixture.poster.hidden, false);
   assert.equal(fixture.canvas.getAttribute('aria-hidden'), 'true');
 });
+// Common mid-range phones report 2 GB (deviceMemory rounds down) or "3g";
+// they must still get the 3D laptop.
+for (const [name, policy] of [['2 GB phone', { memory: 2 }], ['3G-rated connection', { connection: { effectiveType: '3g' } }]]) {
+  test(`3D policy: ${name} still loads the 3D scene`, async () => {
+    const fixture = heroFixture(policy);
+    await fixture.module.mountScene(fixture.container, fixture.canvas, 0);
+    assert.equal(fixture.counts().imports, 1);
+    assert.equal(fixture.counts().scenes, 1);
+    assert.equal(fixture.container.classList.contains('is-live'), true);
+  });
+}
 for (const [name, policy] of [['download failure', { failImport: true }], ['WebGL unavailable', { noWebGL: true }]]) {
   test(`3D ${name} keeps an accessible poster`, async () => {
     const fixture = heroFixture(policy);
