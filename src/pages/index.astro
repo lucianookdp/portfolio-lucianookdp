@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/hero/Hero.astro';
-import About from '../components/sections/About.astro';
-import Projects from '../components/sections/Projects.astro';
 import Services from '../components/sections/Services.astro';
-import StackActivity from '../components/sections/StackActivity.astro';
+import Devices from '../components/sections/Devices.astro';
+import Process from '../components/sections/Process.astro';
+import About from '../components/sections/About.astro';
 import Contact from '../components/sections/Contact.astro';
 import { getDictionary } from '../i18n/utils';
 
@@ -14,9 +14,10 @@ const dict = getDictionary(locale);
 
 <BaseLayout locale={locale} ptPath="/" enPath="/en">
   <Hero dict={dict} locale={locale} displayName="Luciano K. Dal Pai" />
-  <About dict={dict} />
-  <Projects dict={dict} locale={locale} />
   <Services dict={dict} />
+  <Devices dict={dict} />
+  <Process dict={dict} />
+  {/* Future "work examples" section goes here; see docs/HANDOFF-ETAPA-2.md. */}
+  <About dict={dict} />
   <Contact dict={dict} />
-  <StackActivity dict={dict} locale={locale} />
 </BaseLayout>

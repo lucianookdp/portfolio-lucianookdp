@@ -6,6 +6,16 @@ import Lenis from 'lenis';
 // scrollToTarget() so it works with or without smooth scrolling active.
 let lenis: Lenis | null = null;
 let rafId = 0;
+let hashFrame = 0;
+
+function alignHash(): void {
+  cancelAnimationFrame(hashFrame);
+  hashFrame = requestAnimationFrame(() => {
+    const id = decodeURIComponent(location.hash.slice(1));
+    const target = id && document.getElementById(id);
+    if (target) scrollToTarget(target, { immediate: true });
+  });
+}
 
 export const HEADER_OFFSET = -96;
 
@@ -20,7 +30,8 @@ export function initLenis(): void {
   lenis = new Lenis({
     lerp: 0.09,
     smoothWheel: true,
-    anchors: { offset: HEADER_OFFSET, duration: 1.4 }
+    // Lenis already honors the target's scroll-margin-top for anchor clicks.
+    anchors: { offset: 0, duration: 1.4 }
   });
 
   const raf = (time: number) => {
@@ -28,10 +39,16 @@ export function initLenis(): void {
     rafId = requestAnimationFrame(raf);
   };
   rafId = requestAnimationFrame(raf);
+  // Native hash navigation must cancel any remaining wheel inertia. Wait one
+  // frame for responsive enhancement to finish moving the service illustrations.
+  window.addEventListener('hashchange', alignHash);
+  if (location.hash) alignHash();
 }
 
 export function destroyLenis(): void {
   cancelAnimationFrame(rafId);
+  cancelAnimationFrame(hashFrame);
+  window.removeEventListener('hashchange', alignHash);
   lenis?.destroy();
   lenis = null;
 }
@@ -39,7 +56,9 @@ export function destroyLenis(): void {
 export function scrollToTarget(target: string | HTMLElement | number, options: { offset?: number; immediate?: boolean } = {}): void {
   const offset = options.offset ?? HEADER_OFFSET;
   if (lenis) {
-    lenis.scrollTo(target, { offset, duration: 1.4, immediate: options.immediate });
+    const el = typeof target === 'string' ? document.querySelector<HTMLElement>(target) : target;
+    const top = typeof el === 'number' ? el : el ? el.getBoundingClientRect().top + window.scrollY : null;
+    if (top !== null) lenis.scrollTo(top, { offset: typeof target === 'number' ? 0 : offset, duration: 1.4, immediate: options.immediate });
     return;
   }
 

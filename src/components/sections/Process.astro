@@ -1,0 +1,487 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import type { Dictionary } from '../../i18n/utils';
+
+interface Props {
+  dict: Dictionary;
+}
+
+const { dict } = Astro.props;
+const steps = dict.process.steps;
+
+// Line icons for the step nodes, same order as dict.process.steps:
+// conversation, scope sliders, screen layout, code, launch, follow-up.
+const STEP_ICONS = [
+  `<path d="M8 10h8" /><path d="M8 14h5" /><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z" />`,
+  `<path d="M4 7h10" /><path d="M18 7h2" /><circle cx="16" cy="7" r="2" /><path d="M4 17h4" /><path d="M12 17h8" /><circle cx="10" cy="17" r="2" />`,
+  `<rect x="3" y="3" width="18" height="18" rx="3" /><path d="M3 9h18" /><path d="M9 21V9" /><path d="m14 17 4-4" />`,
+  `<path d="m8 8-4 4 4 4" /><path d="m16 8 4 4-4 4" /><path d="m14 5-4 14" />`,
+  `<path d="M5 15c-1.5 1.5-2 4-2 6 2 0 4.5-.5 6-2" /><path d="M14.5 4.5c2.4-1.6 5-2 6.5-1.5-.5 1.5-.9 4.1-2.5 6.5L12 16l-4-4Z" /><path d="M9 12 4.7 11a2 2 0 0 1-1.1.6L2 12.3l3.5 1.3" /><path d="m12 15 1 4.3a2 2 0 0 1-.6 1.1l-.7 1.6-1.3-3.5" /><circle cx="15" cy="9" r="1.5" />`,
+  `<path d="M21 12a9 9 0 0 1-15.5 6.2" /><path d="M3 12a9 9 0 0 1 15.5-6.2" /><path d="M21 4v5h-5" /><path d="M3 20v-5h5" />`
+];
+// Stage illustration shown for each step (0 chat, 1 layout, 2 code,
+// 3 sliders + check, 4 launch, 5 versions over time).
+const SCENES = [0, 3, 1, 2, 4, 5];
+---
+
+<section id="process" class="container-site scroll-mt-24 py-16 sm:py-24 lg:py-32">
+  <SectionHeading index={dict.process.index} heading={dict.process.heading} subheading={dict.process.subheading} id="process-heading" />
+
+  <div class="service-process" data-process-region>
+  <div class="process-heading" data-reveal>
+    <span class="process-heading-symbol" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3" /><circle cx="24" cy="24" r="3" /><path d="M11 8h9a4 4 0 0 1 0 8h-8a4 4 0 0 0 0 8h9" /></svg>
+    </span>
+    <div class="process-heading-copy">
+      <p class="eyebrow">{dict.process.eyebrow}</p>
+      <p class="process-heading-description">{dict.process.intro}</p>
+    </div>
+    <div class="process-controls" data-process-controls hidden>
+      <span class="process-timer" aria-hidden="true"><span class="process-timer-fill" data-process-timer></span></span>
+      <button type="button" class="process-toggle" data-process-toggle data-pause-label={dict.process.pauseAutoplay} data-play-label={dict.process.playAutoplay}>{dict.process.pauseAutoplay}</button>
+    </div>
+  </div>
+  <div class="services-mobile-process" aria-labelledby="process-heading">
+    <p class="mt-2 text-sm leading-relaxed text-[var(--color-text-secondary)]">{dict.process.selectHint}</p>
+    <ol class="mobile-process-list">
+      {steps.map((step, index) => (
+        <li data-reveal data-reveal-delay={index * 50}>
+          <details class="mobile-process-step" name="service-process" open={index === 0}>
+            <summary>
+              <span class="mobile-process-number" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={STEP_ICONS[index] ?? STEP_ICONS[2]} /></span>
+              <span class="mobile-process-label">
+                <span class="mobile-process-count font-mono">{String(index + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}</span>
+                <span class="mobile-process-title">{step.title}</span>
+              </span>
+              <svg class="mobile-process-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </summary>
+            <div class="mobile-process-body"><p class="mobile-process-description">{step.description}</p></div>
+          </details>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <!-- The panel sticks while this wrapper scrolls; each slice of the scroll
+       reveals the next step. -->
+  <div class="process-scroll mt-8 sm:mt-10" data-process style={`--steps: ${steps.length}`}>
+    <div class="process-sticky" data-process-panel>
+      <p class="process-compact-hint mb-4 text-sm text-[var(--color-text-secondary)]">{dict.process.selectHint}</p>
+      <div class="timeline" data-reveal>
+        <div class="tl-track" aria-hidden="true"><span class="tl-fill" data-tl-fill></span></div>
+        <ol class="tl-steps" data-steps>
+          {steps.map((step, index) => (
+            <li class="tl-item">
+              <button type="button" class="tl-step" data-step data-title={step.title} data-description={step.description} aria-pressed={index === 0 ? 'true' : 'false'} aria-label={`${index + 1}. ${step.title}`}>
+                <span class="tl-node">
+                  <svg class="tl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={STEP_ICONS[index] ?? STEP_ICONS[2]} />
+                </span>
+                <span class="tl-label">
+                  <span class="font-mono text-[10px] text-[var(--color-accent-text)]">{String(index + 1).padStart(2, '0')}</span>
+                  <span class="tl-title">{step.title}</span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="process-panels mt-4 grid grid-cols-1 gap-3 sm:mt-6 sm:gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-6">
+        <div class="card process-stage relative overflow-hidden" data-reveal aria-hidden="true">
+          <div class="grid-bg"></div>
+          {steps.map((_, index) => (
+            <div class={`stage-scene stage-scene-${index + 1}`} data-scene={index}>
+              <svg viewBox="0 0 400 300" class="h-full w-full" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                {SCENES[index] === 0 && (
+                  <g>
+                    <g class="anim-bubble-a">
+                      <rect x="40" y="70" width="190" height="64" rx="20" class="fill-elev stroke-line" />
+                      <circle cx="72" cy="102" r="5" class="fill-dim" /><circle cx="94" cy="102" r="5" class="fill-dim" /><circle cx="116" cy="102" r="5" class="fill-dim" />
+                      <rect x="132" y="96" width="70" height="12" rx="6" class="fill-dim" />
+                    </g>
+                    <g class="anim-bubble-b">
+                      <rect x="150" y="150" width="210" height="72" rx="20" class="fill-accent" />
+                      <rect x="176" y="172" width="150" height="10" rx="5" class="fill-on-accent" />
+                      <rect x="176" y="192" width="98" height="10" rx="5" class="fill-on-accent" />
+                    </g>
+                    <g class="anim-typing">
+                      <rect x="40" y="236" width="120" height="40" rx="20" class="fill-elev stroke-line" />
+                      <circle cx="76" cy="256" r="4" class="fill-accent dot-1" /><circle cx="100" cy="256" r="4" class="fill-accent dot-2" /><circle cx="124" cy="256" r="4" class="fill-accent dot-3" />
+                    </g>
+                  </g>
+                )}
+                {SCENES[index] === 1 && (
+                  <g>
+                    <rect x="40" y="40" width="320" height="220" rx="16" class="stroke-line anim-draw" stroke-dasharray="1080" />
+                    <rect x="60" y="60" width="280" height="30" rx="8" class="fill-dim anim-block-1" />
+                    <rect x="60" y="106" width="130" height="134" rx="12" class="fill-elev stroke-line anim-block-2" />
+                    <rect x="206" y="106" width="134" height="60" rx="12" class="fill-accent anim-block-3" />
+                    <rect x="206" y="180" width="134" height="60" rx="12" class="fill-elev stroke-line anim-block-4" />
+                    <g class="anim-pen"><path d="M0 0l18 44 12-12-30-32Z" class="fill-text" /></g>
+                  </g>
+                )}
+                {SCENES[index] === 2 && (
+                  <g>
+                    <rect x="40" y="40" width="320" height="220" rx="16" class="fill-elev stroke-line" />
+                    <circle cx="62" cy="62" r="5" class="fill-red" /><circle cx="80" cy="62" r="5" class="fill-yellow" /><circle cx="98" cy="62" r="5" class="fill-accent" />
+                    <g class="code-lines">
+                      <rect x="64" y="96" width="0" height="10" rx="5" class="fill-accent code-line" style="--w:120px; --i:0" />
+                      <rect x="64" y="120" width="0" height="10" rx="5" class="fill-dim code-line" style="--w:200px; --i:1" />
+                      <rect x="88" y="144" width="0" height="10" rx="5" class="fill-dim code-line" style="--w:150px; --i:2" />
+                      <rect x="88" y="168" width="0" height="10" rx="5" class="fill-accent-soft code-line" style="--w:230px; --i:3" />
+                      <rect x="88" y="192" width="0" height="10" rx="5" class="fill-dim code-line" style="--w:110px; --i:4" />
+                      <rect x="64" y="216" width="0" height="10" rx="5" class="fill-accent code-line" style="--w:70px; --i:5" />
+                    </g>
+                    <rect x="64" y="236" width="3" height="14" class="fill-accent caret" />
+                  </g>
+                )}
+                {SCENES[index] === 3 && (
+                  <g>
+                    {[0, 1, 2].map((row) => (
+                      <g>
+                        <rect x="60" y={92 + row * 56} width="280" height="8" rx="4" class="fill-dim" />
+                        <rect x="60" y={92 + row * 56} width="0" height="8" rx="4" class={`fill-accent slider-fill slider-${row}`} />
+                        <circle cx="60" cy={96 + row * 56} r="12" class={`fill-text knob knob-${row}`} />
+                      </g>
+                    ))}
+                    <g class="anim-check">
+                      <circle cx="200" cy="262" r="16" class="fill-accent" />
+                      <path d="M191 262l6 6 12-12" class="stroke-on-accent" stroke-width="3" />
+                    </g>
+                  </g>
+                )}
+                {SCENES[index] === 4 && (
+                  <g>
+                    <g class="anim-rocket">
+                      <path d="M200 40c22 24 30 60 30 96l-30 30-30-30c0-36 8-72 30-96Z" class="fill-elev stroke-line" />
+                      <circle cx="200" cy="112" r="14" class="fill-accent" />
+                      <path d="M170 136l-22 26 22-4Z" class="fill-accent" /><path d="M230 136l22 26-22-4Z" class="fill-accent" />
+                      <path d="M188 168l12 40 12-40Z" class="fill-accent-soft flame" />
+                    </g>
+                    <rect x="70" y="240" width="260" height="10" rx="5" class="fill-dim" />
+                    <rect x="70" y="240" width="0" height="10" rx="5" class="fill-accent anim-progress" />
+                    <text x="200" y="278" text-anchor="middle" class="fill-text-secondary progress-label" font-family="JetBrains Mono Variable, monospace" font-size="12">deploy</text>
+                  </g>
+                )}
+                {SCENES[index] === 5 && (
+                  <g>
+                    <rect x="40" y="40" width="320" height="220" rx="16" class="fill-elev stroke-line" />
+                    <path d="M70 200h260" class="stroke-line" />
+                    <path d="M70 200V70" class="stroke-line" />
+                    <path d="M70 190 L120 172 L170 178 L220 140 L270 128 L330 84" class="stroke-accent growth-line" stroke-width="4" stroke-dasharray="360" />
+                    <path d="M70 190 L120 172 L170 178 L220 140 L270 128 L330 84 V200 H70Z" class="fill-accent-soft growth-area" />
+                    {[[120,172],[170,178],[220,140],[270,128],[330,84]].map(([x,y], i) => (
+                      <circle cx={x} cy={y} r="5" class={`fill-text growth-dot growth-dot-${i}`} />
+                    ))}
+                    <g class="growth-badge">
+                      <rect x="236" y="44" width="110" height="28" rx="14" class="fill-accent" />
+                      <text x="291" y="63" text-anchor="middle" class="fill-on-accent-solid" font-family="JetBrains Mono Variable, monospace" font-size="12">v2.0 · v2.1</text>
+                    </g>
+                    {[0, 1, 2, 3, 4, 5].map((i) => (
+                      <rect x={70 + i * 46} y="228" width="30" height="8" rx="4" class={`fill-dim cal-bar cal-${i}`} />
+                    ))}
+                  </g>
+                )}
+              </svg>
+            </div>
+          ))}
+          <div class="stage-caption">
+            <span class="font-mono text-[11px] text-[var(--color-accent-text)]" data-stage-index>01</span>
+            <span class="font-display text-lg font-semibold" data-stage-title>{steps[0].title}</span>
+          </div>
+        </div>
+
+        <div class="card flex flex-col justify-between gap-4 p-5 sm:gap-6 sm:p-8" data-reveal data-reveal-delay="100">
+          <div>
+            <p class="eyebrow flex items-center gap-3">
+              <span class="text-[var(--color-accent-text)]" data-detail-index>01</span>
+              <span class="h-px w-6 bg-[var(--color-border-strong)]" aria-hidden="true"></span>
+              <span>{dict.process.heading}</span>
+            </p>
+            <div class="detail-swap mt-3 sm:mt-4" data-detail>
+              <h3 class="font-display text-xl font-semibold sm:text-3xl" data-detail-title>{steps[0].title}</h3>
+              <p class="mt-2 min-h-[2.6rem] font-sans text-sm leading-relaxed text-[var(--color-text-secondary)] sm:mt-3 sm:min-h-[3.25rem] sm:text-base" data-detail-description>{steps[0].description}</p>
+            </div>
+          </div>
+          <div>
+            <p class="detail-next mb-3 flex items-center gap-2 font-sans text-xs text-[var(--color-text-secondary)]" data-detail-next-wrap>
+              <span class="eyebrow !text-[10px]">{dict.process.next}</span>
+              <span class="text-[var(--color-text)]" data-detail-next>{steps[1]?.title}</span>
+            </p>
+            <div class="detail-progress" aria-hidden="true"><span data-detail-progress></span></div>
+            <div class="mt-2 flex items-center justify-between gap-4 font-mono text-[11px] text-[var(--color-text-secondary)] sm:mt-3">
+              <span><span data-detail-count>1</span> / {steps.length}</span>
+              <span class="scroll-hint flex items-center gap-1.5" data-scroll-hint>
+                <span>{dict.process.scrollHint}</span>
+                <svg class="scroll-hint-arrow h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 5v14" /><path d="m6 13 6 6 6-6" />
+                </svg>
+              </span>
+              <span class="scroll-hint hidden items-center gap-1.5 text-[var(--color-accent-text)]" data-scroll-done>
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                <span>{dict.process.done}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<script>
+  import { scrollToTarget } from '../../lib/lenis';
+  import { createProcessAutoplay } from '../../lib/process-autoplay';
+
+  // Scroll-driven walkthrough: the panel sticks while the wrapper scrolls, and
+  // the scroll position inside the wrapper picks the active step. Clicking a
+  // node scrolls to that step's slice. Compact layouts use native disclosures.
+  let teardown: (() => void) | null = null;
+
+  function initProcess() {
+    teardown?.();
+    const root = document.querySelector<HTMLElement>('[data-process]');
+    const panel = root?.querySelector<HTMLElement>('[data-process-panel]');
+    if (!root || !panel) return;
+    const steps = Array.from(root.querySelectorAll<HTMLElement>('[data-step]'));
+    const scenes = Array.from(root.querySelectorAll<HTMLElement>('[data-scene]'));
+    const list = root.querySelector<HTMLElement>('[data-steps]');
+    const fill = root.querySelector<HTMLElement>('[data-tl-fill]');
+    const stageIndex = root.querySelector<HTMLElement>('[data-stage-index]');
+    const stageTitle = root.querySelector<HTMLElement>('[data-stage-title]');
+    const detail = root.querySelector<HTMLElement>('[data-detail]');
+    const detailIndex = root.querySelector<HTMLElement>('[data-detail-index]');
+    const detailTitle = root.querySelector<HTMLElement>('[data-detail-title]');
+    const detailDescription = root.querySelector<HTMLElement>('[data-detail-description]');
+    const detailProgress = root.querySelector<HTMLElement>('[data-detail-progress]');
+    const detailCount = root.querySelector<HTMLElement>('[data-detail-count]');
+    const detailNext = root.querySelector<HTMLElement>('[data-detail-next]');
+    const detailNextWrap = root.querySelector<HTMLElement>('[data-detail-next-wrap]');
+    const scrollHint = root.querySelector<HTMLElement>('[data-scroll-hint]');
+    const scrollDone = root.querySelector<HTMLElement>('[data-scroll-done]');
+    const count = steps.length;
+    if (count === 0) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const compactScreen = window.matchMedia('(max-width: 1023px), (max-height: 540px)');
+
+    const region = document.querySelector<HTMLElement>('[data-process-region]');
+    const autoplayButton = region?.querySelector<HTMLButtonElement>('[data-process-toggle]');
+    const mobileSteps = Array.from(region?.querySelectorAll<HTMLDetailsElement>('.mobile-process-step') ?? []);
+    const mobileSummaries = mobileSteps.map(step => step.querySelector('summary'));
+    let autoplay: ReturnType<typeof createProcessAutoplay> | undefined;
+    let index = -1;
+
+    const setActive = (i: number) => {
+      if (i === index) return;
+      index = i;
+      steps.forEach((step, j) => {
+        step.classList.toggle('is-active', j === i);
+        step.classList.toggle('is-done', j < i);
+        step.setAttribute('aria-pressed', j === i ? 'true' : 'false');
+      });
+      scenes.forEach((scene, j) => scene.classList.toggle('is-active', j === i));
+      const label = String(i + 1).padStart(2, '0');
+      const title = steps[i].dataset.title ?? '';
+      const progress = `${(i / Math.max(1, count - 1)) * 100}%`;
+      if (fill) fill.style.width = progress;
+      list?.style.setProperty('--tl-progress', progress);
+      if (stageIndex) stageIndex.textContent = label;
+      if (stageTitle) stageTitle.textContent = title;
+      if (detailIndex) detailIndex.textContent = label;
+      if (detailCount) detailCount.textContent = String(i + 1);
+      const last = i === count - 1;
+      if (detailNext) detailNext.textContent = last ? '' : steps[i + 1].dataset.title ?? '';
+      detailNextWrap?.classList.toggle('invisible', last);
+      scrollHint?.classList.toggle('hidden', last);
+      scrollHint?.classList.toggle('flex', !last);
+      scrollDone?.classList.toggle('hidden', !last);
+      scrollDone?.classList.toggle('flex', last);
+      if (detail) {
+        detail.classList.remove('is-in');
+        void detail.offsetWidth;
+        if (detailTitle) detailTitle.textContent = title;
+        if (detailDescription) detailDescription.textContent = steps[i].dataset.description ?? '';
+        detail.classList.add('is-in');
+      }
+    };
+
+    const stickyTop = () => parseFloat(getComputedStyle(panel).top) || 0;
+    // How far the wrapper scrolls while the panel is stuck. Cached instead of
+    // read fresh on every scroll tick: panel.offsetHeight depends on which
+    // step's text is currently shown, and that text is what setActive() (via
+    // update(), below) swaps in — reading it live turns this into a feedback
+    // loop where a step change can shift the panel's height, which shifts the
+    // computed progress, which can flip the step back again. Most visible on
+    // mobile (steps stack in one column, so text-length differences move the
+    // panel's height the most) and on any fast scroll-through, e.g. a "Pedir
+    // orçamento"-style link jumping straight to a later section.
+    let travelValue = 1;
+    const refreshTravel = () => {
+      travelValue = Math.max(1, root.offsetHeight - panel.offsetHeight);
+    };
+
+    let ticking = false;
+    let rafId = 0;
+    const update = () => {
+      ticking = false;
+      if (compactScreen.matches) {
+        if (index < 0) setActive(0);
+        return;
+      }
+      const rect = root.getBoundingClientRect();
+      const progress = Math.min(1, Math.max(0, (stickyTop() - rect.top) / travelValue));
+      const i = Math.min(count - 1, Math.floor(progress * count));
+      setActive(i);
+      if (detailProgress) {
+        const within = Math.min(1, Math.max(0, progress * count - i));
+        detailProgress.style.width = `${within * 100}%`;
+      }
+    };
+    let lastScrollY = window.scrollY;
+    const onScroll = () => {
+      if (window.scrollY !== lastScrollY) autoplay?.pause();
+      lastScrollY = window.scrollY;
+      if (ticking) return;
+      ticking = true;
+      rafId = requestAnimationFrame(update);
+    };
+    const onResize = () => {
+      refreshTravel();
+      if (compactScreen.matches && index >= 0) mobileSteps.forEach((step, i) => { step.open = i === index; });
+      onScroll();
+    };
+
+    const select = (event: Event) => {
+      const i = steps.indexOf(event.currentTarget as HTMLElement);
+      if (i === -1) return;
+      if (compactScreen.matches) {
+        setActive(i);
+        return;
+      }
+      const top = root.getBoundingClientRect().top + window.scrollY - stickyTop() + ((i + 0.2) / count) * travelValue;
+      scrollToTarget(Math.round(top), { offset: 0, immediate: reduced });
+    };
+    steps.forEach((step) => step.addEventListener('click', select));
+
+    refreshTravel();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+    update();
+
+    function onMobileSelect(event: Event) {
+      const selected = mobileSummaries.indexOf(event.currentTarget as HTMLElement);
+      if (selected >= 0) setActive(selected);
+    }
+    mobileSummaries.forEach(summary => summary?.addEventListener('click', onMobileSelect));
+    if (region && autoplayButton) autoplay = createProcessAutoplay({
+      root: region,
+      button: autoplayButton,
+      advance: () => {
+        const next = (index + 1) % count;
+        setActive(next);
+        if (compactScreen.matches) mobileSteps.forEach((step, i) => { step.open = i === next; });
+      }
+    });
+
+    teardown = () => {
+      autoplay?.destroy();
+      cancelAnimationFrame(rafId);
+      mobileSummaries.forEach(summary => summary?.removeEventListener('click', onMobileSelect));
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+      steps.forEach((step) => step.removeEventListener('click', select));
+    };
+  }
+
+  document.addEventListener('astro:page-load', initProcess);
+  document.addEventListener('astro:before-swap', () => {
+    teardown?.();
+    teardown = null;
+  });
+</script>
+
+<!-- Global styles: every class here is process- prefixed, and skipping Astro's
+     per-selector scope attribute keeps the page CSS within budget. -->
+<style is:global>
+  .services-mobile-process { display: none; }
+  @media (max-width: 1023px) {
+    .services-mobile-process { display: block; margin-top: 2.5rem; }
+    .process-scroll { display: none; }
+  }
+    .mobile-process-list { display: grid; gap: 0.625rem; margin-top: 1.25rem; }
+    .mobile-process-step { border: 1px solid var(--color-border-strong); border-radius: 1rem; background: var(--color-bg-elevated); overflow: clip; }
+    .mobile-process-step summary { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr) 1.125rem; align-items: center; gap: 0.75rem; min-height: 4.25rem; padding: 0.875rem 1rem; cursor: pointer; list-style: none; }
+    .mobile-process-step summary::-webkit-details-marker { display: none; }
+    .mobile-process-step summary:focus-visible { outline: 2px solid var(--color-accent-text); outline-offset: -4px; border-radius: 1rem; }
+    .mobile-process-number { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 0.625rem; color: var(--color-accent-text); background: var(--color-accent-soft); font-size: 0.75rem; }
+    .mobile-process-title { font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
+    .mobile-process-chevron { width: 1.125rem; height: 1.125rem; color: var(--color-text-secondary); }
+    .mobile-process-step[open] { border-color: var(--color-accent-text); }
+    .mobile-process-step[open] .mobile-process-chevron { transform: rotate(180deg); }
+    .mobile-process-description { padding: 0 1rem 1.25rem; font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); }
+  
+
+  .process-heading { display: flex; align-items: flex-start; gap: 1rem; margin-top: 2.5rem; }
+  .process-heading-symbol { display: grid; place-items: center; flex: 0 0 3rem; height: 3rem; border: 1px solid var(--color-border-strong); border-radius: 1rem; color: var(--color-accent-text); background: var(--color-accent-soft); }
+  .process-heading-symbol svg { width: 1.75rem; height: 1.75rem; }
+  .process-heading-description { max-width: 44ch; margin-top: 0.625rem; color: var(--color-text-secondary); font-size: 0.9375rem; line-height: 1.65; }
+  @media (min-width: 1024px) {
+    .process-sticky { padding: 1.5rem; border: 1px solid var(--color-border-strong); border-radius: 1.75rem; background: linear-gradient(150deg, var(--color-accent-soft), transparent 45%), var(--color-bg); }
+  }
+  
+    .services-mobile-process { margin-top: 1rem; }
+    .mobile-process-list { position: relative; gap: 0.875rem; }
+    .mobile-process-list::before { content: ''; position: absolute; top: 2rem; bottom: 2rem; left: 2.375rem; width: 1px; background: linear-gradient(var(--color-accent-text), var(--color-border-strong)); opacity: 0.5; }
+    .mobile-process-step { position: relative; border-radius: 1.25rem; transition: border-color 250ms ease, background-color 250ms ease, box-shadow 250ms ease; }
+    .mobile-process-step summary { grid-template-columns: 2.5rem minmax(0, 1fr) 1.125rem; gap: 0.875rem; min-height: 5.25rem; padding: 1rem 1.125rem; }
+    .mobile-process-step summary:focus-visible { border-radius: 1.25rem; }
+    .mobile-process-number { width: 2.5rem; height: 2.5rem; border: 1px solid var(--color-border-strong); border-radius: 0.875rem; background: var(--color-bg); }
+    .mobile-process-number svg { width: 1.25rem; height: 1.25rem; }
+    .mobile-process-label { display: flex; flex-direction: column; gap: 0.25rem; }
+    .mobile-process-count { color: var(--color-text-secondary); font-size: 0.625rem; line-height: 1; letter-spacing: 0.12em; }
+    .mobile-process-step[open] { background: linear-gradient(135deg, var(--color-accent-soft), transparent 65%), var(--color-bg-elevated); box-shadow: 0 12px 28px -24px var(--color-accent-glow); }
+    .mobile-process-step[open] .mobile-process-number { color: var(--color-on-accent); background: var(--color-accent); border-color: var(--color-accent); }
+    .mobile-process-step[open] .mobile-process-count { color: var(--color-accent-text); }
+    .mobile-process-body { padding: 0 1.125rem 1.25rem; }
+    .mobile-process-body::before { content: ''; display: block; height: 1px; margin-bottom: 1rem; background: linear-gradient(90deg, var(--color-border-strong), transparent); }
+    .mobile-process-description { padding: 0; }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    .process-heading.is-revealed .process-heading-symbol svg { animation: process-symbol-draw 1s var(--ease-out-expo) both; }
+    .mobile-process-chevron { transition: transform 300ms var(--ease-out-expo), color 250ms ease; }
+    .mobile-process-number { transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease; }
+    .mobile-process-step[open] .mobile-process-body { animation: service-copy-enter 350ms var(--ease-out-expo) both; }
+    .mobile-process-step[open] .mobile-process-number svg { animation: service-node-enter 400ms var(--ease-out-expo) both; }
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .mobile-process-step summary:hover .mobile-process-title { color: var(--color-accent-text); }
+  }
+  @media (hover: none) and (pointer: coarse) and (prefers-reduced-motion: no-preference) {
+    .mobile-process-step summary:active .mobile-process-number svg { transform: scale(0.9); }
+  }
+  @media (prefers-reduced-motion: reduce) { .mobile-process-step { transition: none; } }
+  @keyframes process-symbol-draw { from { stroke-dasharray: 120; stroke-dashoffset: 120; } to { stroke-dasharray: 120; stroke-dashoffset: 0; } }
+  @keyframes service-copy-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes service-node-enter { from { opacity: 0.5; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+  .process-heading { flex-wrap: wrap; }
+  .process-heading-copy { flex: 1; min-width: 0; }
+  .process-controls { display: flex; align-items: center; gap: 0.75rem; flex-basis: 100%; margin-left: 4rem; }
+  .process-controls[hidden] { display: none; }
+  .process-timer { display: block; width: 4rem; height: 3px; overflow: hidden; border-radius: 999px; background: var(--color-border-strong); }
+  .process-timer-fill { display: block; width: 100%; height: 100%; transform: scaleX(0); transform-origin: left; background: var(--color-accent-text); }
+  [data-autoplay-state='playing'] .process-timer-fill { animation: process-countdown var(--process-duration, 6000ms) linear forwards; }
+  .process-toggle { min-height: 44px; padding: 0.5rem 0.875rem; border: 1px solid var(--color-border-strong); border-radius: 999px; background: var(--color-bg-elevated); color: var(--color-text); font-size: 0.75rem; cursor: pointer; }
+  .process-toggle:hover { border-color: var(--color-accent-text); }
+  .process-toggle:focus-visible { outline: 2px solid var(--color-accent-text); outline-offset: 3px; }
+  @media (min-width: 1024px) { .process-controls { flex-basis: auto; margin-left: auto; align-self: center; } }
+  @media (prefers-reduced-motion: reduce) { .process-timer-fill { animation: none !important; } }
+  @keyframes process-countdown { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+html:not(.js) .services-mobile-process { display:block; }
+  html:not(.js) .process-scroll { display:none; }
+  @media(prefers-reduced-motion:reduce) {
+    .services-mobile-process { display:block; }
+    .process-scroll { display:none; }
+  }
+</style>

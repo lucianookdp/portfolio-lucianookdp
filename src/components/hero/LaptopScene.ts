@@ -3,11 +3,10 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import brand from '../../data/brand.json';
 
 /**
- * Hero 3D scene: a laptop, built procedurally, with a live screen. The screen
- * is a 2D canvas updated at a capped frame rate and used as a screen texture — it
- * alternates between a simplified version of this very site (with a cursor
- * browsing it) and a code editor typing itself out. The lid opens on load and
- * closes as the page scrolls away. Nothing is fetched at runtime.
+ * Commercial 3D scene: a laptop, built procedurally, with a live screen. The screen
+ * is painted once per theme/font change, with layouts specific to each device.
+ * The lid opens on load and closes as the visitor scrolls past the hero. No
+ * external models, decorative code editor, or continuously uploaded textures.
  */
 
 const readVar = (name: string, fallback: string) =>
@@ -55,20 +54,8 @@ const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2,
 /* ------------------------------------------------------------------ */
 const SCREEN_W = 1024;
 const SCREEN_H = 640;
-const CODE_LINES: [string, string][][] = [
-  [['kw', 'const '], ['id', 'app'], ['op', ' = '], ['fn', 'fastify'], ['op', '();']],
-  [['id', 'app'], ['op', '.'], ['fn', 'get'], ['op', '('], ['str', "'/users/:id'"], ['op', ', '], ['kw', 'async '], ['op', '(req) => {']],
-  [['op', '  '], ['kw', 'const '], ['id', 'user'], ['op', ' = '], ['kw', 'await '], ['id', 'db'], ['op', '.'], ['fn', 'findUser'], ['op', '(req.params.id);']],
-  [['op', '  '], ['kw', 'return '], ['fn', 'toResponse'], ['op', '(user);']],
-  [['op', '});']],
-  [['op', '']],
-  [['kw', 'await '], ['id', 'app'], ['op', '.'], ['fn', 'listen'], ['op', '({ port: '], ['num', '3000'], ['op', ' });']],
-  [['cm', '// ✓ ready on localhost:3000']]
-];
-
 // Official brand marks (see src/components/ui/Logo.astro), as canvas paths.
 const SYMBOL_PATHS = brand.symbol.paths.map((d) => new Path2D(d));
-const WORDMARK_PATH = new Path2D(brand.wordmark.path);
 
 /** Fills the lk symbol with its top-left corner at the current origin, `height` px tall. */
 function fillSymbol(ctx: CanvasRenderingContext2D, height: number, color: string) {
@@ -79,231 +66,54 @@ function fillSymbol(ctx: CanvasRenderingContext2D, height: number, color: string
   ctx.restore();
 }
 
+type ScreenCopy = { brand: string; title: string; button: string };
 class ScreenPainter {
-  readonly canvas: HTMLCanvasElement;
+  readonly canvas = document.createElement('canvas');
   private readonly ctx: CanvasRenderingContext2D;
   private accent = '#22b573';
-  private glow = '#3ddc8f';
-  private mint = '#a8f0c8';
-
-  constructor(private readonly name: string) {
-    this.canvas = document.createElement('canvas');
-    this.canvas.width = SCREEN_W;
-    this.canvas.height = SCREEN_H;
+  constructor(private readonly name: string, private readonly copy?: ScreenCopy, private readonly format: 'desktop' | 'tablet' | 'phone' = 'desktop') {
+    this.canvas.width = format === 'phone' ? 360 : format === 'tablet' ? 600 : SCREEN_W;
+    this.canvas.height = format === 'phone' ? 760 : format === 'tablet' ? 800 : SCREEN_H;
     this.ctx = this.canvas.getContext('2d')!;
     this.refreshColors();
   }
-
-  refreshColors() {
-    this.accent = readVar('--color-accent', '#22b573');
-    this.glow = readVar('--color-accent-glow', '#3ddc8f');
-    this.mint = readVar('--color-accent-2-glow', '#a8f0c8');
-  }
-
-  /** t is seconds since the scene started. */
-  paint(t: number): void {
-    const cycle = 11; // seconds: 5.5 site, 5.5 code
-    const phase = t % cycle;
-    const ctx = this.ctx;
-    ctx.clearRect(0, 0, SCREEN_W, SCREEN_H);
-    if (phase < 5.5) this.paintSite(phase, t);
-    else this.paintCode(phase - 5.5, t);
-
-    // Wipe transition at the boundaries.
-    const edge = Math.min(phase, Math.abs(phase - 5.5), cycle - phase);
-    if (edge < 0.35) {
-      const p = 1 - edge / 0.35;
-      ctx.fillStyle = `rgba(8, 9, 12, ${(p * 0.9).toFixed(3)})`;
-      ctx.fillRect(0, 0, SCREEN_W, SCREEN_H);
-    }
-  }
-
-  private chrome(title: string) {
-    const ctx = this.ctx;
-    ctx.fillStyle = '#0b0d12';
-    ctx.fillRect(0, 0, SCREEN_W, SCREEN_H);
-    ctx.fillStyle = '#12151c';
-    ctx.fillRect(0, 0, SCREEN_W, 46);
-    ['#ff5f57', '#febc2e', '#28c840'].forEach((c, i) => {
-      ctx.fillStyle = c;
-      ctx.beginPath();
-      ctx.arc(26 + i * 20, 23, 6, 0, Math.PI * 2);
-      ctx.fill();
+  refreshColors() { this.accent = readVar('--color-accent', '#22b573'); }
+  paint(_progress: number) {
+    const ctx = this.ctx, w = this.canvas.width, h = this.canvas.height;
+    const pt = document.documentElement.lang.startsWith('pt');
+    const phone = this.format === 'phone', tablet = this.format === 'tablet';
+    const dark = document.documentElement.classList.contains('dark');
+    const bg = dark ? '#0b0d12' : '#f4f6f3', fg = dark ? '#e8eaf0' : '#19231e';
+    const surface = dark ? '#171e24' : '#e4eae5';
+    const copy = this.copy ?? { brand: this.name, title: pt ? 'Sites e sistemas web' : 'Websites and web apps', button: pt ? 'Conversar sobre meu projeto' : 'Discuss my project' };
+    const text = (t: string,x: number,y: number,size=20,color=fg) => { ctx.fillStyle=color; ctx.font='500 '+size+'px "Inter Variable",sans-serif'; ctx.fillText(t,x,y,w-x-24); };
+    const box=(x:number,y:number,bw:number,bh:number,color=surface) => { ctx.fillStyle=color; roundRectPath(ctx,x,y,bw,bh,10); ctx.fill(); };
+    ctx.fillStyle=bg; ctx.fillRect(0,0,w,h);
+    ctx.save(); ctx.translate(28,27); fillSymbol(ctx,26,this.accent); ctx.restore();
+    text(copy.brand,70,48,phone?17:20);
+    if(phone) { box(w-44,30,20,3,fg); box(w-44,39,20,3,fg); }
+    else (pt?['Empresa','Serviços','Contato']:['Company','Services','Contact']).slice(tablet?1:0).forEach((label,i)=>text(label,w-(tablet?180:310)+i*100,48,14));
+    const y=tablet?285:155;
+    if(tablet) box(28,83,w-56,155);
+    text(pt?'SEU NEGÓCIO, NA WEB':'YOUR BUSINESS, ONLINE',28,y-38,phone?13:16,this.accent);
+    const titleSize=phone?30:tablet?42:48;
+    text(copy.title,28,y+12,titleSize);
+    box(28,y+45,phone?w-70:w*.43,6);
+    box(28,y+65,phone?w-110:w*.34,6);
+    box(28,y+101,phone?w-56:310,54,this.accent);
+    text(copy.button,42,y+134,phone?15:17,readVar('--color-on-accent','#04130b'));
+    if(!phone&&!tablet) { box(640,118,350,220); text('↗',768,252,70,this.accent); }
+    if(phone) box(28,y+180,w-56,120);
+    const services=pt?['Landing pages','Sites institucionais','Sistemas web','Automações']:['Landing pages','Company websites','Web apps','Automations'];
+    const cols=phone?1:tablet?2:4;
+    const gap=14, cw=(w-56-gap*(cols-1))/cols;
+    const top=phone?y+325:tablet?y+200:430;
+    services.forEach((label,i)=>{
+      const x=28+(i%cols)*(cw+gap), cy=top+Math.floor(i/cols)*(phone?63:100);
+      box(x,cy,cw,phone?51:85);
+      text('0'+(i+1),x+12,cy+24,12,this.accent);
+      text(label,x+12,cy+(phone?42:56),phone?16:15);
     });
-    roundRectPath(ctx, 200, 11, 624, 24, 12);
-    ctx.fillStyle = '#1b1f28';
-    ctx.fill();
-    ctx.fillStyle = '#8b919f';
-    ctx.font = '13px "JetBrains Mono Variable", ui-monospace, monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText(title, 512, 28);
-    ctx.textAlign = 'left';
-  }
-
-  private paintSite(phase: number, t: number) {
-    const ctx = this.ctx;
-    this.chrome('lucianookdp.dev');
-
-    // Header: the horizontal lockup, 26px tall.
-    const lockupScale = 26 / brand.lockup.height;
-    ctx.save();
-    ctx.translate(48, 70);
-    ctx.scale(lockupScale, lockupScale);
-    fillSymbol(ctx, brand.symbol.height * brand.lockup.symbolScale, this.accent);
-    ctx.translate(brand.lockup.wordmarkX, brand.lockup.wordmarkY);
-    ctx.fillStyle = '#e8eaf0';
-    ctx.fill(WORDMARK_PATH);
-    ctx.restore();
-    ctx.fillStyle = '#8b919f';
-    ctx.font = '14px "Inter Variable", system-ui, sans-serif';
-    ['About', 'Projects', 'Services', 'Contact'].forEach((label, i) => ctx.fillText(label, 560 + i * 92, 88));
-    ctx.fillStyle = this.accent;
-    ctx.beginPath();
-    ctx.arc(960, 84, 9, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Availability pill
-    roundRectPath(ctx, 48, 140, 276, 30, 15);
-    ctx.fillStyle = '#151a22';
-    ctx.fill();
-    ctx.fillStyle = this.mint;
-    ctx.beginPath();
-    ctx.arc(66, 155, 4 + Math.sin(t * 4) * 1, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = '#8b919f';
-    ctx.font = '12px "JetBrains Mono Variable", ui-monospace, monospace';
-    ctx.fillText('Available for projects', 80, 159);
-
-    // Name
-    ctx.fillStyle = '#e8eaf0';
-    ctx.font = '700 72px "Bricolage Grotesque Variable", "Inter Variable", sans-serif';
-    const parts = this.name.split(' ');
-    const first = parts.slice(0, -2).join(' ');
-    const last = parts.slice(-2).join(' ');
-    ctx.fillText(first, 46, 262);
-    ctx.fillStyle = this.glow;
-    ctx.fillText(last, 46, 338);
-
-    ctx.fillStyle = '#8b919f';
-    ctx.font = '16px "Inter Variable", system-ui, sans-serif';
-    ctx.fillText('Full-stack software engineer', 48, 386, 520);
-
-    // Buttons (the cursor hovers the first one)
-    const hover = phase > 2.2 && phase < 4.6;
-    roundRectPath(ctx, 48, 418, 170, 48, 24);
-    ctx.fillStyle = hover ? this.accent : '#e8eaf0';
-    ctx.fill();
-    ctx.fillStyle = hover ? '#04130b' : '#0b0d12';
-    ctx.font = '600 15px "Inter Variable", system-ui, sans-serif';
-    ctx.fillText('View projects', 68, 447);
-    roundRectPath(ctx, 232, 418, 150, 48, 24);
-    ctx.strokeStyle = '#2b303c';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-    ctx.fillStyle = '#e8eaf0';
-    ctx.fillText('Get in touch', 250, 447);
-
-    // Three generic project cards on the right (placeholder bars, so this
-    // never needs updating when the featured projects change).
-    [0, 1, 2].forEach((i) => {
-      const y = 140 + i * 118;
-      const lift = Math.sin(t * 1.4 + i) * 3;
-      roundRectPath(ctx, 596, y + lift, 380, 100, 16);
-      ctx.fillStyle = '#12151c';
-      ctx.fill();
-      ctx.strokeStyle = '#1d2129';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-      roundRectPath(ctx, 616, y + 20 + lift, 60, 60, 12);
-      ctx.fillStyle = i === 1 ? this.accent : '#1b2129';
-      ctx.fill();
-      ctx.fillStyle = '#e8eaf0';
-      roundRectPath(ctx, 694, y + 30 + lift, 150 - i * 20, 12, 6);
-      ctx.fill();
-      ctx.fillStyle = '#5c6371';
-      roundRectPath(ctx, 694, y + 56 + lift, 200 - i * 30, 8, 4);
-      ctx.fill();
-      roundRectPath(ctx, 694, y + 70 + lift, 140 + i * 20, 8, 4);
-      ctx.fill();
-    });
-
-    // Cursor: glides from the cards to the primary button and clicks it.
-    const p = easeInOut(Math.min(1, Math.max(0, (phase - 0.6) / 1.8)));
-    const cx = 780 + (150 - 780) * p;
-    const cy = 250 + (442 - 250) * p;
-    if (hover && phase > 3.0 && phase < 3.25) {
-      ctx.strokeStyle = this.glow;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(cx, cy, 10 + (phase - 3.0) * 60, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-    ctx.fillStyle = '#ffffff';
-    ctx.strokeStyle = '#0b0d12';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(cx, cy + 18);
-    ctx.lineTo(cx + 5, cy + 14);
-    ctx.lineTo(cx + 13, cy + 13);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-  }
-
-  private paintCode(phase: number, t: number) {
-    const ctx = this.ctx;
-    this.chrome('api · server.ts');
-    // Sidebar
-    ctx.fillStyle = '#0e1117';
-    ctx.fillRect(0, 46, 200, SCREEN_H - 46);
-    ctx.fillStyle = '#5c6371';
-    ctx.font = '13px "JetBrains Mono Variable", ui-monospace, monospace';
-    ['src/', '  routes/', '  services/', '  server.ts', 'tests/', 'package.json'].forEach((f, i) => {
-      ctx.fillStyle = i === 3 ? this.mint : '#5c6371';
-      ctx.fillText(f, 22, 86 + i * 26);
-    });
-
-    const colors: Record<string, string> = { kw: this.glow, id: '#e8eaf0', op: '#8b919f', fn: '#7fd9a8', str: '#ffc266', num: '#ffc266', cm: '#5c6371' };
-    ctx.font = '17px "JetBrains Mono Variable", ui-monospace, monospace';
-    const charsTotal = CODE_LINES.reduce((n, line) => n + line.reduce((m, [, text]) => m + text.length, 0), 0);
-    const typed = Math.min(charsTotal, Math.floor(((phase - 0.3) / 3.6) * charsTotal));
-    let remaining = typed;
-    let caretX = 232;
-    let caretY = 96;
-    CODE_LINES.forEach((line, row) => {
-      let x = 232;
-      const y = 96 + row * 30;
-      ctx.fillStyle = '#3a4150';
-      ctx.textAlign = 'right';
-      ctx.fillText(String(row + 1), 218, y);
-      ctx.textAlign = 'left';
-      line.forEach(([kind, text]) => {
-        if (remaining <= 0) return;
-        const slice = text.slice(0, remaining);
-        remaining -= slice.length;
-        ctx.fillStyle = colors[kind] ?? '#e8eaf0';
-        ctx.fillText(slice, x, y);
-        x += ctx.measureText(slice).width;
-        caretX = x;
-        caretY = y;
-      });
-    });
-    if (Math.floor(t * 2.4) % 2 === 0) {
-      ctx.fillStyle = this.glow;
-      ctx.fillRect(caretX + 2, caretY - 16, 2, 20);
-    }
-    // Status bar
-    ctx.fillStyle = '#12151c';
-    ctx.fillRect(0, SCREEN_H - 30, SCREEN_W, 30);
-    ctx.fillStyle = this.accent;
-    ctx.fillRect(0, SCREEN_H - 30, 120, 30);
-    ctx.fillStyle = '#04130b';
-    ctx.font = '600 12px "JetBrains Mono Variable", ui-monospace, monospace';
-    ctx.fillText('⎇ main', 16, SCREEN_H - 11);
-    ctx.fillStyle = '#8b919f';
-    ctx.font = '12px "JetBrains Mono Variable", ui-monospace, monospace';
-    ctx.fillText('TypeScript · UTF-8 · Ln 7', 140, SCREEN_H - 11);
   }
 }
 
@@ -317,6 +127,7 @@ export interface LaptopSceneHandle {
 export interface LaptopSceneOptions {
   name: string;
   role: string;
+  screen?: ScreenCopy;
 }
 
 export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElement, options: LaptopSceneOptions): LaptopSceneHandle | null {
@@ -507,7 +318,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   bezel.position.set(0, LID_H / 2, 0.022);
   lid.add(bezel);
 
-  const painter = new ScreenPainter(options.name);
+  const painter = new ScreenPainter(options.name, options.screen);
   const screenTexture = track(new THREE.CanvasTexture(painter.canvas));
   screenTexture.colorSpace = THREE.SRGBColorSpace;
   screenTexture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
@@ -585,12 +396,13 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
       const halfViewWidth = camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect;
       target.x = Math.min(2.1, halfViewWidth * 0.47);
       target.y = -0.55;
-      target.scale = Math.min(1, halfViewWidth / 4.5);
+      target.scale = Math.min(.85, halfViewWidth / 5.2);
     } else {
       target.x = 0;
-      target.y = width < 640 ? 0.85 : 0.95;
+      target.y = width < 640 ? 0.85 : 0.55;
       target.scale = width < 640 ? 0.5 : 0.66;
     }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, width < 769 ? 1.5 : 2));
     root.position.set(target.x, target.y, 0);
     root.scale.setScalar(target.scale);
     scrollNeedsUpdate = true;
@@ -620,7 +432,6 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   }
 
   /* --- Frame ----------------------------------------------------------------- */
-  let lastPaint = -1;
   let lastFrame = -1;
   function renderFrame(elapsed: number) {
     // Frame-rate independent smoothing keeps the same feel at 30 or 60 Hz.
@@ -647,15 +458,6 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
     root.rotation.x = 0.28 - smoothPointer.y * 0.05 + sp * 0.18;
     root.position.y = target.y + Math.sin(elapsed * 0.7) * 0.018 + (target.narrow ? -sp : sp * 0.6);
     root.position.x = target.x + smoothPointer.x * 0.04;
-
-    // Repaint the screen at 15/24 fps while the lid is open and still; while it
-    // is closing the texture upload would only steal frames from the motion.
-    const lidMoving = Math.abs(scrollProgress - smoothScroll) > 0.003 || intro < 1;
-    if (openAmount > 0.15 && !lidMoving && elapsed - lastPaint > 1 / (isSmall ? 15 : 24)) {
-      painter.paint(elapsed);
-      screenTexture.needsUpdate = true;
-      lastPaint = elapsed;
-    }
 
     renderer.render(scene, camera);
   }
@@ -744,6 +546,8 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
     if (reducedMotion) renderer.render(scene, camera);
   }
 
+  const contextLost = (event: Event) => { event.preventDefault(); stop(); container.classList.remove('is-live'); canvas.hidden = true; };
+  canvas.addEventListener('webglcontextlost', contextLost);
   window.addEventListener('pointermove', onPointerMove, { passive: true });
   window.addEventListener('scroll', onScroll, { passive: true });
   document.addEventListener('visibilitychange', onVisibilityChange);
@@ -752,6 +556,7 @@ export function createLaptopScene(container: HTMLElement, canvas: HTMLCanvasElem
   return {
     dispose() {
       disposed = true;
+      canvas.removeEventListener('webglcontextlost', contextLost);
       stop();
       resizeObserver.disconnect();
       intersectionObserver.disconnect();

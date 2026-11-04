@@ -1,14 +1,13 @@
 {
   "meta": {
-    "title": "Luciano K. Dal Pai · Software development",
-    "description": "Landing pages, websites and applications built by Luciano K. Dal Pai. Explore my projects, find out how I can help and get in touch."
+    "title": "Websites and web apps for your business · Luciano K. Dal Pai",
+    "description": "Custom landing pages, business websites, web apps and automations. See what each service covers, how a project works and how to request a quote."
   },
   "nav": {
     "primary": "Main navigation",
-    "about": "About me",
-    "projects": "Projects",
     "services": "Services",
-    "stack": "Technologies",
+    "process": "How it works",
+    "about": "About",
     "contact": "Contact",
     "skipToContent": "Skip to content",
     "openMenu": "Open menu",
@@ -16,25 +15,409 @@
     "menuHint": "Choose a section"
   },
   "hero": {
-    "availability": "Available for new work",
-    "role": "Software engineer · Full-stack",
-    "tagline": "Software engineer focused on web development.",
-    "intro": "Technology and web development enthusiast.",
-    "ctaProjects": "Explore projects",
-    "ctaContact": "Get in touch",
+    "availability": "Available for new projects",
+    "role": "Luciano K. Dal Pai · Web development",
+    "headline": [
+      "Websites and web apps",
+      "for your business."
+    ],
+    "intro": "I build landing pages, business websites, web apps and automations that present your services, make it easier for clients to reach you and keep day-to-day processes organized.",
+    "tagline": "Landing pages, business websites, web apps and automations.",
+    "ctaServices": "Explore the services",
+    "ctaContact": "Talk about my project",
     "location": "Brazil · GMT-3",
     "localTime": "Local time",
-    "sceneLabel": "3D laptop displaying this portfolio"
+    "sceneLabel": "3D laptop showing a preview of this site"
+  },
+  "services": {
+    "index": "01",
+    "heading": "Services",
+    "subheading": "Four kinds of project, each for a different need.",
+    "intro": "Before talking about technology, it helps to understand what you need to solve. Here is what each service is, when it makes sense and what the project can include.",
+    "chooserHeading": "Which option fits what you need?",
+    "chooserMore": "See details",
+    "chooserHelp": "Still not sure? Tell me about your situation and I'll suggest the most suitable path.",
+    "chooserHelpLink": "Ask for advice",
+    "labels": {
+      "service": "Service",
+      "what": "What it is",
+      "when": "When it makes sense",
+      "includes": "What it can include",
+      "practice": "How it works in practice",
+      "next": "Next step"
+    },
+    "offerings": [
+      {
+        "id": "service-landing",
+        "kind": "landing",
+        "title": "Landing page",
+        "kicker": "One page, one goal",
+        "need": "I want to promote a service or a launch, or receive quote requests.",
+        "what": "A single page focused on one offer or one specific goal. All of its content guides visitors to understand the proposal and get in touch.",
+        "callout": "",
+        "when": [
+          "Presenting a specific service",
+          "Promoting a launch, event or campaign",
+          "Receiving quote requests in an organized way",
+          "Getting started online with little content"
+        ],
+        "includes": [
+          "A clear presentation of the offer",
+          "Sections for benefits, details and frequently asked questions",
+          "Contact buttons throughout the page",
+          "A layout adapted to desktop, tablet and phone",
+          "Basic setup for search engines and link sharing"
+        ],
+        "practice": "You share the information about your offer and we organize the content together into a sequence: introduction, benefits, details and contact. Then I build the page and fine-tune how it reads on every screen size.",
+        "nextStep": "Tell me which offer you want to present, and to whom.",
+        "cta": "Talk about a landing page",
+        "visual": {
+          "caption": "Illustration of a landing page: introduction, benefits, information and contact.",
+          "labels": [
+            "Introduction",
+            "Benefits",
+            "Information",
+            "Contact"
+          ],
+          "details": [
+            "Headline and offer summary",
+            "Advantages in short points",
+            "Details and FAQ",
+            "Closing call to get in touch"
+          ],
+          "states": [],
+          "action": "Request a quote",
+          "sequence": [
+            {
+              "title": "Present the offer",
+              "text": "Visitors understand what you offer."
+            },
+            {
+              "title": "Explain and guide",
+              "text": "Benefits and information help with the decision."
+            },
+            {
+              "title": "Invite contact",
+              "text": "The page leads to a clear action."
+            }
+          ],
+          "copy": [
+            "Your service explained on one page",
+            "Who it is for",
+            "What it includes",
+            "How it works",
+            "How does the service work?",
+            "Which payment methods do you accept?",
+            "Shall we talk?"
+          ]
+        }
+      },
+      {
+        "id": "service-website",
+        "kind": "website",
+        "title": "Business website",
+        "kicker": "Several pages, well organized",
+        "need": "I want to present my company, with pages for services, information and contact.",
+        "what": "A website with pages or areas that present the company, its services, useful information and ways to get in touch. It is the company's presence on the internet, organized so that each visitor finds what they are looking for.",
+        "callout": "How it differs from a landing page: a landing page puts everything on one page with a single goal. A business website brings together several topics and uses navigation to take each visitor to the information they need.",
+        "when": [
+          "The company offers more than one service or serves different audiences",
+          "Clients keep asking for the same information, such as address, opening hours and how you work",
+          "You want an official address to share on social media, business cards and in conversations",
+          "The content is expected to grow over time"
+        ],
+        "includes": [
+          "Pages such as Home, About, Services and Contact",
+          "A navigation menu adapted to phones",
+          "A page for each service",
+          "Map, opening hours and contact channels",
+          "Basic setup for search engines and link sharing"
+        ],
+        "practice": "First we decide which pages the website needs and how they connect. That map shapes the menu and the order of the content. Then I build the pages, keeping the same visual style across all of them.",
+        "nextStep": "Tell me what your company does and what information your clients look for most.",
+        "cta": "Talk about a business website",
+        "visual": {
+          "caption": "Illustration of a business website with About, Services and Contact pages.",
+          "labels": [
+            "Home",
+            "About",
+            "Services",
+            "Contact"
+          ],
+          "details": [
+            "Service 1",
+            "Service 2"
+          ],
+          "states": [],
+          "action": "You are here",
+          "sequence": [
+            {
+              "title": "Meet the company",
+              "text": "A dedicated area to introduce your business."
+            },
+            {
+              "title": "Find services",
+              "text": "Each subject has its own space and path."
+            },
+            {
+              "title": "Get in touch",
+              "text": "One page brings together the ways to reach you."
+            }
+          ],
+          "copy": [
+            "Learn more",
+            "Name",
+            "Email",
+            "Message",
+            "Send message"
+          ]
+        }
+      },
+      {
+        "id": "service-webapp",
+        "kind": "webapp",
+        "title": "Web app",
+        "kicker": "A tool for your routine",
+        "need": "I need a tool to record, track and look up information.",
+        "what": "A tool used in the browser to carry out tasks and organize business information. Instead of scattered spreadsheets and messages, the data sits in one place, available to the people who need it.",
+        "callout": "",
+        "when": [
+          "The team keeps track of information across several spreadsheets or notes",
+          "Requests arrive through different channels and get lost",
+          "You need to know which stage each order or service request is at",
+          "An internal task is repeated every day and always follows the same rules"
+        ],
+        "includes": [
+          "Records for clients, products or services",
+          "Tracking requests by stage",
+          "Dashboards that summarise information",
+          "Reports and data export",
+          "Different access levels for each team member"
+        ],
+        "practice": "We start with the current process: who takes part, what information moves around and where the difficulties are. From there we define the priority features for a first version. New features can be planned later, in agreed stages.",
+        "nextStep": "Tell me how the process works today and what gets in the way the most.",
+        "cta": "Talk about a web app",
+        "visual": {
+          "caption": "Illustration of a web app: recording, listing and tracking a request.",
+          "labels": [
+            "Dashboard",
+            "Records",
+            "Requests",
+            "Reports"
+          ],
+          "details": [
+            "Quote request",
+            "Site visit",
+            "Material delivery"
+          ],
+          "states": [
+            "Received",
+            "In progress",
+            "Done"
+          ],
+          "action": "New request",
+          "sequence": [
+            {
+              "title": "Register a request",
+              "text": "A new quote request is recorded."
+            },
+            {
+              "title": "Organize in a list",
+              "text": "The request joins the others in the list."
+            },
+            {
+              "title": "Follow the task",
+              "text": "Its status shows the current stage of the request."
+            }
+          ],
+          "copy": [
+            "Search",
+            "Client",
+            "Request type",
+            "Save",
+            "Request",
+            "Status",
+            "Sample client"
+          ]
+        }
+      },
+      {
+        "id": "service-automation",
+        "kind": "automation",
+        "title": "Automations and integrations",
+        "kicker": "Fewer manual steps",
+        "need": "I want to connect tools I already use and cut down repetitive tasks.",
+        "what": "Connections between the tools you already use, so that information moves on its own to where it needs to go. The idea is to reduce repetitive tasks, such as copying data from one place to another or notifying someone by hand.",
+        "callout": "",
+        "when": [
+          "You copy the same information between systems, spreadsheets or emails",
+          "Incoming orders have to be passed on to another person or tool",
+          "Notices and confirmations are sent one by one",
+          "The company's tools don't talk to each other"
+        ],
+        "includes": [
+          "Sending form data to spreadsheets or other systems",
+          "Automatic email notifications",
+          "Integration with services that offer an API",
+          "Scheduled routines, such as generating a periodic report"
+        ],
+        "practice": "We map the routine step by step and find where information is copied or passed on by hand. Then I check what each tool allows, build the automation and we test it with everyday situations before putting it to use.",
+        "nextStep": "Tell me which tools you use and which task you'd like to automate.",
+        "cta": "Talk about an automation",
+        "visual": {
+          "caption": "Illustration of an automation: the form request goes to a spreadsheet and triggers an email notice.",
+          "labels": [
+            "Website form",
+            "Orders spreadsheet",
+            "Team email"
+          ],
+          "details": [
+            "New order received",
+            "New row added",
+            "Notice sent"
+          ],
+          "states": [],
+          "action": "Automatic",
+          "sequence": [
+            {
+              "title": "Receive information",
+              "text": "A client fills in the website form."
+            },
+            {
+              "title": "Organize the data",
+              "text": "The request moves into an organized list."
+            },
+            {
+              "title": "Notify the team",
+              "text": "The notice arrives by email, with no manual hand-off."
+            }
+          ],
+          "copy": [
+            "Name",
+            "Request",
+            "Send",
+            "No.",
+            "Client",
+            "New request #001",
+            "Sample client",
+            "now"
+          ]
+        }
+      }
+    ],
+    "storyLabel": "Service illustrations",
+    "site": {
+      "brand": "Your company",
+      "domain": "yourcompany.com"
+    }
+  },
+  "devices": {
+    "index": "02",
+    "heading": "Works on every device",
+    "subheading": "The content adapts to each visitor's screen.",
+    "body": "One person may open your website on a phone, another on a work computer. That's why the layout is planned for each screen size: the arrangement changes, but the content stays easy to read and use.",
+    "points": [
+      {
+        "title": "Readable text",
+        "description": "Font size and spacing adjusted for each screen, with no need to zoom in."
+      },
+      {
+        "title": "Adapted navigation",
+        "description": "On a computer the menu stays in view. On a phone it folds into a button and opens full screen."
+      },
+      {
+        "title": "Easy-to-use buttons",
+        "description": "Comfortably sized buttons with space between them, to avoid accidental taps."
+      },
+      {
+        "title": "Reorganized content",
+        "description": "Side-by-side columns become a sequence on phones, in the order that makes the most sense to read."
+      }
+    ],
+    "labels": {
+      "desktop": "Desktop",
+      "tablet": "Tablet",
+      "phone": "Phone"
+    },
+    "mock": {
+      "brand": "Your company",
+      "title": "Page title",
+      "button": "Get in touch"
+    },
+    "caption": "Illustration: the same content arranged for three screen sizes."
+  },
+  "process": {
+    "index": "03",
+    "heading": "How it works",
+    "subheading": "From first contact to launch, in six steps.",
+    "eyebrow": "Step by step",
+    "intro": "Each step has a clear purpose. You take part in the important decisions and know what comes next.",
+    "pauseAutoplay": "Pause",
+    "playAutoplay": "Resume",
+    "steps": [
+      {
+        "title": "Understand the need",
+        "description": "We talk about your business, your audience and the problem the project needs to solve."
+      },
+      {
+        "title": "Define the project",
+        "description": "We define features, priorities and scope. Based on that, I present the price and the timeline."
+      },
+      {
+        "title": "Plan the screens",
+        "description": "I plan the look and the navigation for desktop, tablet and phone before development starts."
+      },
+      {
+        "title": "Build and test",
+        "description": "I build the pages and features and test how they work on different screen sizes."
+      },
+      {
+        "title": "Review and launch",
+        "description": "You review the result, we make the agreed adjustments and I get everything ready to go live."
+      },
+      {
+        "title": "Plan the next steps",
+        "description": "You get guidance on how to use it. Maintenance and improvements follow whatever we agree on."
+      }
+    ],
+    "scrollHint": "Scroll to continue",
+    "next": "Next",
+    "done": "All steps",
+    "selectHint": "Tap a step to see the details."
   },
   "about": {
-    "index": "01",
-    "heading": "About me",
-    "lead": "Full-stack developer.",
-    "body": "I build websites and applications for people and businesses. I help solve business problems and create a place online to showcase your work.",
-    "linkedin": "Find out more about my background on LinkedIn"
+    "index": "04",
+    "heading": "Who builds it",
+    "lead": "Nice to meet you, I'm Luciano K.",
+    "body": "I'm a software engineer based in Brazil and I work independently, building websites and web apps for individuals and companies. You talk to me directly at every step, and I'm responsible for the planning, the development and the agreed deliverables.",
+    "points": [
+      "Direct contact, no middlemen",
+      "Scope, price and timeline agreed before work starts",
+      "Explanations in plain language"
+    ],
+    "linkedin": "See my background on LinkedIn"
+  },
+  "contact": {
+    "index": "05",
+    "heading": "Contact",
+    "title": "Tell me what you need.",
+    "subheading": "Write about your business and what you'd like to solve. We'll talk about the most suitable option and, if it makes sense, I'll prepare a quote.",
+    "helpHeading": "To get started, it helps to share:",
+    "help": [
+      "What your company does and who it serves",
+      "What you need to solve or promote",
+      "Whether you already have a website, domain or tools in use",
+      "Whether there is an important date for the project"
+    ],
+    "loadingEmail": "Loading email…",
+    "copyEmail": "Copy email",
+    "emailCopied": "Email copied!",
+    "sendEmail": "Send email",
+    "responseTime": "I usually reply within 24 hours",
+    "copyError": "Couldn't copy it. You can select the address above or use the Send email button."
   },
   "projects": {
-    "index": "02",
+    "index": "",
     "heading": "Projects",
     "subheading": "A selection of my work.",
     "problem": "Context",
@@ -47,101 +430,6 @@
     "demoMaintenance": "Under maintenance",
     "demoSoon": "Demo coming soon"
   },
-  "github": {
-    "index": "05",
-    "heading": "GitHub activity",
-    "subheading": "An overview of my public activity on GitHub.",
-    "contributions": "contributions in the last 12 months",
-    "repos": "public repositories",
-    "stars": "stars received",
-    "topLanguages": "Most used languages",
-    "heatmapCaption": "GitHub contributions over the last 20 weeks",
-    "updatedAt": "Last updated",
-    "viewProfile": "My GitHub profile",
-    "empty": "Activity is currently unavailable."
-  },
-  "stack": {
-    "index": "05",
-    "heading": "Technologies and activity",
-    "subheading": "The tools I work with and my activity on GitHub.",
-    "categories": {
-      "languages": "Languages",
-      "frontend": "Frontend",
-      "backend": "Backend",
-      "databases": "Databases",
-      "tools": "Tools and testing"
-    }
-  },
-  "services": {
-    "index": "03",
-    "heading": "Services",
-    "body": "Here’s how I can help you or your business.",
-    "processEyebrow": "From idea to launch",
-    "processIntro": "A clear process, from our first conversation to your next project.",
-    "pauseAutoplay": "Pause",
-    "playAutoplay": "Resume",
-    "processHeading": "How it works",
-    "steps": [
-      {
-        "title": "Getting started",
-        "description": "We talk about your idea, what you need and what makes sense for the project."
-      },
-      {
-        "title": "Design",
-        "description": "Layout and visual identity tailored to your project."
-      },
-      {
-        "title": "Development",
-        "description": "I build the pages and features and make sure everything works together."
-      },
-      {
-        "title": "Final adjustments",
-        "description": "Improvements based on your feedback before delivery."
-      },
-      {
-        "title": "Delivery & support",
-        "description": "You get the finished project ready to use, with technical support."
-      },
-      {
-        "title": "Ongoing partnership",
-        "description": "I stay available for updates and future projects."
-      }
-    ],
-    "scrollHint": "Scroll to continue",
-    "next": "Next",
-    "done": "All steps",
-    "offerings": [
-      {
-        "title": "Landing pages",
-        "description": "A single page to present a product or service and make it easy to get in touch. Ideal for getting started online or promoting something new."
-      },
-      {
-        "title": "Business websites",
-        "description": "A website with several pages to introduce your company, services and other important information. Everything is organized so your customers can find what they need."
-      },
-      {
-        "title": "Web applications",
-        "description": "A system built for your company, with user access, information management and connections to other tools. Each feature is planned and built around what your business needs."
-      },
-      {
-        "title": "Other solutions",
-        "description": "Does your business need something different? We can discuss the problem and find a way to solve it with technology, such as automating tasks, connecting tools or building a program for your work."
-      }
-    ],
-    "selectHint": "Tap a step to see the details."
-  },
-  "contact": {
-    "index": "04",
-    "heading": "Contact",
-    "title": "Let's build something together?",
-    "subheading": "Get in touch by email. There we can discuss your project and pricing.",
-    "loadingEmail": "Loading email…",
-    "copyEmail": "Copy email",
-    "emailCopied": "Email copied!",
-    "sendEmail": "Send email",
-    "responseTime": "I usually reply within 24h",
-    "copyError": "Could not copy the address. You can select it above or use the Send email button."
-  },
   "footer": {
     "rights": "All rights reserved.",
     "localTime": "Local time",
@@ -151,17 +439,17 @@
   "commandPalette": {
     "label": "Site shortcuts",
     "openButton": "Open shortcuts",
-    "placeholder": "Find a page or action…",
-    "empty": "No matching shortcuts.",
+    "placeholder": "Search for a section or action…",
+    "empty": "No shortcut found.",
     "groupNavigation": "Sections",
     "groupActions": "Actions",
-    "groupLinks": "Profiles",
+    "groupLinks": "Contact and profiles",
     "toggleTheme": "Toggle theme",
     "toggleThemeLight": "Switch to light mode",
     "toggleThemeDark": "Switch to dark mode",
-    "switchLanguage": "Mudar para Português",
+    "switchLanguage": "Mudar para português",
     "openGithub": "Open GitHub",
     "sendEmail": "Send email",
-    "hint": "for shortcuts"
+    "hint": "to see shortcuts"
   }
 }

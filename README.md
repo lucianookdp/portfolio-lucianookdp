@@ -1,7 +1,7 @@
 # lucianookdp.dev
 
-My personal portfolio: who I am, the projects I've built, the services I offer
-and how to reach me. The whole site is available in Portuguese and English, with
+The site for my web development services: landing pages, business websites,
+web apps and automations, how a project works and how to reach me. The whole site is available in Portuguese and English, with
 light and dark themes.
 
 **Live:** https://lucianookdp.dev
@@ -10,9 +10,9 @@ light and dark themes.
 
 - An interactive 3D laptop in the hero, whose screen shows a live mini version
   of the site and a code editor typing itself out
-- Projects, services and an about section, with smooth scrolling and motion
-  that respects reduced-motion settings
-- My GitHub activity and tech stack, refreshed automatically every day
+- A detailed walkthrough of each service with illustrative interfaces, a
+  desktop/tablet/phone section and a six-step process, with smooth scrolling
+  and motion that respects reduced-motion settings
 - A command palette (⌘K) to jump anywhere on the page
 - A share image for each language, generated at build time
 
@@ -23,7 +23,7 @@ light and dark themes.
 - **Three.js** for the 3D laptop and **WebGL shaders** for the animated backgrounds
 - **Motion** and **Lenis** for animation and smooth scrolling
 - **Satori** and **resvg** for the share images
-- **GitHub Actions** and **GitHub Pages** for daily data refreshes and deploys,
+- **GitHub Actions** and **GitHub Pages** for deploys,
   with a performance budget checked on every build
 
 ## License

@@ -1,6 +1,7 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
 import RevealText from '../ui/RevealText.astro';
+import ServiceVisual from './ServiceVisual.astro';
 import type { Dictionary } from '../../i18n/utils';
 
 interface Props {
@@ -8,591 +9,218 @@ interface Props {
 }
 
 const { dict } = Astro.props;
-const steps = dict.services.steps;
+const { labels, offerings } = dict.services;
 
-// Line icons for the step nodes, same order as dict.services.steps.
-const STEP_ICONS = [
-  `<path d="M8 10h8" /><path d="M8 14h5" /><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z" />`,
-  `<rect x="3" y="3" width="18" height="18" rx="3" /><path d="M3 9h18" /><path d="M9 21V9" /><path d="m14 17 4-4" />`,
-  `<path d="m8 8-4 4 4 4" /><path d="m16 8 4 4-4 4" /><path d="m14 5-4 14" />`,
-  `<path d="M4 7h10" /><path d="M18 7h2" /><circle cx="16" cy="7" r="2" /><path d="M4 17h4" /><path d="M12 17h8" /><circle cx="10" cy="17" r="2" />`,
-  `<path d="M5 15c-1.5 1.5-2 4-2 6 2 0 4.5-.5 6-2" /><path d="M14.5 4.5c2.4-1.6 5-2 6.5-1.5-.5 1.5-.9 4.1-2.5 6.5L12 16l-4-4Z" /><path d="M9 12 4.7 11a2 2 0 0 1-1.1.6L2 12.3l3.5 1.3" /><path d="m12 15 1 4.3a2 2 0 0 1-.6 1.1l-.7 1.6-1.3-3.5" /><circle cx="15" cy="9" r="1.5" />`,
-  `<path d="M21 12a9 9 0 0 1-15.5 6.2" /><path d="M3 12a9 9 0 0 1 15.5-6.2" /><path d="M21 4v5h-5" /><path d="M3 20v-5h5" />`
-];
+// Small line icons for the chooser cards, keyed by offering kind.
+const KIND_ICONS: Record<string, string> = {
+  landing: `<rect x="3" y="4" width="26" height="24" rx="3" /><path d="M3 10h26M7 7h.1M10 7h.1M8 15h10M8 19h6" /><path d="m21 17 6 6-3 .5-1 3Z" fill="currentColor" stroke-width="1" />`,
+  website: `<rect x="3" y="4" width="26" height="24" rx="3" /><path d="M3 10h26M7 7h.1M10 7h.1M8 15h16M8 19h6M8 23h6M19 19h5M19 23h5" />`,
+  webapp: `<rect x="3" y="4" width="26" height="24" rx="3" /><path d="M3 10h26M7 7h.1M10 7h.1M11 10v18M6 15h2M6 19h2M16 23v-4M21 23v-8M26 23v-6" />`,
+  automation: `<rect x="12" y="12" width="8" height="8" rx="2" /><circle cx="6" cy="6" r="3" /><circle cx="26" cy="6" r="3" /><circle cx="6" cy="26" r="3" /><circle cx="26" cy="26" r="3" /><path d="m8 8 5 5m6 0 5-5M8 24l5-5m6 0 5 5" />`
+};
+const number = (index: number) => String(index + 1).padStart(2, '0');
 ---
 
 <section id="services" class="container-site scroll-mt-24 py-16 sm:py-24 lg:py-32">
-  <SectionHeading index={dict.services.index} heading={dict.services.heading} />
+  <SectionHeading index={dict.services.index} heading={dict.services.heading} subheading={dict.services.subheading} />
 
   <div class="mt-8 max-w-3xl sm:mt-10">
     <RevealText as="p" class="font-display text-xl font-medium leading-snug tracking-tight sm:text-2xl lg:text-3xl">
-      {dict.services.body}
+      {dict.services.intro}
     </RevealText>
   </div>
 
-  <div class="services-offerings mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4">
-    {dict.services.offerings.map((offering, index) => (
-      <div class="offering-reveal" data-reveal data-reveal-delay={index * 80}>
-        <div class="offering spot-card tilt h-full" data-tilt-max="3">
-        <span class="offering-accent" aria-hidden="true"></span>
-        <span class="offering-icon" aria-hidden="true">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            {index === 0 && <>
-              <rect x="3" y="4" width="26" height="24" rx="3" />
-              <path d="M3 10h26M7 7h.1M10 7h.1M8 15h10M8 19h6" />
-              <path d="m21 17 6 6-3 .5-1 3Z" fill="currentColor" stroke-width="1" />
-            </>}
-            {index === 1 && <>
-              <rect x="3" y="4" width="26" height="24" rx="3" />
-              <path d="M3 10h26M7 7h.1M10 7h.1M8 15h16M8 19h6M8 23h6M19 19h5M19 23h5" />
-            </>}
-            {index === 2 && <>
-              <rect x="3" y="4" width="26" height="24" rx="3" />
-              <path d="M3 10h26M7 7h.1M10 7h.1M11 10v18M6 15h2M6 19h2M16 23v-4M21 23v-8M26 23v-6" />
-            </>}
-            {index === 3 && <>
-              <rect x="12" y="12" width="8" height="8" rx="2" />
-              <circle cx="6" cy="6" r="3" /><circle cx="26" cy="6" r="3" />
-              <circle cx="6" cy="26" r="3" /><circle cx="26" cy="26" r="3" />
-              <path d="m8 8 5 5m6 0 5-5M8 24l5-5m6 0 5 5" />
-            </>}
-          </svg>
-        </span>
-        <h3 class="offering-title font-display font-semibold">{offering.title}</h3>
-        <p class="offering-description font-sans text-base leading-relaxed text-[var(--color-text-secondary)]">{offering.description}</p>
-        </div>
-      </div>
-    ))}
-  </div>
-
-  <div class="service-process" data-process-region>
-  <div class="process-heading" data-reveal>
-    <span class="process-heading-symbol" aria-hidden="true">
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3" /><circle cx="24" cy="24" r="3" /><path d="M11 8h9a4 4 0 0 1 0 8h-8a4 4 0 0 0 0 8h9" /></svg>
-    </span>
-    <div class="process-heading-copy">
-      <p class="eyebrow">{dict.services.processEyebrow}</p>
-      <h3 id="service-process-heading" class="process-heading-title font-display font-semibold">{dict.services.processHeading}</h3>
-      <p class="process-heading-description">{dict.services.processIntro}</p>
-    </div>
-    <div class="process-controls" data-process-controls hidden>
-      <span class="process-timer" aria-hidden="true"><span class="process-timer-fill" data-process-timer></span></span>
-      <button type="button" class="process-toggle" data-process-toggle data-pause-label={dict.services.pauseAutoplay} data-play-label={dict.services.playAutoplay}>{dict.services.pauseAutoplay}</button>
-    </div>
-  </div>
-  <div class="services-mobile-process" aria-labelledby="service-process-heading">
-    <p class="mt-2 text-sm leading-relaxed text-[var(--color-text-secondary)]">{dict.services.selectHint}</p>
-    <ol class="mobile-process-list">
-      {steps.map((step, index) => (
-        <li data-reveal data-reveal-delay={index * 50}>
-          <details class="mobile-process-step" name="service-process" open={index === 0}>
-            <summary>
-              <span class="mobile-process-number" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={STEP_ICONS[index] ?? STEP_ICONS[2]} /></span>
-              <span class="mobile-process-label">
-                <span class="mobile-process-count font-mono">{String(index + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}</span>
-                <span class="mobile-process-title">{step.title}</span>
+  <!-- Chooser: one card per need, each jumping to its full service block. -->
+  <nav class="service-chooser mt-10 sm:mt-14" aria-labelledby="service-chooser-heading">
+    <h3 id="service-chooser-heading" class="eyebrow" data-reveal>{dict.services.chooserHeading}</h3>
+    <ul class="mt-4 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+      {offerings.map((offering, index) => (
+        <li class="offering-reveal" data-reveal data-reveal-delay={index * 70}>
+          <a href={`#${offering.id}`} class="offering spot-card">
+            <span class="offering-accent" aria-hidden="true"></span>
+            <span class="offering-head">
+              <span class="offering-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={KIND_ICONS[offering.kind]} />
               </span>
-              <svg class="mobile-process-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
-            </summary>
-            <div class="mobile-process-body"><p class="mobile-process-description">{step.description}</p></div>
-          </details>
+              <span class="font-mono text-[11px] text-[var(--color-text-secondary)]" aria-hidden="true">{number(index)}</span>
+            </span>
+            <span class="offering-need">“{offering.need}”</span>
+            <span class="offering-title font-display font-semibold">{offering.title}</span>
+            <span class="offering-more">
+              {dict.services.chooserMore}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="m6 13 6 6 6-6" /></svg>
+            </span>
+          </a>
         </li>
       ))}
-    </ol>
-  </div>
+    </ul>
+    <p class="mt-5 font-sans text-sm text-[var(--color-text-secondary)]" data-reveal>
+      {dict.services.chooserHelp}
+      <a href="#contact" class="ml-1 font-medium text-[var(--color-accent-text)] underline underline-offset-4">{dict.services.chooserHelpLink}</a>
+    </p>
+  </nav>
 
-  <!-- The panel sticks while this wrapper scrolls; each slice of the scroll
-       reveals the next step. -->
-  <div class="process-scroll mt-8 sm:mt-10" data-process style={`--steps: ${steps.length}`}>
-    <div class="process-sticky" data-process-panel>
-      <p class="process-compact-hint mb-4 text-sm text-[var(--color-text-secondary)]">{dict.services.selectHint}</p>
-      <div class="timeline" data-reveal>
-        <div class="tl-track" aria-hidden="true"><span class="tl-fill" data-tl-fill></span></div>
-        <ol class="tl-steps" data-steps>
-          {steps.map((step, index) => (
-            <li class="tl-item">
-              <button type="button" class="tl-step" data-step data-title={step.title} data-description={step.description} aria-pressed={index === 0 ? 'true' : 'false'} aria-label={`${index + 1}. ${step.title}`}>
-                <span class="tl-node">
-                  <svg class="tl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={STEP_ICONS[index] ?? STEP_ICONS[2]} />
-                </span>
-                <span class="tl-label">
-                  <span class="font-mono text-[10px] text-[var(--color-accent-text)]">{String(index + 1).padStart(2, '0')}</span>
-                  <span class="tl-title">{step.title}</span>
-                </span>
-              </button>
-            </li>
-          ))}
-        </ol>
-      </div>
+  <!-- Full service blocks. Copy on one side, an illustrative visual on the
+       other; data-service / data-service-visual are the hooks for the
+       stage 2 3D models and animations. -->
+  <div class="service-story" data-service-story data-label={dict.services.storyLabel}>
+  <div class="service-list">
+    {offerings.map((offering, index) => (
+      <article id={offering.id} class="service-block scroll-mt-24" data-service={offering.kind} aria-labelledby={`${offering.id}-title`}>
+        <div class="service-copy">
+          <p class="eyebrow flex items-center gap-3" data-reveal>
+            <span class="text-[var(--color-accent-text)]">{labels.service} {number(index)}</span>
+            <span class="h-px w-6 bg-[var(--color-border-strong)]" aria-hidden="true"></span>
+            <span>{offering.kicker}</span>
+          </p>
+          <h3 id={`${offering.id}-title`} class="service-title font-display font-semibold" data-reveal>{offering.title}</h3>
 
-      <div class="process-panels mt-4 grid grid-cols-1 gap-3 sm:mt-6 sm:gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-6">
-        <div class="card process-stage relative overflow-hidden" data-reveal aria-hidden="true">
-          <div class="grid-bg"></div>
-          {steps.map((_, index) => (
-            <div class={`stage-scene stage-scene-${index + 1}`} data-scene={index}>
-              <svg viewBox="0 0 400 300" class="h-full w-full" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                {index === 0 && (
-                  <g>
-                    <g class="anim-bubble-a">
-                      <rect x="40" y="70" width="190" height="64" rx="20" class="fill-elev stroke-line" />
-                      <circle cx="72" cy="102" r="5" class="fill-dim" /><circle cx="94" cy="102" r="5" class="fill-dim" /><circle cx="116" cy="102" r="5" class="fill-dim" />
-                      <rect x="132" y="96" width="70" height="12" rx="6" class="fill-dim" />
-                    </g>
-                    <g class="anim-bubble-b">
-                      <rect x="150" y="150" width="210" height="72" rx="20" class="fill-accent" />
-                      <rect x="176" y="172" width="150" height="10" rx="5" class="fill-on-accent" />
-                      <rect x="176" y="192" width="98" height="10" rx="5" class="fill-on-accent" />
-                    </g>
-                    <g class="anim-typing">
-                      <rect x="40" y="236" width="120" height="40" rx="20" class="fill-elev stroke-line" />
-                      <circle cx="76" cy="256" r="4" class="fill-accent dot-1" /><circle cx="100" cy="256" r="4" class="fill-accent dot-2" /><circle cx="124" cy="256" r="4" class="fill-accent dot-3" />
-                    </g>
-                  </g>
-                )}
-                {index === 1 && (
-                  <g>
-                    <rect x="40" y="40" width="320" height="220" rx="16" class="stroke-line anim-draw" stroke-dasharray="1080" />
-                    <rect x="60" y="60" width="280" height="30" rx="8" class="fill-dim anim-block-1" />
-                    <rect x="60" y="106" width="130" height="134" rx="12" class="fill-elev stroke-line anim-block-2" />
-                    <rect x="206" y="106" width="134" height="60" rx="12" class="fill-accent anim-block-3" />
-                    <rect x="206" y="180" width="134" height="60" rx="12" class="fill-elev stroke-line anim-block-4" />
-                    <g class="anim-pen"><path d="M0 0l18 44 12-12-30-32Z" class="fill-text" /></g>
-                  </g>
-                )}
-                {index === 2 && (
-                  <g>
-                    <rect x="40" y="40" width="320" height="220" rx="16" class="fill-elev stroke-line" />
-                    <circle cx="62" cy="62" r="5" class="fill-red" /><circle cx="80" cy="62" r="5" class="fill-yellow" /><circle cx="98" cy="62" r="5" class="fill-accent" />
-                    <g class="code-lines">
-                      <rect x="64" y="96" width="0" height="10" rx="5" class="fill-accent code-line" style="--w:120px; --i:0" />
-                      <rect x="64" y="120" width="0" height="10" rx="5" class="fill-dim code-line" style="--w:200px; --i:1" />
-                      <rect x="88" y="144" width="0" height="10" rx="5" class="fill-dim code-line" style="--w:150px; --i:2" />
-                      <rect x="88" y="168" width="0" height="10" rx="5" class="fill-accent-soft code-line" style="--w:230px; --i:3" />
-                      <rect x="88" y="192" width="0" height="10" rx="5" class="fill-dim code-line" style="--w:110px; --i:4" />
-                      <rect x="64" y="216" width="0" height="10" rx="5" class="fill-accent code-line" style="--w:70px; --i:5" />
-                    </g>
-                    <rect x="64" y="236" width="3" height="14" class="fill-accent caret" />
-                  </g>
-                )}
-                {index === 3 && (
-                  <g>
-                    {[0, 1, 2].map((row) => (
-                      <g>
-                        <rect x="60" y={92 + row * 56} width="280" height="8" rx="4" class="fill-dim" />
-                        <rect x="60" y={92 + row * 56} width="0" height="8" rx="4" class={`fill-accent slider-fill slider-${row}`} />
-                        <circle cx="60" cy={96 + row * 56} r="12" class={`fill-text knob knob-${row}`} />
-                      </g>
-                    ))}
-                    <g class="anim-check">
-                      <circle cx="200" cy="262" r="16" class="fill-accent" />
-                      <path d="M191 262l6 6 12-12" class="stroke-on-accent" stroke-width="3" />
-                    </g>
-                  </g>
-                )}
-                {index === 4 && (
-                  <g>
-                    <g class="anim-rocket">
-                      <path d="M200 40c22 24 30 60 30 96l-30 30-30-30c0-36 8-72 30-96Z" class="fill-elev stroke-line" />
-                      <circle cx="200" cy="112" r="14" class="fill-accent" />
-                      <path d="M170 136l-22 26 22-4Z" class="fill-accent" /><path d="M230 136l22 26-22-4Z" class="fill-accent" />
-                      <path d="M188 168l12 40 12-40Z" class="fill-accent-soft flame" />
-                    </g>
-                    <rect x="70" y="240" width="260" height="10" rx="5" class="fill-dim" />
-                    <rect x="70" y="240" width="0" height="10" rx="5" class="fill-accent anim-progress" />
-                    <text x="200" y="278" text-anchor="middle" class="fill-text-secondary progress-label" font-family="JetBrains Mono Variable, monospace" font-size="12">deploy</text>
-                  </g>
-                )}
-                {index === 5 && (
-                  <g>
-                    <rect x="40" y="40" width="320" height="220" rx="16" class="fill-elev stroke-line" />
-                    <path d="M70 200h260" class="stroke-line" />
-                    <path d="M70 200V70" class="stroke-line" />
-                    <path d="M70 190 L120 172 L170 178 L220 140 L270 128 L330 84" class="stroke-accent growth-line" stroke-width="4" stroke-dasharray="360" />
-                    <path d="M70 190 L120 172 L170 178 L220 140 L270 128 L330 84 V200 H70Z" class="fill-accent-soft growth-area" />
-                    {[[120,172],[170,178],[220,140],[270,128],[330,84]].map(([x,y], i) => (
-                      <circle cx={x} cy={y} r="5" class={`fill-text growth-dot growth-dot-${i}`} />
-                    ))}
-                    <g class="growth-badge">
-                      <rect x="236" y="44" width="110" height="28" rx="14" class="fill-accent" />
-                      <text x="291" y="63" text-anchor="middle" class="fill-on-accent-solid" font-family="JetBrains Mono Variable, monospace" font-size="12">v2.0 · v2.1</text>
-                    </g>
-                    {[0, 1, 2, 3, 4, 5].map((i) => (
-                      <rect x={70 + i * 46} y="228" width="30" height="8" rx="4" class={`fill-dim cal-bar cal-${i}`} />
-                    ))}
-                  </g>
-                )}
-              </svg>
+          <div class="service-what" data-reveal>
+            <p class="service-label">{labels.what}</p>
+            <p class="service-lead">{offering.what}</p>
+          </div>
+
+          {offering.callout && (
+            <p class="service-callout" data-reveal>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 11v5" /><path d="M12 7.5h.01" /></svg>
+              <span>{offering.callout}</span>
+            </p>
+          )}
+
+          <div class="service-lists" data-reveal>
+            <div>
+              <p class="service-label">{labels.when}</p>
+              <ul class="service-bullets">
+                {offering.when.map((item) => <li>{item}</li>)}
+              </ul>
             </div>
-          ))}
-          <div class="stage-caption">
-            <span class="font-mono text-[11px] text-[var(--color-accent-text)]" data-stage-index>01</span>
-            <span class="font-display text-lg font-semibold" data-stage-title>{steps[0].title}</span>
+            <div>
+              <p class="service-label">{labels.includes}</p>
+              <ul class="service-bullets service-bullets-check">
+                {offering.includes.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+          </div>
+
+          <div class="service-practice" data-reveal>
+            <p class="service-label">{labels.practice}</p>
+            <p>{offering.practice}</p>
+          </div>
+
+          <div class="service-next" data-reveal>
+            <div>
+              <p class="service-label">{labels.next}</p>
+              <p class="service-next-text">{offering.nextStep}</p>
+            </div>
+            <a href="#contact" class="btn btn-primary btn-sm service-cta" data-magnetic="0.2">
+              {offering.cta}
+              <svg class="btn-arrow h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
+            </a>
           </div>
         </div>
 
-        <div class="card flex flex-col justify-between gap-4 p-5 sm:gap-6 sm:p-8" data-reveal data-reveal-delay="100">
-          <div>
-            <p class="eyebrow flex items-center gap-3">
-              <span class="text-[var(--color-accent-text)]" data-detail-index>01</span>
-              <span class="h-px w-6 bg-[var(--color-border-strong)]" aria-hidden="true"></span>
-              <span>{dict.services.processHeading}</span>
-            </p>
-            <div class="detail-swap mt-3 sm:mt-4" data-detail>
-              <h3 class="font-display text-xl font-semibold sm:text-3xl" data-detail-title>{steps[0].title}</h3>
-              <p class="mt-2 min-h-[2.6rem] font-sans text-sm leading-relaxed text-[var(--color-text-secondary)] sm:mt-3 sm:min-h-[3.25rem] sm:text-base" data-detail-description>{steps[0].description}</p>
-            </div>
-          </div>
-          <div>
-            <p class="detail-next mb-3 flex items-center gap-2 font-sans text-xs text-[var(--color-text-secondary)]" data-detail-next-wrap>
-              <span class="eyebrow !text-[10px]">{dict.services.next}</span>
-              <span class="text-[var(--color-text)]" data-detail-next>{steps[1]?.title}</span>
-            </p>
-            <div class="detail-progress" aria-hidden="true"><span data-detail-progress></span></div>
-            <div class="mt-2 flex items-center justify-between gap-4 font-mono text-[11px] text-[var(--color-text-secondary)] sm:mt-3">
-              <span><span data-detail-count>1</span> / {steps.length}</span>
-              <span class="scroll-hint flex items-center gap-1.5" data-scroll-hint>
-                <span>{dict.services.scrollHint}</span>
-                <svg class="scroll-hint-arrow h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M12 5v14" /><path d="m6 13 6 6 6-6" />
-                </svg>
-              </span>
-              <span class="scroll-hint hidden items-center gap-1.5 text-[var(--color-accent-text)]" data-scroll-done>
-                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
-                <span>{dict.services.done}</span>
-              </span>
-            </div>
-          </div>
+        <div class="service-visual-col">
+          <ServiceVisual kind={offering.kind} visual={offering.visual} site={dict.services.site} />
         </div>
-      </div>
-    </div>
+      </article>
+    ))}
   </div>
   </div>
 </section>
 
 <script>
-  import { scrollToTarget } from '../../lib/lenis';
-  import { createProcessAutoplay } from '../../lib/process-autoplay';
-
-  // Scroll-driven walkthrough: the panel sticks while the wrapper scrolls, and
-  // the scroll position inside the wrapper picks the active step. Clicking a
-  // node scrolls to that step's slice. Compact layouts use native disclosures.
-  let teardown: (() => void) | null = null;
-
-  function initProcess() {
-    teardown?.();
-    const root = document.querySelector<HTMLElement>('[data-process]');
-    const panel = root?.querySelector<HTMLElement>('[data-process-panel]');
-    if (!root || !panel) return;
-    const steps = Array.from(root.querySelectorAll<HTMLElement>('[data-step]'));
-    const scenes = Array.from(root.querySelectorAll<HTMLElement>('[data-scene]'));
-    const list = root.querySelector<HTMLElement>('[data-steps]');
-    const fill = root.querySelector<HTMLElement>('[data-tl-fill]');
-    const stageIndex = root.querySelector<HTMLElement>('[data-stage-index]');
-    const stageTitle = root.querySelector<HTMLElement>('[data-stage-title]');
-    const detail = root.querySelector<HTMLElement>('[data-detail]');
-    const detailIndex = root.querySelector<HTMLElement>('[data-detail-index]');
-    const detailTitle = root.querySelector<HTMLElement>('[data-detail-title]');
-    const detailDescription = root.querySelector<HTMLElement>('[data-detail-description]');
-    const detailProgress = root.querySelector<HTMLElement>('[data-detail-progress]');
-    const detailCount = root.querySelector<HTMLElement>('[data-detail-count]');
-    const detailNext = root.querySelector<HTMLElement>('[data-detail-next]');
-    const detailNextWrap = root.querySelector<HTMLElement>('[data-detail-next-wrap]');
-    const scrollHint = root.querySelector<HTMLElement>('[data-scroll-hint]');
-    const scrollDone = root.querySelector<HTMLElement>('[data-scroll-done]');
-    const count = steps.length;
-    if (count === 0) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const compactScreen = window.matchMedia('(max-width: 1023px), (max-height: 540px)');
-
-    const region = document.querySelector<HTMLElement>('[data-process-region]');
-    const autoplayButton = region?.querySelector<HTMLButtonElement>('[data-process-toggle]');
-    const mobileSteps = Array.from(region?.querySelectorAll<HTMLDetailsElement>('.mobile-process-step') ?? []);
-    const mobileSummaries = mobileSteps.map(step => step.querySelector('summary'));
-    let autoplay: ReturnType<typeof createProcessAutoplay> | undefined;
-    let index = -1;
-
-    const setActive = (i: number) => {
-      if (i === index) return;
-      index = i;
-      steps.forEach((step, j) => {
-        step.classList.toggle('is-active', j === i);
-        step.classList.toggle('is-done', j < i);
-        step.setAttribute('aria-pressed', j === i ? 'true' : 'false');
-      });
-      scenes.forEach((scene, j) => scene.classList.toggle('is-active', j === i));
-      const label = String(i + 1).padStart(2, '0');
-      const title = steps[i].dataset.title ?? '';
-      const progress = `${(i / Math.max(1, count - 1)) * 100}%`;
-      if (fill) fill.style.width = progress;
-      list?.style.setProperty('--tl-progress', progress);
-      if (stageIndex) stageIndex.textContent = label;
-      if (stageTitle) stageTitle.textContent = title;
-      if (detailIndex) detailIndex.textContent = label;
-      if (detailCount) detailCount.textContent = String(i + 1);
-      const last = i === count - 1;
-      if (detailNext) detailNext.textContent = last ? '' : steps[i + 1].dataset.title ?? '';
-      detailNextWrap?.classList.toggle('invisible', last);
-      scrollHint?.classList.toggle('hidden', last);
-      scrollHint?.classList.toggle('flex', !last);
-      scrollDone?.classList.toggle('hidden', !last);
-      scrollDone?.classList.toggle('flex', last);
-      if (detail) {
-        detail.classList.remove('is-in');
-        void detail.offsetWidth;
-        if (detailTitle) detailTitle.textContent = title;
-        if (detailDescription) detailDescription.textContent = steps[i].dataset.description ?? '';
-        detail.classList.add('is-in');
-      }
-    };
-
-    const stickyTop = () => parseFloat(getComputedStyle(panel).top) || 0;
-    // How far the wrapper scrolls while the panel is stuck. Cached instead of
-    // read fresh on every scroll tick: panel.offsetHeight depends on which
-    // step's text is currently shown, and that text is what setActive() (via
-    // update(), below) swaps in — reading it live turns this into a feedback
-    // loop where a step change can shift the panel's height, which shifts the
-    // computed progress, which can flip the step back again. Most visible on
-    // mobile (steps stack in one column, so text-length differences move the
-    // panel's height the most) and on any fast scroll-through, e.g. a "Pedir
-    // orçamento"-style link jumping straight to a later section.
-    let travelValue = 1;
-    const refreshTravel = () => {
-      travelValue = Math.max(1, root.offsetHeight - panel.offsetHeight);
-    };
-
-    let ticking = false;
-    let rafId = 0;
-    const update = () => {
-      ticking = false;
-      if (compactScreen.matches) {
-        if (index < 0) setActive(0);
-        return;
-      }
-      const rect = root.getBoundingClientRect();
-      const progress = Math.min(1, Math.max(0, (stickyTop() - rect.top) / travelValue));
-      const i = Math.min(count - 1, Math.floor(progress * count));
-      setActive(i);
-      if (detailProgress) {
-        const within = Math.min(1, Math.max(0, progress * count - i));
-        detailProgress.style.width = `${within * 100}%`;
-      }
-    };
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      rafId = requestAnimationFrame(update);
-    };
-    const onResize = () => {
-      refreshTravel();
-      if (compactScreen.matches && index >= 0) mobileSteps.forEach((step, i) => { step.open = i === index; });
-      onScroll();
-    };
-
-    const select = (event: Event) => {
-      const i = steps.indexOf(event.currentTarget as HTMLElement);
-      if (i === -1) return;
-      if (compactScreen.matches) {
-        setActive(i);
-        return;
-      }
-      const top = root.getBoundingClientRect().top + window.scrollY - stickyTop() + ((i + 0.2) / count) * travelValue;
-      scrollToTarget(Math.round(top), { offset: 0, immediate: reduced });
-    };
-    steps.forEach((step) => step.addEventListener('click', select));
-
-    refreshTravel();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onResize);
-    update();
-
-    function onMobileSelect(event: Event) {
-      const selected = mobileSummaries.indexOf(event.currentTarget as HTMLElement);
-      if (selected >= 0) setActive(selected);
-    }
-    mobileSummaries.forEach(summary => summary?.addEventListener('click', onMobileSelect));
-    if (region && autoplayButton) autoplay = createProcessAutoplay({
-      root: region,
-      button: autoplayButton,
-      advance: () => {
-        const next = (index + 1) % count;
-        setActive(next);
-        if (compactScreen.matches) mobileSteps.forEach((step, i) => { step.open = i === next; });
-      }
-    });
-
-    teardown = () => {
-      autoplay?.destroy();
-      cancelAnimationFrame(rafId);
-      mobileSummaries.forEach(summary => summary?.removeEventListener('click', onMobileSelect));
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onResize);
-      steps.forEach((step) => step.removeEventListener('click', select));
-    };
-  }
-
-  document.addEventListener('astro:page-load', initProcess);
-  document.addEventListener('astro:before-swap', () => {
-    teardown?.();
-    teardown = null;
-  });
+  import { initServiceStory } from '../../lib/service-story';
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('astro:page-load', () => { cleanup?.(); cleanup = initServiceStory(); });
+  document.addEventListener('astro:before-swap', () => { cleanup?.(); cleanup = undefined; });
 </script>
 
-<style>
-  /* Equal rows follow the tallest card, so text can grow without clipping. */
-  .services-offerings { grid-auto-rows: 1fr; }
+<!-- Global styles: every class here is service- and offering-prefixed, and skipping Astro's
+     per-selector scope attribute keeps the page CSS within budget. -->
+<style is:global>
+  /* Chooser cards keep the .offering hooks used by the touch scroll glow in
+     lib/interactions.ts. */
   .offering {
-    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.25rem;
     border: 1px solid var(--color-border-strong);
     border-radius: 1.25rem;
     background: var(--color-bg);
+    color: var(--color-text);
+    transition: border-color 300ms ease, box-shadow 300ms ease;
   }
-  :global(html:not(.dark)) .offering {
-    background: var(--color-bg-elevated);
-    box-shadow: var(--shadow-card);
-  }
+  html:not(.dark) .offering { background: var(--color-bg-elevated); box-shadow: var(--shadow-card); }
   .offering > * { position: relative; z-index: 1; }
-  .offering-icon {
-    display: grid;
-    place-items: center;
-    width: 3.25rem;
-    height: 3.25rem;
-    margin-bottom: 1.75rem;
-    border-radius: 0.875rem;
-    background: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg-elevated));
-    color: var(--color-accent-text);
-  }
-  .offering-icon svg { width: 2rem; height: 2rem; }
-  .offering-title { font-size: 1.25rem; line-height: 1.25; }
-  .offering-description { margin-top: 0.75rem; max-width: 65ch; }
-  @media (min-width: 640px) {
-    .offering { padding: 2rem; }
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .offering-reveal.is-revealed .offering-icon {
-      animation: offering-icon-enter 550ms var(--ease-out-expo) both;
-      animation-delay: var(--reveal-delay, 0ms);
-    }
-    .offering-reveal.is-revealed .offering-icon svg {
-      animation: offering-icon-draw 900ms var(--ease-out-expo) both;
-      animation-delay: calc(var(--reveal-delay, 0ms) + 150ms);
-    }
-    .offering-icon svg { transition: transform 250ms var(--ease-out-expo); }
-  }
+  .offering > .offering-accent { position: absolute; top: -1px; left: 1.25rem; right: 1.25rem; height: 1px; z-index: 2; pointer-events: none; background: linear-gradient(90deg, transparent, var(--color-accent-glow), transparent); opacity: 0.55; }
+  .offering:focus-visible { outline: 2px solid var(--color-accent-text); outline-offset: 3px; border-radius: 1.25rem; }
+  .offering-head { display: flex; align-items: center; justify-content: space-between; }
+  .offering-icon { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 0.75rem; background: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg-elevated)); color: var(--color-accent-text); }
+  .offering-icon svg { width: 1.625rem; height: 1.625rem; }
+  .offering-need { margin-top: 1.25rem; color: var(--color-text-secondary); font-size: 0.9375rem; line-height: 1.55; }
+  .offering-title { margin-top: auto; padding-top: 1.25rem; font-size: 1.125rem; line-height: 1.3; }
+  .offering-more { display: inline-flex; align-items: center; gap: 0.375rem; margin-top: 0.5rem; color: var(--color-accent-text); font-size: 0.8125rem; font-weight: 500; }
+  .offering-more svg { width: 0.875rem; height: 0.875rem; transition: transform 300ms var(--ease-out-expo); }
+  @media (min-width: 640px) { .offering { padding: 1.5rem; } }
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .offering:hover .offering-icon svg { transform: translateY(-3px); }
-    .offering:hover { border-color: var(--color-accent); }
-    .offering:hover .offering-icon { color: var(--color-accent-text); }
+    .offering:hover { border-color: var(--color-accent); box-shadow: 0 16px 36px -28px var(--color-accent-glow); }
+    .offering:hover .offering-more svg { transform: translateY(3px); }
   }
   @media (hover: none) and (pointer: coarse) and (prefers-reduced-motion: no-preference) {
-    .offering { transition: border-color 300ms ease; }
     .offering::before, .offering::after { opacity: var(--mobile-glow, 0); }
     .offering:active::before, .offering:active::after { opacity: 1; }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .offering:hover { transform: none; }
-  }
-  @keyframes offering-icon-draw {
-    from { stroke-dasharray: 120; stroke-dashoffset: 120; }
-    to { stroke-dasharray: 120; stroke-dashoffset: 0; }
-  }
-  @keyframes offering-icon-enter {
-    from { opacity: 0; transform: translateY(8px) scale(0.9); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-
-  .services-mobile-process { display: none; }
-  @media (max-width: 1023px) {
-    .services-mobile-process { display: block; margin-top: 2.5rem; }
-    .process-scroll { display: none; }
-    .offering {
-      display: grid;
-      grid-template-columns: 2.75rem minmax(0, 1fr);
-      column-gap: 0.875rem;
-      row-gap: 0.875rem;
-      align-content: start;
-      padding: 1.25rem;
-      border-radius: 1.25rem;
-    }
-    .offering-icon { width: 2.75rem; height: 2.75rem; margin: 0; border-radius: 0.75rem; }
-    .offering-icon svg { width: 1.625rem; height: 1.625rem; }
-    .offering-title { align-self: center; font-size: 1.125rem; line-height: 1.35; overflow-wrap: anywhere; }
-    .offering-description { grid-column: 1 / -1; margin: 0; font-size: 0.9375rem; line-height: 1.65; }
-    .mobile-process-list { display: grid; gap: 0.625rem; margin-top: 1.25rem; }
-    .mobile-process-step { border: 1px solid var(--color-border-strong); border-radius: 1rem; background: var(--color-bg-elevated); overflow: clip; }
-    .mobile-process-step summary { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr) 1.125rem; align-items: center; gap: 0.75rem; min-height: 4.25rem; padding: 0.875rem 1rem; cursor: pointer; list-style: none; }
-    .mobile-process-step summary::-webkit-details-marker { display: none; }
-    .mobile-process-step summary:focus-visible { outline: 2px solid var(--color-accent-text); outline-offset: -4px; border-radius: 1rem; }
-    .mobile-process-number { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 0.625rem; color: var(--color-accent-text); background: var(--color-accent-soft); font-size: 0.75rem; }
-    .mobile-process-title { font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
-    .mobile-process-chevron { width: 1.125rem; height: 1.125rem; color: var(--color-text-secondary); }
-    .mobile-process-step[open] { border-color: var(--color-accent-text); }
-    .mobile-process-step[open] .mobile-process-chevron { transform: rotate(180deg); }
-    .mobile-process-description { padding: 0 1rem 1.25rem; font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); }
-  }
-
-  /* Emerald accents and staggered entrances stay consistent with the page. */
-  .offering { transition: border-color 300ms ease, box-shadow 300ms ease; }
-  .offering > .offering-accent { position: absolute; top: -1px; left: 1.25rem; right: 1.25rem; height: 1px; z-index: 2; pointer-events: none; background: linear-gradient(90deg, transparent, var(--color-accent-glow), transparent); opacity: 0.55; }
-  .process-heading { display: flex; align-items: flex-start; gap: 1rem; margin-top: 3.5rem; }
-  .process-heading-symbol { display: grid; place-items: center; flex: 0 0 3rem; height: 3rem; border: 1px solid var(--color-border-strong); border-radius: 1rem; color: var(--color-accent-text); background: var(--color-accent-soft); }
-  .process-heading-symbol svg { width: 1.75rem; height: 1.75rem; }
-  .process-heading-title { margin-top: 0.5rem; font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.2; letter-spacing: -0.03em; }
-  .process-heading-description { max-width: 44ch; margin-top: 0.625rem; color: var(--color-text-secondary); font-size: 0.9375rem; line-height: 1.65; }
-  @media (min-width: 1024px) {
-    .process-sticky { padding: 1.5rem; border: 1px solid var(--color-border-strong); border-radius: 1.75rem; background: linear-gradient(150deg, var(--color-accent-soft), transparent 45%), var(--color-bg); }
-  }
-  @media (max-width: 1023px) {
-    .services-mobile-process { margin-top: 1rem; }
-    .mobile-process-list { position: relative; gap: 0.875rem; }
-    .mobile-process-list::before { content: ''; position: absolute; top: 2rem; bottom: 2rem; left: 2.375rem; width: 1px; background: linear-gradient(var(--color-accent-text), var(--color-border-strong)); opacity: 0.5; }
-    .mobile-process-step { position: relative; border-radius: 1.25rem; transition: border-color 250ms ease, background-color 250ms ease, box-shadow 250ms ease; }
-    .mobile-process-step summary { grid-template-columns: 2.5rem minmax(0, 1fr) 1.125rem; gap: 0.875rem; min-height: 5.25rem; padding: 1rem 1.125rem; }
-    .mobile-process-step summary:focus-visible { border-radius: 1.25rem; }
-    .mobile-process-number { width: 2.5rem; height: 2.5rem; border: 1px solid var(--color-border-strong); border-radius: 0.875rem; background: var(--color-bg); }
-    .mobile-process-number svg { width: 1.25rem; height: 1.25rem; }
-    .mobile-process-label { display: flex; flex-direction: column; gap: 0.25rem; }
-    .mobile-process-count { color: var(--color-text-secondary); font-size: 0.625rem; line-height: 1; letter-spacing: 0.12em; }
-    .mobile-process-step[open] { background: linear-gradient(135deg, var(--color-accent-soft), transparent 65%), var(--color-bg-elevated); box-shadow: 0 12px 28px -24px var(--color-accent-glow); }
-    .mobile-process-step[open] .mobile-process-number { color: var(--color-on-accent); background: var(--color-accent); border-color: var(--color-accent); }
-    .mobile-process-step[open] .mobile-process-count { color: var(--color-accent-text); }
-    .mobile-process-body { padding: 0 1.125rem 1.25rem; }
-    .mobile-process-body::before { content: ''; display: block; height: 1px; margin-bottom: 1rem; background: linear-gradient(90deg, var(--color-border-strong), transparent); }
-    .mobile-process-description { padding: 0; }
-  }
   @media (prefers-reduced-motion: no-preference) {
-    .offering-reveal.is-revealed .offering-title { animation: service-copy-enter 600ms var(--ease-out-expo) both; animation-delay: calc(var(--reveal-delay, 0ms) + 100ms); }
-    .offering-reveal.is-revealed .offering-description { animation: service-copy-enter 650ms var(--ease-out-expo) both; animation-delay: calc(var(--reveal-delay, 0ms) + 170ms); }
+    .offering-reveal.is-revealed .offering-icon svg { animation: offering-icon-draw 900ms var(--ease-out-expo) both; animation-delay: calc(var(--reveal-delay, 0ms) + 150ms); }
     .offering-reveal.is-revealed .offering-accent { animation: service-accent-enter 1s var(--ease-out-expo) both; animation-delay: var(--reveal-delay, 0ms); }
-    .process-heading.is-revealed .process-heading-symbol svg { animation: offering-icon-draw 1s var(--ease-out-expo) both; }
-    .mobile-process-chevron { transition: transform 300ms var(--ease-out-expo), color 250ms ease; }
-    .mobile-process-number { transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease; }
-    .mobile-process-step[open] .mobile-process-body { animation: service-copy-enter 350ms var(--ease-out-expo) both; }
-    .mobile-process-step[open] .mobile-process-number svg { animation: service-node-enter 400ms var(--ease-out-expo) both; }
   }
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .offering:hover { box-shadow: 0 16px 36px -28px var(--color-accent-glow); }
-    .mobile-process-step summary:hover .mobile-process-title { color: var(--color-accent-text); }
-  }
-  @media (hover: none) and (pointer: coarse) and (prefers-reduced-motion: no-preference) {
-    .offering:active .offering-icon svg { transform: translateY(-2px); }
-    .mobile-process-step summary:active .mobile-process-number svg { transform: scale(0.9); }
-  }
-  @media (prefers-reduced-motion: reduce) { .mobile-process-step { transition: none; } }
-  @keyframes service-copy-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes offering-icon-draw { from { stroke-dasharray: 120; stroke-dashoffset: 120; } to { stroke-dasharray: 120; stroke-dashoffset: 0; } }
   @keyframes service-accent-enter { from { opacity: 0; transform: scaleX(0.15); } to { opacity: 0.55; transform: scaleX(1); } }
-  @keyframes service-node-enter { from { opacity: 0.5; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 
-  .process-heading { flex-wrap: wrap; }
-  .process-heading-copy { flex: 1; min-width: 0; }
-  .process-controls { display: flex; align-items: center; gap: 0.75rem; flex-basis: 100%; margin-left: 4rem; }
-  .process-controls[hidden] { display: none; }
-  .process-timer { display: block; width: 4rem; height: 3px; overflow: hidden; border-radius: 999px; background: var(--color-border-strong); }
-  .process-timer-fill { display: block; width: 100%; height: 100%; transform: scaleX(0); transform-origin: left; background: var(--color-accent-text); }
-  [data-autoplay-state='playing'] .process-timer-fill { animation: process-countdown var(--process-duration, 6000ms) linear forwards; }
-  .process-toggle { min-height: 44px; padding: 0.5rem 0.875rem; border: 1px solid var(--color-border-strong); border-radius: 999px; background: var(--color-bg-elevated); color: var(--color-text); font-size: 0.75rem; cursor: pointer; }
-  .process-toggle:hover { border-color: var(--color-accent-text); }
-  .process-toggle:focus-visible { outline: 2px solid var(--color-accent-text); outline-offset: 3px; }
-  @media (min-width: 1024px) { .process-controls { flex-basis: auto; margin-left: auto; align-self: center; } }
-  @media (prefers-reduced-motion: reduce) { .process-timer-fill { animation: none !important; } }
-  @keyframes process-countdown { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  /* Service blocks */
+  .service-list { display: grid; gap: 4.5rem; margin-top: 4.5rem; }
+  .service-block { display: grid; gap: 2rem; padding-top: 2.5rem; border-top: 1px solid var(--color-border); }
+  .service-copy { min-width: 0; }
+  .service-title { margin-top: 0.75rem; font-size: clamp(1.875rem, 4.2vw, 3rem); line-height: 1.08; letter-spacing: -0.03em; }
+  .service-label { margin-bottom: 0.5rem; color: var(--color-accent-text); font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .service-what { margin-top: 1.5rem; }
+  .service-lead { max-width: 60ch; font-size: 1.0625rem; line-height: 1.65; }
+  .service-callout { display: flex; gap: 0.75rem; max-width: 62ch; margin-top: 1.25rem; padding: 1rem 1.125rem; border: 1px solid color-mix(in srgb, var(--color-accent) 30%, var(--color-border)); border-radius: 1rem; background: var(--color-accent-soft); color: var(--color-text); font-size: 0.9375rem; line-height: 1.6; }
+  .service-callout svg { flex: none; width: 1.25rem; height: 1.25rem; margin-top: 0.125rem; color: var(--color-accent-text); }
+  .service-lists { display: grid; gap: 1.75rem; margin-top: 2rem; }
+  .service-bullets { display: grid; gap: 0.625rem; color: var(--color-text-secondary); font-size: 0.9375rem; line-height: 1.55; }
+  .service-bullets li { position: relative; padding-left: 1.25rem; }
+  .service-bullets li::before { content: ''; position: absolute; left: 0.125rem; top: 0.6em; width: 0.375rem; height: 0.375rem; border-radius: 999px; background: var(--color-accent-text); }
+  .service-bullets-check li::before { top: 0.35em; width: 0.75rem; height: 0.75rem; left: 0; border-radius: 0; background: none; border: solid var(--color-accent-text); border-width: 0 2px 2px 0; transform: translateX(0.2rem) rotate(45deg) scale(0.55, 0.8); }
+  .service-practice { max-width: 62ch; margin-top: 2rem; color: var(--color-text-secondary); font-size: 0.9375rem; line-height: 1.65; }
+  .service-next { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; margin-top: 2rem; padding: 1.25rem; border: 1px solid var(--color-border-strong); border-radius: 1.25rem; background: var(--color-bg-elevated); }
+  .service-next-text { font-size: 0.9375rem; line-height: 1.55; }
+  .service-cta { white-space: normal; text-align: left; line-height: 1.25; }
+  .service-visual-col { min-width: 0; }
+
+  @media (min-width: 640px) {
+    .service-lists { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+    .service-next { padding: 1.5rem; }
+  }
+  @media (min-width: 1024px) {
+    .service-list { gap: 6.5rem; margin-top: 6rem; }
+    .service-block { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; gap: 4rem; padding-top: 3.5rem; }
+
+    /* The visual stays in view while the longer copy scrolls past it. */
+    .service-visual-col { position: sticky; top: 6.5rem; }
+  }
+
+  .service-stage { display: none; }
+  html:not(.js) .service-visual-col { position:static; }
+  @media(prefers-reduced-motion:reduce) { .service-visual-col { position:static; } }
+  @media (min-width:1024px) and (min-height:800px) {
+    .service-story.is-connected { display: grid; grid-template-columns: 1.05fr 1fr; gap: 4rem; align-items: start; margin-top: 3rem; }
+    .is-connected .service-list { display: grid; gap: 4rem; margin-top: 0; }
+    .is-connected .service-block { display: block; padding-top: 2rem; }
+    .is-connected .service-stage { display: grid; position: sticky; top: 6.5rem; padding-top: 2rem; }
+    .service-stage .service-visual-col { grid-area: 1 / 1; position: relative; top: auto; opacity: 0; visibility: hidden; transform: translateY(12px) scale(.98); transition: opacity 250ms, transform 350ms, visibility 250ms; pointer-events: none; }
+    .service-stage .service-visual-col.is-current { opacity: 1; visibility: visible; transform: none; }
+    .service-stage .sv-sequence { min-height:6.5rem; }
+  }
 </style>

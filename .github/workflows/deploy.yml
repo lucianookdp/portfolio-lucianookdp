@@ -40,8 +40,6 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Enforce performance budget
         run: node scripts/check-performance-budget.mjs
