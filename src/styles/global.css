@@ -606,7 +606,6 @@
 .stage-scene svg .fill-yellow { fill: #febc2e; }
 .stage-scene svg .stroke-line { stroke: var(--color-border-strong); stroke-width: 1.5; }
 .stage-scene svg .stroke-accent { stroke: var(--color-accent); }
-.stage-scene svg .stroke-text { stroke: var(--color-text); }
 .stage-scene svg .stroke-on-accent { stroke: var(--color-on-accent); }
 
 /* Scene 1 — briefing */
@@ -766,21 +765,6 @@
   width: 1.15rem;
   height: 1.15rem;
 }
-.tl-ring {
-  position: absolute;
-  inset: -1px;
-  width: calc(100% + 2px);
-  height: calc(100% + 2px);
-  transform: rotate(-90deg);
-}
-.tl-ring circle {
-  fill: none;
-  stroke: var(--color-accent-glow);
-  stroke-width: 2;
-  stroke-dasharray: 138.2;
-  stroke-dashoffset: 138.2;
-  opacity: 0;
-}
 .tl-label {
   display: flex;
   flex-direction: column;
@@ -805,14 +789,9 @@
   transform: scale(1.12);
   box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--color-accent) 80%, transparent);
 }
-.tl-step.is-active .tl-ring circle {
-  opacity: 1;
-  animation: ring-fill 4600ms linear forwards;
-}
 .tl-step.is-active .tl-label {
   color: var(--color-text);
 }
-@keyframes ring-fill { to { stroke-dashoffset: 0; } }
 @media (hover: hover) and (pointer: fine) {
   .tl-step:hover .tl-node {
     transform: scale(1.08);
@@ -839,10 +818,6 @@
   .process-sticky {
     top: 6rem;
   }
-}
-.tl-step.is-active .tl-ring circle {
-  animation: none;
-  opacity: 0;
 }
 
 /* Detail card */
@@ -1085,7 +1060,6 @@
   .stage-scene:not(.is-active) {
     opacity: 0;
   }
-  .tl-ring circle,
   .detail-swap {
     animation: none !important;
     opacity: 1;
