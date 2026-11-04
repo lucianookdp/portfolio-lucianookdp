@@ -147,7 +147,7 @@ function heroFixture({ reduced = false, memory, connection, failImport = false, 
   container.querySelector = () => poster;
   let imports = 0;
   let scenes = 0;
-  env.window.matchMedia = () => ({ matches: reduced });
+  env.window.matchMedia = () => ({ ...eventTarget(), matches: reduced });
   const module = execute(astroScript('src/components/hero/Hero.astro'), {
     ...env, navigator: { deviceMemory: memory, connection },
     require(specifier) {

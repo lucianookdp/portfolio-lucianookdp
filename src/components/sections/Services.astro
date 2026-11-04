@@ -63,6 +63,8 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
   <!-- Full service blocks. Copy on one side, an illustrative visual on the
        other; data-service / data-service-visual are the hooks for the
        stage 2 3D models and animations. -->
+  <p class="service-disclaimer">{dict.services.storyNote}</p>
+  <div class="service-story" data-service-story data-label={dict.services.storyLabel}>
   <div class="service-list">
     {offerings.map((offering, index) => (
       <article id={offering.id} class="service-block scroll-mt-24" data-service={offering.kind} aria-labelledby={`${offering.id}-title`}>
@@ -119,13 +121,21 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
           </div>
         </div>
 
-        <div class="service-visual-col" data-reveal data-reveal-delay="120">
+        <div class="service-visual-col">
           <ServiceVisual kind={offering.kind} visual={offering.visual} badge={labels.illustrative} />
         </div>
       </article>
     ))}
   </div>
+  </div>
 </section>
+
+<script>
+  import { initServiceStory } from '../../lib/service-story';
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('astro:page-load', () => { cleanup?.(); cleanup = initServiceStory(); });
+  document.addEventListener('astro:before-swap', () => { cleanup?.(); cleanup = undefined; });
+</script>
 
 <!-- Global styles: every class here is service- and offering-prefixed, and skipping Astro's
      per-selector scope attribute keeps the page CSS within budget. -->
@@ -199,8 +209,23 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
   @media (min-width: 1024px) {
     .service-list { gap: 6.5rem; margin-top: 6rem; }
     .service-block { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; gap: 4rem; padding-top: 3.5rem; }
-    .service-block:nth-child(even) .service-copy { order: 2; }
+
     /* The visual stays in view while the longer copy scrolls past it. */
     .service-visual-col { position: sticky; top: 6.5rem; }
+  }
+
+  .service-disclaimer { margin-top: 3rem; color: var(--color-text-secondary); font-size: .8125rem; }
+  .service-stage { display: none; }
+  html:not(.js) .service-visual-col { position:static; }
+  @media(prefers-reduced-motion:reduce) { .service-visual-col { position:static; } }
+  @media (min-width:1024px) and (min-height:800px) {
+    .service-story.is-connected { display: grid; grid-template-columns: 1.05fr 1fr; gap: 4rem; align-items: start; margin-top: 3rem; }
+    .is-connected .service-list { display: grid; gap: 4rem; margin-top: 0; }
+    .is-connected .service-block { display: block; padding-top: 2rem; }
+    .is-connected .service-stage { display: grid; position: sticky; top: 6.5rem; padding-top: 2rem; }
+    .service-stage .service-visual-col { grid-area: 1 / 1; position: relative; top: auto; opacity: 0; visibility: hidden; transform: translateY(12px) scale(.98); transition: opacity 250ms, transform 350ms, visibility 250ms; pointer-events: none; }
+    .service-stage .service-visual-col.is-current { opacity: 1; visibility: visible; transform: none; }
+    .service-stage .sv-block { padding:.75rem; gap:.5rem; }
+    .service-stage .sv-sequence { min-height:6.5rem; }
   }
 </style>

@@ -17,7 +17,10 @@
   "hero": {
     "availability": "Disponível para novos projetos",
     "role": "Luciano K. Dal Pai · Desenvolvimento web",
-    "headline": ["Sites e sistemas web", "para o seu negócio."],
+    "headline": [
+      "Sites e sistemas web",
+      "para o seu negócio."
+    ],
     "intro": "Desenvolvo landing pages, sites institucionais, sistemas web e automações para apresentar seus serviços, facilitar o contato com clientes e organizar processos do dia a dia.",
     "tagline": "Landing pages, sites institucionais, sistemas web e automações.",
     "ctaServices": "Conhecer os serviços",
@@ -72,10 +75,34 @@
         "cta": "Conversar sobre uma landing page",
         "visual": {
           "caption": "Estrutura ilustrativa de uma landing page",
-          "labels": ["Apresentação", "Benefícios", "Informações", "Contato"],
-          "details": ["Título e resumo da oferta", "Vantagens em tópicos", "Detalhes e perguntas frequentes", "Chamada final para contato"],
+          "labels": [
+            "Apresentação",
+            "Benefícios",
+            "Informações",
+            "Contato"
+          ],
+          "details": [
+            "Título e resumo da oferta",
+            "Vantagens em tópicos",
+            "Detalhes e perguntas frequentes",
+            "Chamada final para contato"
+          ],
           "states": [],
-          "action": "Pedir orçamento"
+          "action": "Pedir orçamento",
+          "sequence": [
+            {
+              "title": "Apresentar a oferta",
+              "text": "O visitante entende o que você oferece."
+            },
+            {
+              "title": "Explicar e orientar",
+              "text": "Benefícios e informações ajudam a decidir."
+            },
+            {
+              "title": "Convidar ao contato",
+              "text": "A página conduz a uma ação clara."
+            }
+          ]
         }
       },
       {
@@ -105,10 +132,32 @@
         "cta": "Conversar sobre um site institucional",
         "visual": {
           "caption": "Exemplo ilustrativo de navegação entre páginas",
-          "labels": ["Início", "Sobre", "Serviços", "Contato"],
-          "details": ["Serviço 1", "Serviço 2"],
+          "labels": [
+            "Início",
+            "Sobre",
+            "Serviços",
+            "Contato"
+          ],
+          "details": [
+            "Serviço 1",
+            "Serviço 2"
+          ],
           "states": [],
-          "action": "Você está aqui"
+          "action": "Você está aqui",
+          "sequence": [
+            {
+              "title": "Conhecer a empresa",
+              "text": "Uma área para apresentar quem você é."
+            },
+            {
+              "title": "Encontrar serviços",
+              "text": "Cada assunto tem seu espaço e seu caminho."
+            },
+            {
+              "title": "Entrar em contato",
+              "text": "O menu conecta as páginas do site."
+            }
+          ]
         }
       },
       {
@@ -137,11 +186,38 @@
         "nextStep": "Me conte como esse processo funciona hoje e o que mais atrapalha.",
         "cta": "Conversar sobre um sistema web",
         "visual": {
-          "caption": "Interface ilustrativa. As funções dependem do escopo contratado.",
-          "labels": ["Painel", "Cadastros", "Solicitações", "Relatórios"],
-          "details": ["Pedido de orçamento", "Visita técnica", "Entrega de material"],
-          "states": ["Recebida", "Em andamento", "Concluída"],
-          "action": "Nova solicitação"
+          "caption": "Dados fictícios e interface ilustrativa. As funções dependem do escopo contratado.",
+          "labels": [
+            "Painel",
+            "Cadastros",
+            "Solicitações",
+            "Relatórios"
+          ],
+          "details": [
+            "Pedido de orçamento",
+            "Visita técnica",
+            "Entrega de material"
+          ],
+          "states": [
+            "Recebida",
+            "Em andamento",
+            "Concluída"
+          ],
+          "action": "Nova solicitação",
+          "sequence": [
+            {
+              "title": "Registrar uma solicitação",
+              "text": "Exemplo fictício: pedido de orçamento."
+            },
+            {
+              "title": "Organizar na lista",
+              "text": "O mesmo pedido passa a fazer parte da rotina."
+            },
+            {
+              "title": "Acompanhar a tarefa",
+              "text": "O status mostra em que etapa o pedido está."
+            }
+          ]
         }
       },
       {
@@ -170,13 +246,37 @@
         "cta": "Conversar sobre uma automação",
         "visual": {
           "caption": "Fluxo ilustrativo: um pedido feito no formulário segue para a planilha e gera um aviso.",
-          "labels": ["Formulário do site", "Planilha de pedidos", "Email da equipe"],
-          "details": ["Novo pedido recebido", "Nova linha adicionada", "Aviso enviado"],
+          "labels": [
+            "Formulário do site",
+            "Planilha de pedidos",
+            "Email da equipe"
+          ],
+          "details": [
+            "Novo pedido recebido",
+            "Nova linha adicionada",
+            "Aviso enviado"
+          ],
           "states": [],
-          "action": "Automático"
+          "action": "Automático",
+          "sequence": [
+            {
+              "title": "Receber a informação",
+              "text": "Um formulário inicia o fluxo ilustrativo."
+            },
+            {
+              "title": "Organizar os dados",
+              "text": "O pedido segue para uma lista organizada."
+            },
+            {
+              "title": "Encaminhar para outra ferramenta",
+              "text": "A conexão depende das ferramentas e dos acessos."
+            }
+          ]
         }
       }
-    ]
+    ],
+    "storyLabel": "Da ideia à experiência",
+    "storyNote": "Demonstrações ilustrativas dos serviços, não projetos entregues."
   },
   "devices": {
     "index": "02",

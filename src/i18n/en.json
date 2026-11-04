@@ -17,7 +17,10 @@
   "hero": {
     "availability": "Available for new projects",
     "role": "Luciano K. Dal Pai · Web development",
-    "headline": ["Websites and web apps", "for your business."],
+    "headline": [
+      "Websites and web apps",
+      "for your business."
+    ],
     "intro": "I build landing pages, business websites, web apps and automations that present your services, make it easier for clients to reach you and keep day-to-day processes organised.",
     "tagline": "Landing pages, business websites, web apps and automations.",
     "ctaServices": "Explore the services",
@@ -72,10 +75,34 @@
         "cta": "Talk about a landing page",
         "visual": {
           "caption": "Illustrative structure of a landing page",
-          "labels": ["Introduction", "Benefits", "Information", "Contact"],
-          "details": ["Headline and offer summary", "Advantages in short points", "Details and FAQ", "Closing call to get in touch"],
+          "labels": [
+            "Introduction",
+            "Benefits",
+            "Information",
+            "Contact"
+          ],
+          "details": [
+            "Headline and offer summary",
+            "Advantages in short points",
+            "Details and FAQ",
+            "Closing call to get in touch"
+          ],
           "states": [],
-          "action": "Request a quote"
+          "action": "Request a quote",
+          "sequence": [
+            {
+              "title": "Present the offer",
+              "text": "Visitors understand what you offer."
+            },
+            {
+              "title": "Explain and guide",
+              "text": "Benefits and information help with the decision."
+            },
+            {
+              "title": "Invite contact",
+              "text": "The page leads to a clear action."
+            }
+          ]
         }
       },
       {
@@ -105,10 +132,32 @@
         "cta": "Talk about a business website",
         "visual": {
           "caption": "Illustrative example of navigation between pages",
-          "labels": ["Home", "About", "Services", "Contact"],
-          "details": ["Service 1", "Service 2"],
+          "labels": [
+            "Home",
+            "About",
+            "Services",
+            "Contact"
+          ],
+          "details": [
+            "Service 1",
+            "Service 2"
+          ],
           "states": [],
-          "action": "You are here"
+          "action": "You are here",
+          "sequence": [
+            {
+              "title": "Meet the company",
+              "text": "A dedicated area to introduce your business."
+            },
+            {
+              "title": "Find services",
+              "text": "Each subject has its own space and path."
+            },
+            {
+              "title": "Get in touch",
+              "text": "Navigation connects the pages of the website."
+            }
+          ]
         }
       },
       {
@@ -137,11 +186,38 @@
         "nextStep": "Tell me how the process works today and what gets in the way the most.",
         "cta": "Talk about a web app",
         "visual": {
-          "caption": "Illustrative interface. Features depend on the agreed scope.",
-          "labels": ["Dashboard", "Records", "Requests", "Reports"],
-          "details": ["Quote request", "Site visit", "Material delivery"],
-          "states": ["Received", "In progress", "Done"],
-          "action": "New request"
+          "caption": "Fictional data and illustrative interface. Features depend on the agreed scope.",
+          "labels": [
+            "Dashboard",
+            "Records",
+            "Requests",
+            "Reports"
+          ],
+          "details": [
+            "Quote request",
+            "Site visit",
+            "Material delivery"
+          ],
+          "states": [
+            "Received",
+            "In progress",
+            "Done"
+          ],
+          "action": "New request",
+          "sequence": [
+            {
+              "title": "Register a request",
+              "text": "Fictional example: a request for a quote."
+            },
+            {
+              "title": "Organize in a list",
+              "text": "The same request becomes part of the workflow."
+            },
+            {
+              "title": "Follow the task",
+              "text": "Its status shows the current stage of the request."
+            }
+          ]
         }
       },
       {
@@ -170,13 +246,37 @@
         "cta": "Talk about an automation",
         "visual": {
           "caption": "Illustrative flow: an order placed on the form goes to the spreadsheet and triggers a notice.",
-          "labels": ["Website form", "Orders spreadsheet", "Team email"],
-          "details": ["New order received", "New row added", "Notice sent"],
+          "labels": [
+            "Website form",
+            "Orders spreadsheet",
+            "Team email"
+          ],
+          "details": [
+            "New order received",
+            "New row added",
+            "Notice sent"
+          ],
           "states": [],
-          "action": "Automatic"
+          "action": "Automatic",
+          "sequence": [
+            {
+              "title": "Receive information",
+              "text": "A form starts this illustrative workflow."
+            },
+            {
+              "title": "Organize the data",
+              "text": "The request moves into an organized list."
+            },
+            {
+              "title": "Forward to another tool",
+              "text": "Connections depend on the tools and available access."
+            }
+          ]
         }
       }
-    ]
+    ],
+    "storyLabel": "From idea to experience",
+    "storyNote": "Illustrations of the services, not delivered projects."
   },
   "devices": {
     "index": "02",

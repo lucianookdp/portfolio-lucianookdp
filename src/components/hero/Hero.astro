@@ -19,9 +19,9 @@ const headline = dict.hero.headline.join(' ');
   <div class="aurora" aria-hidden="true"><span class="aurora-blob"></span></div>
   <div class="grid-bg" aria-hidden="true"></div>
 
-  <div id="hero-scene" class="absolute inset-0" data-name={displayName} data-role={dict.hero.role}>
+  <div id="hero-scene" class="absolute inset-0 pointer-events-none" data-name={displayName} data-role={dict.hero.role}>
     <canvas id="hero-canvas" class="hero-canvas block h-full w-full" role="img" aria-label={dict.hero.sceneLabel} aria-hidden="true"></canvas>
-    <img id="hero-fallback" class="hero-fallback is-ready" src="/media/laptop.webp" alt={dict.hero.sceneLabel} width="1500" height="1260" decoding="async" fetchpriority="high" />
+    <img id="hero-fallback" class="hero-fallback is-ready" src="/media/laptop-static.svg" alt={dict.hero.sceneLabel} width="1200" height="900" decoding="async" fetchpriority="high" />
   </div>
 
   <div id="hero-content" class="container-site relative z-10 pb-12 pt-[46svh] sm:pb-16 sm:pt-[40svh] lg:pb-20 lg:pt-40">
@@ -139,6 +139,7 @@ const headline = dict.hero.headline.join(' ');
     }
     if (handle) {
       scene = { container, handle };
+      canvas.hidden = false;
       container.classList.add('is-live');
       canvas.removeAttribute('aria-hidden');
       container.querySelector('#hero-fallback')?.setAttribute('aria-hidden', 'true');
@@ -175,6 +176,7 @@ const headline = dict.hero.headline.join(' ');
         };
         sceneObserver = new IntersectionObserver(([entry]) => {
           visible = entry.isIntersecting;
+          if (!visible && scene?.container === sceneContainer) { scene.handle.dispose(); scene = null; sceneContainer.classList.remove('is-live'); }
           schedule();
         });
         sceneObserver.observe(sceneContainer);
@@ -229,6 +231,11 @@ const headline = dict.hero.headline.join(' ');
   }
 
   document.addEventListener('astro:page-load', initHero);
+  window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', () => {
+    scene?.handle.dispose();
+    scene = null;
+    initHero();
+  });
   document.addEventListener('astro:before-swap', () => {
     ++sceneGeneration;
     cancelSceneStart?.();

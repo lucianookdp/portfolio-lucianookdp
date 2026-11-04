@@ -409,12 +409,14 @@
 }
 
 .hero-canvas {
+  pointer-events: none;
   opacity: 0;
   transition: opacity 1.2s ease;
 }
 .hero-canvas.is-ready {
   opacity: 1;
 }
+.btn { min-height:44px; }
 .hero-fallback {
   position: absolute;
   left: 50%;
@@ -810,7 +812,7 @@
 /* Scroll-driven process: the wrapper is tall, the panel sticks inside it. */
 .process-scroll {
   position: relative;
-  height: calc(var(--steps, 6) * 45vh + 35vh);
+  height: calc(var(--steps, 6) * 25vh + 70vh);
 }
 .scroll-hint-arrow {
   animation: hint-bounce 1.4s ease-in-out infinite;
@@ -826,61 +828,6 @@
 @media (min-width: 1024px) {
   .process-sticky {
     top: 6rem;
-  }
-}
-@media (max-width: 639px) {
-  .process-scroll {
-    height: calc(var(--steps, 6) * 45svh + 100svh);
-  }
-  .process-stage {
-    height: clamp(9rem, calc(100svh - 27rem), 22rem);
-    min-height: 9rem;
-    max-height: 22rem;
-    aspect-ratio: auto;
-  }
-  .tl-step {
-    min-height: 44px;
-  }
-  .tl-steps {
-    gap: 0;
-  }
-  .tl-track {
-    left: 1.1rem;
-    right: 1.1rem;
-    top: calc(0.25rem + 1.1rem);
-  }
-  .tl-node {
-    width: 2.2rem;
-    height: 2.2rem;
-  }
-  .tl-icon {
-    width: 0.95rem;
-    height: 0.95rem;
-  }
-  .tl-label {
-    display: none;
-  }
-}
-/* Keep the walkthrough almost full-screen until all six steps have passed. */
-@media (max-width: 639px) and (min-height: 541px) {
-  .process-sticky {
-    height: calc(100svh - 6.25rem);
-    display: flex;
-    flex-direction: column;
-  }
-  .process-panels {
-    flex: 1;
-    min-height: 0;
-    grid-template-rows: minmax(9rem, 1fr) auto;
-  }
-  .process-stage {
-    height: auto;
-    max-height: none;
-  }
-}
-@media (min-width: 640px) and (max-width: 1023px) {
-  .tl-label {
-    font-size: 0.72rem;
   }
 }
 .tl-step.is-active .tl-ring circle {

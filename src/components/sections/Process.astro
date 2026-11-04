@@ -338,7 +338,10 @@ const SCENES = [0, 3, 1, 2, 4, 5];
         detailProgress.style.width = `${within * 100}%`;
       }
     };
+    let lastScrollY = window.scrollY;
     const onScroll = () => {
+      if (window.scrollY !== lastScrollY) autoplay?.pause();
+      lastScrollY = window.scrollY;
       if (ticking) return;
       ticking = true;
       rafId = requestAnimationFrame(update);
@@ -405,6 +408,7 @@ const SCENES = [0, 3, 1, 2, 4, 5];
   @media (max-width: 1023px) {
     .services-mobile-process { display: block; margin-top: 2.5rem; }
     .process-scroll { display: none; }
+  }
     .mobile-process-list { display: grid; gap: 0.625rem; margin-top: 1.25rem; }
     .mobile-process-step { border: 1px solid var(--color-border-strong); border-radius: 1rem; background: var(--color-bg-elevated); overflow: clip; }
     .mobile-process-step summary { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr) 1.125rem; align-items: center; gap: 0.75rem; min-height: 4.25rem; padding: 0.875rem 1rem; cursor: pointer; list-style: none; }
@@ -416,7 +420,7 @@ const SCENES = [0, 3, 1, 2, 4, 5];
     .mobile-process-step[open] { border-color: var(--color-accent-text); }
     .mobile-process-step[open] .mobile-process-chevron { transform: rotate(180deg); }
     .mobile-process-description { padding: 0 1rem 1.25rem; font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); }
-  }
+  
 
   .process-heading { display: flex; align-items: flex-start; gap: 1rem; margin-top: 2.5rem; }
   .process-heading-symbol { display: grid; place-items: center; flex: 0 0 3rem; height: 3rem; border: 1px solid var(--color-border-strong); border-radius: 1rem; color: var(--color-accent-text); background: var(--color-accent-soft); }
@@ -425,7 +429,7 @@ const SCENES = [0, 3, 1, 2, 4, 5];
   @media (min-width: 1024px) {
     .process-sticky { padding: 1.5rem; border: 1px solid var(--color-border-strong); border-radius: 1.75rem; background: linear-gradient(150deg, var(--color-accent-soft), transparent 45%), var(--color-bg); }
   }
-  @media (max-width: 1023px) {
+  
     .services-mobile-process { margin-top: 1rem; }
     .mobile-process-list { position: relative; gap: 0.875rem; }
     .mobile-process-list::before { content: ''; position: absolute; top: 2rem; bottom: 2rem; left: 2.375rem; width: 1px; background: linear-gradient(var(--color-accent-text), var(--color-border-strong)); opacity: 0.5; }
@@ -442,7 +446,7 @@ const SCENES = [0, 3, 1, 2, 4, 5];
     .mobile-process-body { padding: 0 1.125rem 1.25rem; }
     .mobile-process-body::before { content: ''; display: block; height: 1px; margin-bottom: 1rem; background: linear-gradient(90deg, var(--color-border-strong), transparent); }
     .mobile-process-description { padding: 0; }
-  }
+  
   @media (prefers-reduced-motion: no-preference) {
     .process-heading.is-revealed .process-heading-symbol svg { animation: process-symbol-draw 1s var(--ease-out-expo) both; }
     .mobile-process-chevron { transition: transform 300ms var(--ease-out-expo), color 250ms ease; }
@@ -474,4 +478,10 @@ const SCENES = [0, 3, 1, 2, 4, 5];
   @media (min-width: 1024px) { .process-controls { flex-basis: auto; margin-left: auto; align-self: center; } }
   @media (prefers-reduced-motion: reduce) { .process-timer-fill { animation: none !important; } }
   @keyframes process-countdown { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+html:not(.js) .services-mobile-process { display:block; }
+  html:not(.js) .process-scroll { display:none; }
+  @media(prefers-reduced-motion:reduce) {
+    .services-mobile-process { display:block; }
+    .process-scroll { display:none; }
+  }
 </style>
