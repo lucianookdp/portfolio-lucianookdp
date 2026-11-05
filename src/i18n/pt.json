@@ -44,8 +44,7 @@
       "includes": "O que pode incluir",
       "practice": "Como funciona na prática",
       "next": "Próximo passo",
-      "more": "Ver o que inclui e como funciona",
-      "illustrative": "Ilustração"
+      "more": "Ver o que inclui e como funciona"
     },
     "offerings": [
       {
@@ -70,38 +69,7 @@
         ],
         "practice": "Você me passa as informações sobre a oferta e, juntos, organizamos o conteúdo em uma sequência: apresentação, benefícios, detalhes e contato. Depois desenvolvo a página e ajusto a leitura em cada tamanho de tela.",
         "nextStep": "Me conte qual oferta você quer apresentar e para quem.",
-        "cta": "Conversar sobre uma landing page",
-        "visual": {
-          "caption": "Exemplo fictício para explicar o serviço. O escopo é definido em cada projeto.",
-          "labels": [
-            "Apresentação",
-            "Benefícios",
-            "Informações",
-            "Contato"
-          ],
-          "details": [
-            "Título e resumo da oferta",
-            "Vantagens em tópicos",
-            "Detalhes e perguntas frequentes",
-            "Chamada final para contato"
-          ],
-          "states": [],
-          "action": "Pedir orçamento",
-          "sequence": [
-            {
-              "title": "A oferta",
-              "text": "A pessoa entende que pode contratar a organização de um ambiente."
-            },
-            {
-              "title": "Os benefícios",
-              "text": "A página explica como esse serviço ajuda na rotina."
-            },
-            {
-              "title": "O contato",
-              "text": "Uma chamada clara convida a conversar sobre o espaço."
-            }
-          ]
-        }
+        "cta": "Conversar sobre uma landing page"
       },
       {
         "id": "service-website",
@@ -125,36 +93,7 @@
         ],
         "practice": "Primeiro definimos quais páginas o site precisa e como elas se conectam. Esse mapa orienta o menu e a ordem dos conteúdos. Depois desenvolvo as páginas mantendo o mesmo padrão visual em todas.",
         "nextStep": "Me conte o que sua empresa faz e quais informações seus clientes mais procuram.",
-        "cta": "Conversar sobre um site institucional",
-        "visual": {
-          "caption": "Exemplo fictício para explicar o serviço. O escopo é definido em cada projeto.",
-          "labels": [
-            "Início",
-            "Sobre",
-            "Serviços",
-            "Contato"
-          ],
-          "details": [
-            "Serviço 1",
-            "Serviço 2"
-          ],
-          "states": [],
-          "action": "Você está aqui",
-          "sequence": [
-            {
-              "title": "O estúdio",
-              "text": "Uma página apresenta o negócio e sua forma de trabalhar."
-            },
-            {
-              "title": "Os serviços",
-              "text": "Outra página organiza os tipos de serviço por ambiente."
-            },
-            {
-              "title": "O contato",
-              "text": "O menu leva aos canais de contato e às informações de atendimento."
-            }
-          ]
-        }
+        "cta": "Conversar sobre um site institucional"
       },
       {
         "id": "service-webapp",
@@ -178,41 +117,7 @@
         ],
         "practice": "Começamos pelo processo atual: quem participa, que informações circulam e onde estão as dificuldades. A partir disso, definimos as funções prioritárias para uma primeira versão. Novas funções podem ser planejadas depois, em etapas combinadas.",
         "nextStep": "Me conte como esse processo funciona hoje e o que mais atrapalha.",
-        "cta": "Conversar sobre um sistema web",
-        "visual": {
-          "caption": "Exemplo fictício para explicar o serviço. O escopo é definido em cada projeto.",
-          "labels": [
-            "Painel",
-            "Cadastros",
-            "Solicitações",
-            "Relatórios"
-          ],
-          "details": [
-            "Pedido de orçamento",
-            "Visita técnica",
-            "Entrega de material"
-          ],
-          "states": [
-            "Recebida",
-            "Em andamento",
-            "Concluída"
-          ],
-          "action": "Nova solicitação",
-          "sequence": [
-            {
-              "title": "Registrar",
-              "text": "Um pedido fictício de organização de escritório entra no sistema."
-            },
-            {
-              "title": "Organizar",
-              "text": "O pedido #024 aparece em uma lista para consulta."
-            },
-            {
-              "title": "Acompanhar",
-              "text": "O mesmo pedido muda de etapa, sem se perder entre mensagens."
-            }
-          ]
-        }
+        "cta": "Conversar sobre um sistema web"
       },
       {
         "id": "service-automation",
@@ -235,114 +140,9 @@
         ],
         "practice": "Mapeamos a rotina passo a passo e identificamos onde a informação é copiada ou repassada à mão. Depois verifico o que cada ferramenta permite, monto a automação e testamos com situações da rotina antes de colocar em uso.",
         "nextStep": "Me conte quais ferramentas você usa e qual tarefa gostaria de automatizar.",
-        "cta": "Conversar sobre uma automação",
-        "visual": {
-          "caption": "Exemplo fictício para explicar o serviço. O escopo é definido em cada projeto.",
-          "labels": [
-            "Formulário do site",
-            "Planilha de pedidos",
-            "Email da equipe"
-          ],
-          "details": [
-            "Novo pedido recebido",
-            "Nova linha adicionada",
-            "Aviso enviado"
-          ],
-          "states": [],
-          "action": "Automático",
-          "sequence": [
-            {
-              "title": "Receber",
-              "text": "O formulário recebe o pedido de organização de escritório."
-            },
-            {
-              "title": "Organizar",
-              "text": "As informações seguem para uma lista, sem nova digitação."
-            },
-            {
-              "title": "Encaminhar",
-              "text": "Um aviso leva o pedido à equipe. A viabilidade depende das ferramentas."
-            }
-          ]
-        }
+        "cta": "Conversar sobre uma automação"
       }
-    ],
-    "storyLabel": "Da ideia à experiência",
-    "site": {
-      "brand": "Sua empresa",
-      "domain": "suaempresa.com.br"
-    },
-    "demo": {
-      "example": "Exemplo fictício",
-      "business": "Forma · organização de ambientes",
-      "request": "Pedido de serviço",
-      "organizing": "Organização de ambientes",
-      "home": "Um lugar para cada coisa",
-      "headline": "Seu espaço, mais leve.",
-      "subtitle": "Organização de ambientes para uma rotina mais simples.",
-      "landingAction": "Quero organizar meu espaço",
-      "benefits": [
-        "Tudo no seu lugar",
-        "Mais espaço para viver",
-        "Uma rotina mais prática"
-      ],
-      "start": "Por onde começamos?",
-      "tellSpace": "Conte qual ambiente você quer organizar.",
-      "contact": "Conversar",
-      "pages": [
-        "Estúdio",
-        "Serviços",
-        "Contato"
-      ],
-      "companyTitle": "Espaços que fazem sentido para você.",
-      "companyText": "Conheça o estúdio e nossa forma de organizar cada ambiente.",
-      "explore": "Conheça os serviços",
-      "servicesTitle": "Um cuidado para cada espaço.",
-      "rooms": [
-        "Casa",
-        "Escritório",
-        "Armários"
-      ],
-      "serviceDetails": [
-        "Ambientes do dia a dia",
-        "Um lugar para trabalhar",
-        "Cada coisa no seu lugar"
-      ],
-      "talk": "Vamos conversar?",
-      "contactHint": "Escolha um canal e conte sua ideia.",
-      "location": "Área de atendimento e horários",
-      "pagesLabel": "Páginas conectadas",
-      "workspace": "Central de pedidos",
-      "fictional": "Dados fictícios",
-      "newRequest": "Novo pedido",
-      "taskTitle": "Organizar escritório",
-      "service": "Serviço",
-      "space": "Ambiente",
-      "createRequest": "Registrar pedido",
-      "requestList": "Lista de pedidos",
-      "listTitle": "O pedido fica organizado.",
-      "statuses": [
-        "Recebido",
-        "Em andamento",
-        "Concluído"
-      ],
-      "listNote": "O mesmo pedido, pronto para ser consultado.",
-      "follow": "Acompanhamento",
-      "followTitle": "Veja em que etapa está.",
-      "flow": "Fluxo de informação",
-      "flowTitle": "O pedido segue seu caminho.",
-      "nodes": [
-        "Formulário recebido",
-        "Lista atualizada",
-        "Aviso encaminhado"
-      ],
-      "sameData": "O mesmo pedido",
-      "saved": "Pedido #024 registrado",
-      "notified": "Equipe avisada sobre o pedido",
-      "noCopy": "Sem copiar a informação a cada etapa",
-      "controls": "Explorar as etapas do exemplo"
-    },
-    "storyNote": "Demonstrações ilustrativas dos serviços, não projetos entregues."
+    ]
   },
   "devices": {
     "index": "02",

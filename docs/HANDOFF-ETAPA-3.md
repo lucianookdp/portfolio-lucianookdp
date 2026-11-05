@@ -1,5 +1,7 @@
 # Handoff — etapa 3: revisão e acabamento
 
+**Atualização dos serviços.** A seção pública apresenta as quatro ofertas com detalhes e contato. Os mockups fictícios foram retirados a pedido de Luciano. Os exemplos reais ficam para uma versão futura. Os registros de demonstrações abaixo descrevem versões anteriores.
+
 ## Objetivo da próxima etapa
 
 A etapa 3 será a revisão final pelo Claude: corrigir problemas pontuais de texto, layout, navegação, acessibilidade e metadados, preservando a direção visual e o funcionamento das animações. Não redesenhar o site, reescrever toda a apresentação ou substituir a arquitetura das cenas.

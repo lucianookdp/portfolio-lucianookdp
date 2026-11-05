@@ -1,6 +1,5 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
-import ServiceVisual from './ServiceVisual.astro';
 import type { Dictionary } from '../../i18n/utils';
 interface Props { dict: Dictionary; }
 const { dict } = Astro.props;
@@ -15,36 +14,38 @@ const number = (i: number) => String(i + 1).padStart(2, '0');
     <ul class="service-options">{offerings.map((o,i)=><li><a href={`#${o.id}`} class="offering"><span class="offering-head"><span>{number(i)}</span><span aria-hidden="true">↗</span></span><span class="offering-title">{o.title}</span><span class="offering-need">{o.need}</span></a></li>)}</ul>
     <p class="service-help">{dict.services.chooserHelp} <a href="#contact">{dict.services.chooserHelpLink} ↗</a></p>
   </nav>
-  <p class="service-disclaimer">{dict.services.storyNote}</p>
-  <div class="service-story" data-service-story data-label={dict.services.storyLabel}>
-    <div class="service-list">
-      {offerings.map((o,i)=><article id={o.id} class="service-block scroll-mt-24" data-service={o.kind} aria-labelledby={`${o.id}-title`}>
-        <div class="service-copy">
-          <header class="service-intro">
-            <p class="service-kicker"><span>{number(i)}</span>{o.kicker}</p>
-            <h3 id={`${o.id}-title`} class="service-title">{o.title}</h3>
-            <p class="service-lead">{o.what}</p>
-          </header>
-          <div class="service-details">
-            <div class="service-accordions">
-              <details><summary>{labels.when}<span aria-hidden="true">+</span></summary><ul class="service-bullets">{o.when.map(item=><li>{item}</li>)}</ul></details>
-              <details><summary>{labels.includes}<span aria-hidden="true">+</span></summary><ul class="service-bullets">{o.includes.map(item=><li>{item}</li>)}</ul></details>
-              <details><summary>{labels.practice}<span aria-hidden="true">+</span></summary><p class="service-practice">{o.practice}</p></details>
-            </div>
-            <div class="service-next"><p>{o.nextStep}</p><a href="#contact" class="btn btn-primary btn-sm service-cta">{o.cta}<span aria-hidden="true">↗</span></a></div>
+  <div class="service-list">
+    {offerings.map((offering, index) => (
+      <article id={offering.id} class="service-block scroll-mt-24" aria-labelledby={`${offering.id}-title`}>
+        <header class="service-intro" data-reveal>
+          <p class="service-kicker"><span>{number(index)}</span>{offering.kicker}</p>
+          <h3 id={`${offering.id}-title`} class="service-title">{offering.title}</h3>
+          <p class="service-lead">{offering.what}</p>
+        </header>
+        <div class="service-details">
+          <div class="service-accordions">
+            <details>
+              <summary>{labels.when}<span aria-hidden="true">+</span></summary>
+              <ul class="service-bullets">{offering.when.map(item => <li>{item}</li>)}</ul>
+            </details>
+            <details>
+              <summary>{labels.includes}<span aria-hidden="true">+</span></summary>
+              <ul class="service-bullets">{offering.includes.map(item => <li>{item}</li>)}</ul>
+            </details>
+            <details>
+              <summary>{labels.practice}<span aria-hidden="true">+</span></summary>
+              <p class="service-practice">{offering.practice}</p>
+            </details>
+          </div>
+          <div class="service-next">
+            <p>{offering.nextStep}</p>
+            <a href="#contact" class="btn btn-primary btn-sm service-cta">{offering.cta}<span aria-hidden="true">↗</span></a>
           </div>
         </div>
-        <div class="service-visual-col"><ServiceVisual kind={o.kind} visual={o.visual} badge={labels.illustrative} demo={dict.services.demo} /></div>
-      </article>)}
-    </div>
+      </article>
+    ))}
   </div>
 </section>
-<script>
-  import { initServiceStory } from '../../lib/service-story';
-  let cleanup: (() => void) | undefined;
-  document.addEventListener('astro:page-load', () => { cleanup?.(); cleanup = initServiceStory(); });
-  document.addEventListener('astro:before-swap', () => { cleanup?.(); cleanup = undefined; });
-</script>
 <style is:global>
 #services{--s-dim:var(--color-text-secondary);--s-ink:var(--color-text);--s-edge:var(--color-border-strong);--s-line:var(--color-border);--s-green:var(--color-accent-text);--s-soft:var(--color-accent-soft);--s-paper:var(--color-bg-elevated);--s-bg:var(--color-bg);--s-accent:var(--color-accent);--s-on:var(--color-on-accent)}
 .service-introduction{max-width:55ch;margin-top:2.5rem;font:500 clamp(1.15rem,2vw,1.65rem)/1.5 var(--font-display);letter-spacing:-.02em}
@@ -52,14 +53,22 @@ const number = (i: number) => String(i + 1).padStart(2, '0');
 .offering{display:flex;flex-direction:column;height:100%;padding:1.3rem 1rem;border-right:1px solid var(--s-line);color:var(--s-ink);transition:background .3s}.service-options li:nth-child(2n) .offering{border-right:0}.service-options li:nth-child(-n+2){border-bottom:1px solid var(--s-line)}
 .offering-head{display:flex;justify-content:space-between;color:var(--s-green);font:.7rem var(--font-mono)}.offering-head>span:last-child{font-size:1.1rem;transition:transform .3s}.offering-title{font:600 1.1rem/1.2 var(--font-display);letter-spacing:-.025em;margin-top:1rem}.offering-need{font-size:.8rem;line-height:1.55;color:var(--s-dim);margin-top:.6rem}
 .offering:hover,.offering:focus-visible{background:var(--s-soft)}.offering:focus-visible{outline:2px solid var(--s-green);outline-offset:-2px}.offering:hover .offering-head>span:last-child{transform:translate(2px,-2px)}
-.service-help{margin-top:1rem;font-size:.8rem;line-height:1.6;color:var(--s-dim)}.service-help a{color:var(--s-green);text-decoration:underline;text-underline-offset:4px}.service-disclaimer{margin-top:3.5rem;color:var(--s-dim);font-size:.75rem}
-.service-list{display:grid;gap:3.5rem;margin-top:2rem}.service-block{display:grid;gap:1.75rem;padding-top:2rem;border-top:1px solid var(--s-edge)}.service-copy{display:contents}.service-intro{order:0}.service-visual-col{order:1;min-width:0}.service-details{order:2}
+.service-help{margin-top:1rem;font-size:.8rem;line-height:1.6;color:var(--s-dim)}.service-help a{color:var(--s-green);text-decoration:underline;text-underline-offset:4px}
+.service-list{display:grid;gap:3.5rem;margin-top:2rem}.service-block{display:grid;gap:1.75rem;padding-top:2rem;border-top:1px solid var(--s-edge)}
 .service-kicker{display:flex;align-items:center;gap:.8rem;color:var(--s-dim);font:.65rem/1.5 var(--font-mono);text-transform:uppercase;letter-spacing:.1em}.service-kicker>span{display:grid;place-items:center;width:2rem;height:2rem;flex:none;border:1px solid var(--s-edge);border-radius:50%;color:var(--s-green)}
 .service-title{font:600 clamp(2rem,4vw,3rem)/1.06 var(--font-display);letter-spacing:-.045em;margin:1rem 0 1.25rem;max-width:18ch}.service-lead{font-size:1rem;line-height:1.65;max-width:53ch;color:var(--s-dim)}
-.service-callout{padding-left:1rem;border-left:2px solid var(--s-accent);font-size:.8rem;line-height:1.6;color:var(--s-dim);margin-bottom:1.5rem}.service-accordions{border-top:1px solid var(--s-line)}.service-accordions details{border-bottom:1px solid var(--s-line)}.service-accordions summary{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:52px;cursor:pointer;font-size:.85rem;font-weight:500;list-style:none}.service-accordions summary::-webkit-details-marker{display:none}.service-accordions summary>span{color:var(--s-green);font-size:1.25rem}.service-accordions details[open] summary>span{transform:rotate(45deg)}.service-accordions summary:focus-visible{outline:2px solid var(--s-green);outline-offset:4px}
-.service-bullets{display:grid;gap:.5rem;padding:0 0 1rem 1rem;list-style:disc;font-size:.85rem;line-height:1.6;color:var(--s-dim)}.service-bullets li::marker{color:var(--s-green)}.service-note,.service-practice{font-size:.8rem;line-height:1.65;color:var(--s-dim);padding-bottom:1rem}.service-note{font-style:italic}.service-next{margin-top:1.5rem}.service-next p{font-size:.8rem;line-height:1.6;color:var(--s-dim);margin-bottom:1rem;max-width:45ch}.service-cta{white-space:normal;line-height:1.4;text-align:left;gap:.75rem}
-.service-stage{display:none}
-@media(min-width:768px){.service-options{grid-template-columns:repeat(4,minmax(0,1fr))}.service-options li:nth-child(-n+2){border-bottom:0}.service-options li:nth-child(2) .offering{border-right:1px solid var(--s-line)}.offering{padding:1.5rem}.service-copy{display:block}.service-details{margin-top:1.75rem}.service-block{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:3rem;align-items:start}.service-visual-col{position:sticky;top:7rem;padding-top:1rem}.service-list{gap:4.5rem}}
-@media(min-width:1024px) and (min-height:800px){.service-story.is-connected{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:4rem;align-items:start;margin-top:2rem}.is-connected .service-list{margin-top:0;gap:0}.is-connected .service-block{display:block;padding-top:2.5rem;padding-bottom:5rem}.is-connected .service-stage{display:grid;position:sticky;top:7rem;padding-top:2.5rem}.service-stage .service-visual-col{grid-area:1/1;position:relative;top:auto;padding:0;opacity:0;visibility:hidden;transform:translateY(24px) scale(.97);transition:opacity .35s,transform .55s cubic-bezier(.2,.7,.2,1),visibility .35s;pointer-events:none}.service-stage .service-visual-col.is-current{opacity:1;visibility:visible;transform:none;pointer-events:auto}}
-html:not(.js) .service-visual-col{position:static}@media(prefers-reduced-motion:reduce){.service-visual-col{position:static}.offering,.offering-head>span:last-child{transition:none}.offering:hover .offering-head>span:last-child{transform:none}}
+.service-accordions{border-top:1px solid var(--s-line)}.service-accordions details{border-bottom:1px solid var(--s-line)}.service-accordions summary{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:52px;cursor:pointer;font-size:.85rem;font-weight:500;list-style:none}.service-accordions summary::-webkit-details-marker{display:none}.service-accordions summary>span{color:var(--s-green);font-size:1.25rem}.service-accordions details[open] summary>span{transform:rotate(45deg)}.service-accordions summary:focus-visible{outline:2px solid var(--s-green);outline-offset:4px}
+.service-bullets{display:grid;gap:.5rem;padding:0 0 1rem 1rem;list-style:disc;font-size:.85rem;line-height:1.6;color:var(--s-dim)}.service-bullets li::marker{color:var(--s-green)}.service-practice{font-size:.8rem;line-height:1.65;color:var(--s-dim);padding-bottom:1rem}.service-next{margin-top:1.5rem}.service-next p{font-size:.8rem;line-height:1.6;color:var(--s-dim);margin-bottom:1rem;max-width:45ch}.service-cta{white-space:normal;line-height:1.4;text-align:left;gap:.75rem}
+@media (min-width: 768px) {
+  .service-options { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .service-options li:nth-child(-n+2) { border-bottom: 0; }
+  .service-options li:nth-child(2) .offering { border-right: 1px solid var(--s-line); }
+  .offering { padding: 1.5rem; }
+  .service-block { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(3rem, 7vw, 7rem); align-items: start; }
+  .service-list { gap: 4rem; margin-top: 3.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .offering, .offering-head > span:last-child { transition: none; }
+  .offering:hover .offering-head > span:last-child { transform: none; }
+}
 </style>

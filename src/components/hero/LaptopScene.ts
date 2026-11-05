@@ -102,12 +102,6 @@ class ScreenPainter {
     box(28,y+65,phone?w-110:w*.34,6);
     box(28,y+101,phone?w-56:310,54,this.accent);
     text(copy.button,42,y+134,phone?15:17,readVar('--color-on-accent','#04130b'));
-    if(!phone&&!tablet) {
-      box(640,118,350,220);
-      // Drawn arrow icon: a text glyph here can fall back to a colour emoji.
-      ctx.strokeStyle=this.accent; ctx.lineWidth=10; ctx.lineCap='round'; ctx.lineJoin='round';
-      ctx.beginPath(); ctx.moveTo(780,262); ctx.lineTo(850,192); ctx.moveTo(800,192); ctx.lineTo(850,192); ctx.lineTo(850,242); ctx.stroke();
-    }
     if(phone) box(28,y+180,w-56,120);
     const services=pt?['Landing pages','Sites institucionais','Sistemas web','Automações']:['Landing pages','Company websites','Web apps','Automations'];
     const cols=phone?1:tablet?2:4;
