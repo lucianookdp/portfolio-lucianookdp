@@ -7,31 +7,18 @@ export function initServiceStory() {
   const columns = articles.map(a => a.querySelector<HTMLElement>('.service-visual-col')!);
   const figures = columns.map(c => c.querySelector<HTMLElement>('[data-service-visual]')!);
   const desktop = matchMedia('(min-width:1024px) and (min-height:800px)');
+  const sideBySide = matchMedia('(min-width:768px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const stage = document.createElement('div');
   stage.className = 'service-stage';
-  stage.setAttribute('role', 'group');
   stage.setAttribute('aria-label', root.dataset.label ?? '');
   root.append(stage);
   let connected = false;
   let raf = 0;
   let visible = false;
+  const manual = new Map<HTMLElement, number>();
+  const removeControls: (() => void)[] = [];
   const clamp = (n: number) => Math.max(0, Math.min(1, n));
-  // Each card marks its three parts (summary, lists, next step) with
-  // data-story-step; the mockup step follows whichever part the reader has
-  // reached. Without markers, the article is split into equal thirds.
-  function articleProgress(article: HTMLElement, rect: DOMRect, anchor: number) {
-    const marks = Array.from(article.querySelectorAll<HTMLElement>('[data-story-step]'))
-      .map(el => el.getBoundingClientRect())
-      .filter(r => r.height > 0)
-      .map(r => r.top);
-    if (marks.length < 2) return clamp((anchor - rect.top) / Math.max(1, rect.height - 80));
-    const ends = [...marks.slice(1), rect.bottom];
-    let step = 0;
-    marks.forEach((top, i) => { if (top <= anchor) step = i; });
-    const within = clamp((anchor - marks[step]) / Math.max(1, ends[step] - marks[step]));
-    return clamp((step + within) / marks.length);
-  }
 
   function paint(figure: HTMLElement, progress: number) {
     const step = Math.min(2, Math.floor(progress * 3));
@@ -43,12 +30,27 @@ export function initServiceStory() {
     figure.querySelectorAll<HTMLElement>('[data-cue]').forEach(el => {
       el.classList.toggle('is-cued', Number(el.dataset.cue) === step);
     });
+    figure.querySelectorAll<HTMLElement>('[data-story-step]').forEach((button, i) => {
+      button.setAttribute('aria-pressed', String(i === step));
+    });
   }
+  figures.forEach(figure => {
+    figure.querySelectorAll<HTMLButtonElement>('[data-story-step]').forEach((button, i) => {
+      const select = () => {
+        if (reduced.matches) return;
+        const progress = (i + .5) / 3;
+        manual.set(figure, progress);
+        paint(figure, progress);
+      };
+      button.addEventListener('click', select);
+      removeControls.push(() => button.removeEventListener('click', select));
+    });
+  });
   function update() {
     raf = 0;
     if (document.visibilityState !== 'visible' || reduced.matches) return;
     if (connected) {
-      const anchor = innerHeight * .42;
+      const anchor = innerHeight * .32;
       const rects = articles.map(a => a.getBoundingClientRect());
       let index = 0;
       rects.forEach((rect,i) => { if (rect.top <= anchor) index = i; });
@@ -57,12 +59,18 @@ export function initServiceStory() {
         c.setAttribute('aria-hidden', String(i !== index));
       });
       const rect = rects[index];
-      paint(figures[index], articleProgress(articles[index], rect, anchor));
+      const readingLine = innerHeight * .18;
+      paint(figures[index], manual.get(figures[index]) ?? clamp((readingLine - rect.top) / Math.max(1, rect.height - readingLine)));
     } else {
-      figures.forEach(f => {
+      figures.forEach((f, i) => {
         const rect = f.getBoundingClientRect();
         if (rect.bottom > 0 && rect.top < innerHeight) {
-          paint(f, clamp((innerHeight * .85 - rect.top) / (rect.height + innerHeight * .15)));
+          // Sticky illustrations don't move with the document: follow their article.
+          const article = articles[i].getBoundingClientRect();
+          const progress = sideBySide.matches
+            ? (innerHeight * .18 - article.top) / Math.max(1, article.height - innerHeight * .18)
+            : (innerHeight * .55 - rect.top) / (rect.height * .7);
+          paint(f, manual.get(f) ?? clamp(progress));
         }
       });
     }
@@ -71,6 +79,7 @@ export function initServiceStory() {
     if (!raf && visible && !reduced.matches && document.visibilityState === 'visible') raf = requestAnimationFrame(update);
   }
   function layout() {
+    manual.clear();
     connected = desktop.matches && !reduced.matches;
     root.classList.toggle('is-connected', connected);
     columns.forEach((c,i) => {
@@ -93,7 +102,9 @@ export function initServiceStory() {
   observer.observe(root);
   const resize = new ResizeObserver(schedule);
   articles.forEach(a => resize.observe(a));
-  window.addEventListener('scroll', schedule, { passive: true });
+  // Scroll resumes the narrative; resize alone must not undo a chosen step.
+  function onScroll() { manual.clear(); schedule(); }
+  window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', schedule);
   document.addEventListener('visibilitychange', schedule);
   desktop.addEventListener('change', layout);
@@ -102,11 +113,12 @@ export function initServiceStory() {
   return () => {
     cancelAnimationFrame(raf);
     observer.disconnect(); resize.disconnect();
-    window.removeEventListener('scroll', schedule);
+    window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', schedule);
     document.removeEventListener('visibilitychange', schedule);
     desktop.removeEventListener('change', layout);
     reduced.removeEventListener('change', layout);
+    removeControls.forEach(remove => remove());
     columns.forEach((c,i) => { articles[i].append(c); c.removeAttribute('aria-hidden'); });
     root.classList.remove('is-connected');
     stage.remove();

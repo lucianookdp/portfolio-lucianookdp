@@ -44,7 +44,8 @@
       "includes": "What it can include",
       "practice": "How it works in practice",
       "next": "Next step",
-      "more": "See what it includes and how it works"
+      "more": "See what it includes and how it works",
+      "illustrative": "Illustration"
     },
     "offerings": [
       {
@@ -71,7 +72,7 @@
         "nextStep": "Tell me which offer you want to present, and to whom.",
         "cta": "Talk about a landing page",
         "visual": {
-          "caption": "Illustration of a landing page: introduction, benefits, information and contact.",
+          "caption": "A fictional example to explain the service. Scope is agreed for each project.",
           "labels": [
             "Introduction",
             "Benefits",
@@ -88,26 +89,17 @@
           "action": "Request a quote",
           "sequence": [
             {
-              "title": "Present the offer",
-              "text": "Visitors understand what you offer."
+              "title": "The offer",
+              "text": "Visitors understand they can hire a service to organize a space."
             },
             {
-              "title": "Explain and guide",
-              "text": "Benefits and information help with the decision."
+              "title": "The benefits",
+              "text": "The page explains how the service can help with their routine."
             },
             {
-              "title": "Invite contact",
-              "text": "The page leads to a clear action."
+              "title": "Get in touch",
+              "text": "A clear next step invites them to discuss their space."
             }
-          ],
-          "copy": [
-            "Your service explained on one page",
-            "Who it is for",
-            "What it includes",
-            "How it works",
-            "How does the service work?",
-            "Which payment methods do you accept?",
-            "Shall we talk?"
           ]
         }
       },
@@ -135,7 +127,7 @@
         "nextStep": "Tell me what your company does and what information your clients look for most.",
         "cta": "Talk about a business website",
         "visual": {
-          "caption": "Illustration of a business website with About, Services and Contact pages.",
+          "caption": "A fictional example to explain the service. Scope is agreed for each project.",
           "labels": [
             "Home",
             "About",
@@ -150,24 +142,17 @@
           "action": "You are here",
           "sequence": [
             {
-              "title": "Meet the company",
-              "text": "A dedicated area to introduce your business."
+              "title": "The studio",
+              "text": "One page introduces the business and how it works."
             },
             {
-              "title": "Find services",
-              "text": "Each subject has its own space and path."
+              "title": "Services",
+              "text": "Another page groups services by the type of space."
             },
             {
-              "title": "Get in touch",
-              "text": "One page brings together the ways to reach you."
+              "title": "Contact",
+              "text": "The menu leads to contact channels and service information."
             }
-          ],
-          "copy": [
-            "Learn more",
-            "Name",
-            "Email",
-            "Message",
-            "Send message"
           ]
         }
       },
@@ -195,7 +180,7 @@
         "nextStep": "Tell me how the process works today and what gets in the way the most.",
         "cta": "Talk about a web app",
         "visual": {
-          "caption": "Illustration of a web app: recording, listing and tracking a request.",
+          "caption": "A fictional example to explain the service. Scope is agreed for each project.",
           "labels": [
             "Dashboard",
             "Records",
@@ -215,26 +200,17 @@
           "action": "New request",
           "sequence": [
             {
-              "title": "Register a request",
-              "text": "A new quote request is recorded."
+              "title": "Create",
+              "text": "A fictional request to organize an office enters the system."
             },
             {
-              "title": "Organize in a list",
-              "text": "The request joins the others in the list."
+              "title": "Organize",
+              "text": "Request #024 appears in a list, ready to look up."
             },
             {
-              "title": "Follow the task",
-              "text": "Its status shows the current stage of the request."
+              "title": "Track",
+              "text": "The same request moves forward without getting lost in messages."
             }
-          ],
-          "copy": [
-            "Search",
-            "Client",
-            "Request type",
-            "Save",
-            "Request",
-            "Status",
-            "Sample client"
           ]
         }
       },
@@ -261,7 +237,7 @@
         "nextStep": "Tell me which tools you use and which task you'd like to automate.",
         "cta": "Talk about an automation",
         "visual": {
-          "caption": "Illustration of an automation: the form request goes to a spreadsheet and triggers an email notice.",
+          "caption": "A fictional example to explain the service. Scope is agreed for each project.",
           "labels": [
             "Website form",
             "Orders spreadsheet",
@@ -276,36 +252,97 @@
           "action": "Automatic",
           "sequence": [
             {
-              "title": "Receive information",
-              "text": "A client fills in the website form."
+              "title": "Receive",
+              "text": "The form receives a request to organize an office."
             },
             {
-              "title": "Organize the data",
-              "text": "The request moves into an organized list."
+              "title": "Organize",
+              "text": "The information goes to a list without being typed again."
             },
             {
-              "title": "Notify the team",
-              "text": "The notice arrives by email, with no manual hand-off."
+              "title": "Forward",
+              "text": "A notification takes the request to the team. Feasibility depends on the tools."
             }
-          ],
-          "copy": [
-            "Name",
-            "Request",
-            "Send",
-            "No.",
-            "Client",
-            "New request #001",
-            "Sample client",
-            "now"
           ]
         }
       }
     ],
-    "storyLabel": "Service illustrations",
+    "storyLabel": "From idea to experience",
     "site": {
       "brand": "Your company",
       "domain": "yourcompany.com"
-    }
+    },
+    "demo": {
+      "example": "Fictional example",
+      "business": "Forma · space organizing",
+      "request": "Service request",
+      "organizing": "Space organizing",
+      "home": "A place for everything",
+      "headline": "Make room for a lighter day.",
+      "subtitle": "Thoughtful space organizing for a simpler everyday routine.",
+      "landingAction": "Help me organize my space",
+      "benefits": [
+        "Everything in its place",
+        "More room to live",
+        "An easier daily routine"
+      ],
+      "start": "Where do we start?",
+      "tellSpace": "Tell us which space you would like to organize.",
+      "contact": "Get in touch",
+      "pages": [
+        "Studio",
+        "Services",
+        "Contact"
+      ],
+      "companyTitle": "Spaces that make sense for you.",
+      "companyText": "Meet the studio and discover how we approach each space.",
+      "explore": "Explore our services",
+      "servicesTitle": "A thoughtful approach to every space.",
+      "rooms": [
+        "Home",
+        "Office",
+        "Closets"
+      ],
+      "serviceDetails": [
+        "Everyday living spaces",
+        "A place to work",
+        "A place for everything"
+      ],
+      "talk": "Let’s talk.",
+      "contactHint": "Choose a channel and share your idea.",
+      "location": "Service area and opening hours",
+      "pagesLabel": "Connected pages",
+      "workspace": "Request workspace",
+      "fictional": "Fictional data",
+      "newRequest": "New request",
+      "taskTitle": "Organize the office",
+      "service": "Service",
+      "space": "Space",
+      "createRequest": "Create request",
+      "requestList": "Request list",
+      "listTitle": "Keep the request in one place.",
+      "statuses": [
+        "Received",
+        "In progress",
+        "Done"
+      ],
+      "listNote": "The same request, ready to find and review.",
+      "follow": "Progress",
+      "followTitle": "See what happens next.",
+      "flow": "Information flow",
+      "flowTitle": "The request moves to the next step.",
+      "nodes": [
+        "Form received",
+        "List updated",
+        "Notification sent"
+      ],
+      "sameData": "The same request",
+      "saved": "Request #024 recorded",
+      "notified": "Team notified of the request",
+      "noCopy": "No copying the information at every step",
+      "controls": "Explore the example steps"
+    },
+    "storyNote": "Illustrations of the services, not delivered projects."
   },
   "devices": {
     "index": "02",

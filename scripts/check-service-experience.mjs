@@ -28,9 +28,11 @@ function run(file,globals) {
   const output=ts.transpileModule(readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
   const context={exports:{},...globals}; runInNewContext(output,context); return context.exports;
 }
-function fixture({desktop=true,reduced=false}={}) {
+function fixture({desktop=true,reduced=false,tablet=false}={}) {
   const root=element(), articles=Array.from({length:4},()=>element()), columns=articles.map(()=>element());
   const figures=columns.map(()=>element());
+  const controls=figures.map(()=>Array.from({length:3},()=>element()));
+  figures.forEach((f,i)=>{f.querySelectorAll=s=>s==='[data-story-step]'?controls[i]:[];});
   let y=0; const frames=new Map(); let next=0;
   const media=[{...events(),matches:desktop},{...events(),matches:reduced}];
   const window=events(), document={...events(),visibilityState:'visible',querySelector:()=>root,createElement:element};
@@ -38,7 +40,7 @@ function fixture({desktop=true,reduced=false}={}) {
   root.querySelectorAll=()=>articles;
   let observer,disconnected=0;
   const api=run('src/lib/service-story.ts',{document,window,innerHeight:900,
-    matchMedia:q=>q.includes('reduced')?media[1]:media[0],
+    matchMedia:q=>q.includes('reduced')?media[1]:q.includes('768px')?{matches:tablet||desktop}:media[0],
     requestAnimationFrame:fn=>{frames.set(++next,fn);return next;},cancelAnimationFrame:id=>frames.delete(id),
     IntersectionObserver:class{constructor(fn){observer=fn;}observe(){}disconnect(){disconnected++;}},
     ResizeObserver:class{observe(){}disconnect(){disconnected++;}}
@@ -46,7 +48,7 @@ function fixture({desktop=true,reduced=false}={}) {
   const cleanup=api.initServiceStory();
   function flush(){const work=[...frames.values()];frames.clear();work.forEach(fn=>fn());}
   observer([{isIntersecting:true}]);flush();
-  return {root,articles,columns,figures,media,frames,window,document,cleanup,
+  return {root,articles,columns,figures,controls,media,frames,window,document,cleanup,
     scroll(n){y=n;window.emit('scroll');flush();},
     visible(v){observer([{isIntersecting:v}]);flush();},
     change(i,value){media[i].matches=value;media[i].emit('change');flush();},
@@ -56,22 +58,23 @@ function fixture({desktop=true,reduced=false}={}) {
 test('story follows scroll down and back, including direct jumps to the fourth service',()=>{
   const f=fixture();
   f.scroll(400); assert.equal(f.figures[0].dataset.step,'2');
-  f.scroll(0); assert.equal(f.figures[0].dataset.step,'1');
+  f.scroll(0); assert.equal(f.figures[0].dataset.step,'0');
   f.scroll(2800); assert.equal(f.columns[3].attrs.get('aria-hidden'),'false');
   assert.equal(f.columns[0].attrs.get('aria-hidden'),'true');
   f.scroll(0); assert.equal(f.columns[0].attrs.get('aria-hidden'),'false');
   f.cleanup();
 });
-test('story steps follow the card parts marked with data-story-step',()=>{
+test('manual controls select and announce a step; scroll resumes and cleanup removes handlers',()=>{
   const f=fixture();
-  // Summary at the top, lists 300px down, next step 800px down (anchor is 42% of 900 = 378).
-  const marks=[0,300,800].map(offset=>({getBoundingClientRect:()=>{const top=f.articles[0].getBoundingClientRect().top+offset;return {top,height:100};}}));
-  f.articles[0].querySelectorAll=()=>marks;
-  f.scroll(-100); assert.equal(f.figures[0].dataset.step,'0');
-  f.scroll(0); assert.equal(f.figures[0].dataset.step,'1');
-  f.scroll(500); assert.equal(f.figures[0].dataset.step,'2');
-  f.scroll(0); assert.equal(f.figures[0].dataset.step,'1');
+  f.controls[0][2].emit('click');
+  assert.equal(f.figures[0].dataset.step,'2');
+  assert.equal(f.controls[0][2].attrs.get('aria-pressed'),'true');
+  assert.equal(f.controls[0][0].attrs.get('aria-pressed'),'false');
+  f.scroll(0); assert.equal(f.figures[0].dataset.step,'0');
+  f.change(1,true); f.controls[0][2].emit('click');
+  assert.equal(f.figures[0].dataset.step,undefined);
   f.cleanup();
+  for(const group of f.controls.flat()) assert.equal(group.listeners.get('click').size,0);
 });
 test('resize restores each illustration to its own article without duplicating DOM',()=>{
   const f=fixture();
@@ -79,6 +82,24 @@ test('resize restores each illustration to its own article without duplicating D
   f.columns.forEach((c,i)=>assert.equal(c.parent,f.articles[i]));
   f.change(0,true); assert.equal(f.root.children[0].children.length,4);
   f.change(0,false); f.columns.forEach((c,i)=>assert.equal(f.articles[i].children.filter(x=>x===c).length,1));
+  f.cleanup();
+});
+test('mobile keeps animation enabled and scroll reverses the example steps',()=>{
+  const f=fixture({desktop:false});
+  f.figures.forEach(fig=>assert.equal(fig.classes.has('sv-animated'),true));
+  f.scroll(-400); assert.equal(f.figures[0].dataset.step,'0');
+  f.scroll(-150); assert.equal(f.figures[0].dataset.step,'1');
+  f.scroll(0); assert.equal(f.figures[0].dataset.step,'2');
+  f.scroll(-400); assert.equal(f.figures[0].dataset.step,'0');
+  f.controls[0][2].emit('click');assert.equal(f.figures[0].dataset.step,'2');
+  f.cleanup();
+});
+test('tablet uses the article position while the illustration remains sticky',()=>{
+  const f=fixture({desktop:false,tablet:true});
+  f.figures[0].getBoundingClientRect=()=>({top:112,bottom:712,height:600});
+  f.scroll(0);assert.equal(f.figures[0].dataset.step,'0');
+  f.scroll(400);assert.equal(f.figures[0].dataset.step,'2');
+  f.scroll(0);assert.equal(f.figures[0].dataset.step,'0');
   f.cleanup();
 });
 test('reduced motion restores static content at startup and when changed live',()=>{
