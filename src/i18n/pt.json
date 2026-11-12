@@ -51,7 +51,7 @@
         "id": "service-landing",
         "kind": "landing",
         "title": "Landing page",
-        "kicker": "Uma página, um objetivo",
+        "kicker": "Uma página focada na sua oferta",
         "need": "Quero divulgar um serviço, um lançamento ou receber pedidos de orçamento.",
         "what": "Uma página única, focada em uma oferta ou em um objetivo específico. Todo o conteúdo conduz o visitante a entender a proposta e a entrar em contato.",
         "when": [
@@ -75,7 +75,7 @@
         "id": "service-website",
         "kind": "website",
         "title": "Site institucional",
-        "kicker": "Várias páginas, tudo organizado",
+        "kicker": "Sua empresa, seus serviços e sua história",
         "need": "Quero apresentar minha empresa, com páginas para serviços, informações e contato.",
         "what": "Um site com páginas ou áreas para apresentar a empresa, os serviços, informações úteis e formas de contato. É a presença da empresa na internet, organizada para que cada pessoa encontre o que procura.",
         "when": [
@@ -99,7 +99,7 @@
         "id": "service-webapp",
         "kind": "webapp",
         "title": "Sistema web",
-        "kicker": "Uma ferramenta para a rotina",
+        "kicker": "Uma ferramenta sob medida para o seu negócio",
         "need": "Preciso de uma ferramenta para cadastrar, acompanhar e consultar informações.",
         "what": "Uma ferramenta acessada pelo navegador para realizar tarefas e organizar informações do negócio. Em vez de planilhas soltas e mensagens espalhadas, os dados ficam reunidos em um só lugar, com acesso para quem precisa.",
         "when": [
@@ -123,7 +123,7 @@
         "id": "service-automation",
         "kind": "automation",
         "title": "Automações e integrações",
-        "kicker": "Menos etapas manuais",
+        "kicker": "Ferramentas conectadas, menos trabalho manual",
         "need": "Quero conectar ferramentas que já uso e reduzir tarefas repetitivas.",
         "what": "Conexões entre as ferramentas que você já usa, para que uma informação siga sozinha para onde precisa ir. A ideia é reduzir tarefas repetitivas, como copiar dados de um lugar para outro ou avisar alguém manualmente.",
         "when": [
@@ -148,7 +148,7 @@
     "index": "02",
     "heading": "Funciona em todos os dispositivos",
     "subheading": "O conteúdo se adapta à tela de quem acessa.",
-    "body": "Layout responsivo, que se ajusta a qualquer tela sem cortar conteúdo nem exigir zoom.",
+    "body": "Textos, imagens e menus se adaptam ao computador, tablet e celular para facilitar a leitura e a navegação.",
     "points": [
       {
         "title": "Leitura confortável",

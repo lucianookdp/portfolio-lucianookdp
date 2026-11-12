@@ -1,5 +1,6 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
+import ServiceIcon from '../ui/ServiceIcon.astro';
 import type { Dictionary } from '../../i18n/utils';
 interface Props { dict: Dictionary; }
 const { dict } = Astro.props;
@@ -11,13 +12,14 @@ const number = (i: number) => String(i + 1).padStart(2, '0');
   <p class="service-introduction">{dict.services.intro}</p>
   <nav class="service-chooser" aria-labelledby="service-chooser-heading">
     <h3 id="service-chooser-heading" class="eyebrow">{dict.services.chooserHeading}</h3>
-    <ul class="service-options">{offerings.map((o,i)=><li><a href={`#${o.id}`} class="offering"><span class="offering-head"><span>{number(i)}</span><span aria-hidden="true">↗</span></span><span class="offering-title">{o.title}</span><span class="offering-need">{o.need}</span></a></li>)}</ul>
+    <ul class="service-options">{offerings.map((o)=><li><a href={`#${o.id}`} class="offering"><span class="offering-head"><span class="offering-icon"><ServiceIcon kind={o.kind} /></span><span aria-hidden="true">↗</span></span><span class="offering-title">{o.title}</span><span class="offering-need">{o.need}</span></a></li>)}</ul>
     <p class="service-help">{dict.services.chooserHelp} <a href="#contact">{dict.services.chooserHelpLink} ↗</a></p>
   </nav>
   <div class="service-list">
     {offerings.map((offering, index) => (
       <article id={offering.id} class="service-block scroll-mt-24" aria-labelledby={`${offering.id}-title`}>
         <header class="service-intro" data-reveal>
+          <span class="service-emblem"><ServiceIcon kind={offering.kind} /></span>
           <p class="service-kicker"><span>{number(index)}</span>{offering.kicker}</p>
           <h3 id={`${offering.id}-title`} class="service-title">{offering.title}</h3>
           <p class="service-lead">{offering.what}</p>
@@ -55,6 +57,11 @@ const number = (i: number) => String(i + 1).padStart(2, '0');
 .offering:hover,.offering:focus-visible{background:var(--s-soft)}.offering:focus-visible{outline:2px solid var(--s-green);outline-offset:-2px}.offering:hover .offering-head>span:last-child{transform:translate(2px,-2px)}
 .service-help{margin-top:1rem;font-size:.8rem;line-height:1.6;color:var(--s-dim)}.service-help a{color:var(--s-green);text-decoration:underline;text-underline-offset:4px}
 .service-list{display:grid;gap:3.5rem;margin-top:2rem}.service-block{display:grid;gap:1.75rem;padding-top:2rem;border-top:1px solid var(--s-edge)}
+.offering-icon{display:grid;place-items:center;width:3rem;height:3rem;border:1px solid var(--s-line);border-radius:.85rem;background:var(--s-soft)}
+.offering-icon svg{width:1.65rem;height:1.65rem}
+.service-emblem{display:grid;place-items:center;width:4.5rem;height:4.5rem;margin-bottom:1.4rem;border:1px solid var(--s-edge);border-radius:1.2rem;color:var(--s-green);background:linear-gradient(145deg,var(--s-soft),var(--s-paper))}
+.service-emblem svg{width:2.5rem;height:2.5rem}
+@media(prefers-reduced-motion:no-preference){.offering-icon svg{transition:transform .35s var(--ease-out-expo)}.offering:hover .offering-icon svg{transform:translateY(-2px) rotate(-4deg)}}
 .service-kicker{display:flex;align-items:center;gap:.8rem;color:var(--s-dim);font:.65rem/1.5 var(--font-mono);text-transform:uppercase;letter-spacing:.1em}.service-kicker>span{display:grid;place-items:center;width:2rem;height:2rem;flex:none;border:1px solid var(--s-edge);border-radius:50%;color:var(--s-green)}
 .service-title{font:600 clamp(2rem,4vw,3rem)/1.06 var(--font-display);letter-spacing:-.045em;margin:1rem 0 1.25rem;max-width:18ch}.service-lead{font-size:1rem;line-height:1.65;max-width:53ch;color:var(--s-dim)}
 .service-accordions{border-top:1px solid var(--s-line)}.service-accordions details{border-bottom:1px solid var(--s-line)}.service-accordions summary{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:52px;cursor:pointer;font-size:.85rem;font-weight:500;list-style:none}.service-accordions summary::-webkit-details-marker{display:none}.service-accordions summary>span{color:var(--s-green);font-size:1.25rem}.service-accordions details[open] summary>span{transform:rotate(45deg)}.service-accordions summary:focus-visible{outline:2px solid var(--s-green);outline-offset:4px}

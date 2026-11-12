@@ -290,29 +290,40 @@ for (const mode of ['success', 'denied', 'unavailable']) {
   });
 }
 
-for (const compact of [true, false]) {
-  test('service process ' + (compact ? 'leaves compact layouts free to scroll' : 'keeps the desktop walkthrough'), () => {
+for (const reduced of [false, true]) {
+  test('journey keeps all steps readable and cleans up observers, reduced=' + reduced, () => {
     const env = environment();
-    const root = env.element(), panel = env.element(), title = env.element(), description = env.element();
-    root.offsetHeight = 1800; panel.offsetHeight = 500;
-    const steps = Array.from({ length: 6 }, (_, i) => {
-      const step = env.element(); step.dataset = { title: 'Step ' + i, description: 'Description ' + i }; return step;
-    });
-    root.querySelectorAll = selector => selector === '[data-step]' ? steps : [];
-    root.querySelector = selector => ({ '[data-process-panel]': panel, '[data-detail]': env.element(), '[data-detail-title]': title, '[data-detail-description]': description }[selector] ?? null);
+    const root = env.element();
+    const steps = Array.from({length: 6}, () => env.element());
+    const stops = Array.from({length: 6}, () => env.element());
+    root.querySelectorAll = selector => selector === '[data-journey-step]' ? steps : stops;
     env.document.querySelector = () => root;
-    env.window.matchMedia = query => ({ matches: query.includes('max-width') ? compact : false });
-    const scrolls = [];
+    const media = { ...eventTarget(), matches: reduced };
+    env.window.matchMedia = () => media;
+    let notify, active = 0;
+    class Observer {
+      constructor(callback) { notify = callback; active++; }
+      observe() {} unobserve() {} disconnect() { active--; }
+    }
+    env.window.IntersectionObserver = Observer;
     const api = execute(astroScript('src/components/sections/Process.astro'), {
-      ...env, getComputedStyle: () => ({ top: '96px' }),
-      require: () => ({ scrollToTarget: (...args) => scrolls.push(args) })
+      ...env, IntersectionObserver: Observer
     }, 'globalThis.qa = { initProcess };');
     api.initProcess();
-    steps[5].dispatchEvent({ type: 'click', currentTarget: steps[5] });
-    assert.equal(scrolls.length, compact ? 0 : 1);
-    if (compact) { assert.equal(title.textContent, 'Step 5'); assert.equal(description.textContent, 'Description 5'); }
+    if (!reduced) {
+      notify([{ isIntersecting: true, target: steps[3] }]);
+      assert.equal(steps[3].classList.contains('is-reached'), true);
+      assert.equal(steps[4].classList.contains('is-reached'), false);
+      notify([{ isIntersecting: true, target: steps[1] }]);
+      assert.equal(steps[3].classList.contains('is-reached'), true);
+    } else assert.equal(steps.every(step => step.classList.contains('is-reached')), true);
+    assert.equal(steps.every(step => !step.hidden && !step.inert), true);
     api.initProcess();
-    assert.equal(env.window.listeners.get('scroll').size, 1, 'Navigation must not accumulate scroll listeners');
+    assert.equal(active, reduced ? 0 : 1);
+    assert.equal(media.listeners.get('change').size, 1);
+    env.document.dispatchEvent({type: 'astro:before-swap'});
+    assert.equal(active, 0);
+    assert.equal(media.listeners.get('change').size, 0);
   });
 }
 
