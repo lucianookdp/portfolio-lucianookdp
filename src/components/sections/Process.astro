@@ -21,15 +21,6 @@ const STEP_ICONS = [
     <div class="journey-intro">
       <p class="eyebrow">{dict.process.eyebrow}</p>
       <p class="journey-lead">{dict.process.intro}</p>
-      <div class="journey-map" aria-hidden="true">
-        <svg viewBox="0 0 280 140" fill="none">
-          <path class="journey-map-base" d="M24 36H244V104H24" />
-          <path class="journey-map-route" d="M24 36H244V104H24" pathLength="1" />
-          {[[24,36],[134,36],[244,36],[244,104],[134,104],[24,104]].map(([x,y],i) => (
-            <g class="journey-map-stop" data-journey-stop><circle cx={x} cy={y} r="17" /><text x={x} y={y} dy=".35em" text-anchor="middle">{String(i+1).padStart(2,'0')}</text></g>
-          ))}
-        </svg>
-      </div>
     </div>
     <ol class="journey-steps" aria-labelledby="process-heading">
       {steps.map((step,index) => (
@@ -51,15 +42,12 @@ const STEP_ICONS = [
     const root = document.querySelector<HTMLElement>('[data-journey]');
     if (!root) return;
     const steps = Array.from(root.querySelectorAll<HTMLElement>('[data-journey-step]'));
-    const stops = Array.from(root.querySelectorAll<SVGElement>('[data-journey-stop]'));
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     let observer: IntersectionObserver | undefined;
     let furthest = -1;
     const activate = (index: number) => {
       furthest = Math.max(furthest, index);
       steps.forEach((step, i) => step.classList.toggle('is-reached', i <= furthest));
-      stops.forEach((stop, i) => stop.classList.toggle('is-reached', i <= furthest));
-      root.style.setProperty('--journey-progress', String(Math.max(0, furthest) / Math.max(1, steps.length - 1)));
     };
     const setup = () => {
       observer?.disconnect();
@@ -80,13 +68,8 @@ const STEP_ICONS = [
   document.addEventListener('astro:before-swap', () => { teardown?.(); teardown = undefined; });
 </script>
 <style is:global>
-.journey{--journey-progress:0;display:grid;gap:2.5rem;margin-top:3rem}
+.journey{display:grid;gap:2.5rem;margin-top:3rem}
 .journey-lead{max-width:25ch;margin-top:1rem;font:500 clamp(1.5rem,2.5vw,2rem)/1.4 var(--font-display);letter-spacing:-.035em}
-.journey-map{max-width:280px;margin-top:2rem}.journey-map svg{display:block;width:100%;overflow:visible}
-.journey-map-base{stroke:var(--color-border-strong);stroke-width:1.5}
-.journey-map-route{stroke:var(--color-accent-text);stroke-width:1.5;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--journey-progress))}
-.journey-map-stop circle{fill:var(--color-bg);stroke:var(--color-border-strong)}.journey-map-stop text{fill:var(--color-text-secondary);font:10px var(--font-mono)}
-.journey-map-stop.is-reached circle{fill:var(--color-accent);stroke:var(--color-accent)}.journey-map-stop.is-reached text{fill:var(--color-on-accent)}
 .journey-steps{list-style:none;margin:0;padding:0}
 .journey-step{position:relative;display:grid;grid-template-columns:2.5rem minmax(0,1fr);gap:1.25rem;padding-bottom:1.25rem}
 .journey-step:not(:last-child)::before,.journey-step:not(:last-child)::after{content:'';position:absolute;left:calc(1.25rem - .5px);top:2.5rem;bottom:0;width:1px;background:var(--color-border-strong)}
@@ -97,7 +80,7 @@ const STEP_ICONS = [
 .journey-copy h3{font:600 clamp(1.15rem,1.8vw,1.45rem)/1.25 var(--font-display);letter-spacing:-.025em}.journey-copy p{max-width:49ch;margin-top:.65rem;color:var(--color-text-secondary);font-size:.9rem;line-height:1.7}
 .journey-step.is-reached .journey-number{color:var(--color-on-accent);background:var(--color-accent);border-color:var(--color-accent)}.journey-step.is-reached .journey-icon{color:var(--color-accent-text);background:var(--color-accent-soft)}.journey-step.is-reached .journey-card{border-color:var(--color-border-strong)}.journey-step:last-child{padding-bottom:0}
 @media(min-width:900px){.journey{grid-template-columns:minmax(0,.75fr) minmax(0,1.4fr);gap:clamp(3rem,6vw,6rem)}.journey-intro{position:sticky;top:8rem;align-self:start}.journey-card{padding:1.75rem}}
-@media(max-width:599px){.journey{gap:2rem}.journey-map{display:none}.journey-lead{max-width:32ch}.journey-step{gap:.75rem;grid-template-columns:2rem minmax(0,1fr)}.journey-number{width:2rem;height:2rem;font-size:.65rem}.journey-step:not(:last-child)::before,.journey-step:not(:last-child)::after{left:calc(1rem - .5px);top:2rem}.journey-card{grid-template-columns:1fr;padding:1.25rem;gap:1rem}.journey-icon{width:2.25rem;height:2.25rem}}
+@media(max-width:599px){.journey{gap:2rem}.journey-lead{max-width:32ch}.journey-step{gap:.75rem;grid-template-columns:2rem minmax(0,1fr)}.journey-number{width:2rem;height:2rem;font-size:.65rem}.journey-step:not(:last-child)::before,.journey-step:not(:last-child)::after{left:calc(1rem - .5px);top:2rem}.journey-card{grid-template-columns:1fr;padding:1.25rem;gap:1rem}.journey-icon{width:2.25rem;height:2.25rem}}
 @media(max-height:540px){.journey-intro{position:static}}
-@media(prefers-reduced-motion:no-preference){.journey-map-route{transition:stroke-dashoffset .8s ease}.journey-map-stop circle,.journey-map-stop text{transition:fill .4s,stroke .4s}.journey-number,.journey-icon,.journey-card{transition:color .45s,background-color .45s,border-color .45s}.journey-step::after{transition:transform .8s ease}.journey-step.is-reached .journey-icon svg{animation:journey-icon-in .6s var(--ease-out-expo) both}@keyframes journey-icon-in{from{transform:translateY(5px) scale(.9)}to{transform:none}}}
+@media(prefers-reduced-motion:no-preference){.journey-number,.journey-icon,.journey-card{transition:color .45s,background-color .45s,border-color .45s}.journey-step::after{transition:transform .8s ease}.journey-step.is-reached .journey-icon svg{animation:journey-icon-in .6s var(--ease-out-expo) both}@keyframes journey-icon-in{from{transform:translateY(5px) scale(.9)}to{transform:none}}}
 </style>

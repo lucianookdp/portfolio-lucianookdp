@@ -221,12 +221,11 @@
   "about": {
     "index": "04",
     "heading": "Who builds it",
-    "lead": "Nice to meet you, I'm Luciano K.",
+    "lead": "Nice to meet you, I'm Luciano K. Dal Pai",
     "body": "I'm a software engineer based in Brazil and I work independently, building websites and web apps for individuals and companies. You talk to me directly at every step, and I'm responsible for the planning, the development and the agreed deliverables.",
     "points": [
       "Direct contact, no middlemen",
-      "Scope, price and timeline agreed before work starts",
-      "Explanations in plain language"
+      "Scope, price and timeline agreed before work starts"
     ],
     "linkedin": "See my background on LinkedIn"
   },
